@@ -1,2 +1,2 @@
-# Beidou
+# Krul Tepes
 A discord bot
