@@ -1,0 +1,2 @@
+# Beidou
+A discord bot
