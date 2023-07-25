@@ -2,18 +2,18 @@ package com.ryderbelserion.api
 
 import net.dv8tion.jda.api.entities.Guild
 
-interface ModuleApplication {
+abstract class ModuleApplication {
 
-    fun onReady()
+    abstract fun onReady()
 
-    fun onStart()
+    abstract fun onStart()
 
-    fun onGuildReady(guild: Guild)
+    abstract fun onGuildReady(guild: Guild)
 
-    fun onStop()
+    abstract fun onStop()
 
-    fun token(): String?
+    abstract fun token(): String?
 
-    fun init(): Boolean
+    abstract fun init(): Boolean
 
 }
