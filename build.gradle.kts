@@ -17,12 +17,15 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(kotlin("reflect"))
 
     implementation("org.jetbrains", "annotations", "24.0.1")
 
+    implementation("com.google.code.gson", "gson", "2.10.1")
+
     implementation("net.dv8tion", "JDA", "5.0.0-beta.12")
     implementation("ch.qos.logback", "logback-classic", "1.4.5")
+
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.6.4")
 }
 
 kotlin {

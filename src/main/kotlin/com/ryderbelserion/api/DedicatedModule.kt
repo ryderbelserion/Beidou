@@ -3,6 +3,7 @@ package com.ryderbelserion.api
 import com.ryderbelserion.api.exceptions.ModuleInitializeException
 import com.ryderbelserion.api.listeners.ListenerBuilder
 import com.ryderbelserion.api.listeners.ModuleListener
+import com.ryderbelserion.api.schedules.Scheduler
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.requests.GatewayIntent
@@ -36,6 +37,8 @@ abstract class DedicatedModule(
             if (!this.dataFolder.exists()) this.dataFolder.mkdir()
 
             if (!this.addonFolder.exists() && this.addonFolder.exists()) this.addonFolder.mkdir()
+
+            Scheduler.start()
 
             onStart()
         }.onFailure {
