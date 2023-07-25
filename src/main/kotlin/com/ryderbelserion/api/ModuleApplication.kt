@@ -14,4 +14,6 @@ interface ModuleApplication {
 
     fun token(): String?
 
+    fun init(): Boolean
+
 }

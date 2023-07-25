@@ -1,10 +1,11 @@
 package com.ryderbelserion.api
 
-import com.ryderbelserion.api.exceptions.ModuleInitializeFailure
-import com.ryderbelserion.api.provider.ApiRegistration
+import com.ryderbelserion.api.exceptions.ModuleInitializeException
+import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.JDABuilder
 import java.io.File
 
-class DedicatedModule : ModuleInterface {
+abstract class DedicatedModule : ModuleApplication {
 
     private var isActive: Boolean = false
 
@@ -12,21 +13,19 @@ class DedicatedModule : ModuleInterface {
 
     private val addonFolder = dataFolder.resolve("addons")
 
-    private var moduleApplication: ModuleApplication? = null
-
-    fun get(): ModuleApplication {
-        return moduleApplication ?: throw ModuleInitializeFailure("You are fucked.")
-    }
+    private lateinit var jda: JDA
 
     override fun init(): Boolean {
         runCatching {
             if (!this.dataFolder.exists()) this.dataFolder.mkdir()
 
             if (!this.addonFolder.exists() && this.addonFolder.exists()) this.addonFolder.mkdir()
+
+            this.jda = JDABuilder.createDefault(token()).build()
         }.onFailure {
             this.isActive = false
 
-            throw ModuleInitializeFailure("Could not enable the dedicated module!")
+            throw ModuleInitializeException("Could not enable the dedicated module!")
         }.onSuccess {
             this.isActive = true
         }
@@ -37,11 +36,4 @@ class DedicatedModule : ModuleInterface {
     fun isActive(): Boolean {
         return this.isActive
     }
-}
-
-fun configure() {
-    // Create the initial module.
-    val module = DedicatedModule()
-    // Initialize it.
-    module.init()
 }

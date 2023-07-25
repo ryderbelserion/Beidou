@@ -1,7 +1,7 @@
 package com.ryderbelserion
 
-import com.ryderbelserion.api.configure
+import com.ryderbelserion.bot.Krul
 
 fun main() {
-    configure()
+    Krul().init()
 }

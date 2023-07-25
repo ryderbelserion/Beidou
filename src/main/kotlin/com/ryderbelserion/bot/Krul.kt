@@ -1,9 +1,9 @@
 package com.ryderbelserion.bot
 
-import com.ryderbelserion.api.ModuleApplication
+import com.ryderbelserion.api.DedicatedModule
 import net.dv8tion.jda.api.entities.Guild
 
-class Krul : ModuleApplication {
+class Krul : DedicatedModule() {
 
     override fun onReady() {
 
