@@ -18,10 +18,6 @@ abstract class DedicatedModule(
 
     private var isActive: Boolean = false
 
-    private val dataFolder = File("./bot")
-
-    private val addonFolder = dataFolder.resolve("addons")
-
     private val jda: JDA = get()
 
     private fun get(): JDA {
@@ -55,4 +51,8 @@ abstract class DedicatedModule(
     fun isActive(): Boolean {
         return this.isActive
     }
+
+    val dataFolder = File("./bot")
+
+    val addonFolder = dataFolder.resolve("addons")
 }

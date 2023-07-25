@@ -4,6 +4,7 @@ import com.ryderbelserion.api.DedicatedModule
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
+import java.io.File
 
 class Krul : DedicatedModule(
     listOf(
@@ -28,6 +29,11 @@ class Krul : DedicatedModule(
     }
 
     override fun onGuildReady(guild: Guild) {
+        val folder = dataFolder.resolve("guilds")
+
+        if (!folder.exists()) folder.mkdir()
+        if (folder.exists() && !folder.resolve(guild.id).exists()) folder.resolve(guild.id).mkdir()
+
         println("${guild.name} is ready!")
     }
 
