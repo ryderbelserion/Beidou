@@ -1,7 +1,7 @@
 package com.ryderbelserion.api.command.builders.args
 
-class ArgumentType {
+abstract class ArgumentType {
 
-
+    abstract fun getPossibleValues(): List<String?>?
 
 }
