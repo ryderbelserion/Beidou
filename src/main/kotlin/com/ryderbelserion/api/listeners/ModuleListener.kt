@@ -11,7 +11,7 @@ class ModuleListener(private val dedicatedModule: DedicatedModule, private val m
     override fun onReady(event: ReadyEvent) {
         this.module(dedicatedModule)
 
-        this.dedicatedModule.onReady()
+        this.dedicatedModule.onReady(event.jda)
     }
 
     override fun onGuildReady(event: GuildReadyEvent) {

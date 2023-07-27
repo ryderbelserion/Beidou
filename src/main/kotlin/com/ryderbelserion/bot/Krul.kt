@@ -1,10 +1,11 @@
 package com.ryderbelserion.bot
 
 import com.ryderbelserion.api.DedicatedModule
+import com.ryderbelserion.bot.commands.AboutCommand
+import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
-import java.io.File
 
 class Krul : DedicatedModule(
     listOf(
@@ -24,21 +25,28 @@ class Krul : DedicatedModule(
         println("Guten Tag!")
     }
 
-    override fun onReady() {
-        println("Bot is ready!")
+    override fun onReady(jda: JDA) {
+        listeners {
+            register(AboutCommand())
+        }
+
+        println("${jda.selfUser.name} is ready!")
     }
 
     override fun onGuildReady(guild: Guild) {
-        val folder = dataFolder.resolve("guilds")
+        createGuildDir(guild.idLong, "guilds")
 
-        if (!folder.exists()) folder.mkdir()
-        if (folder.exists() && !folder.resolve(guild.id).exists()) folder.resolve(guild.id).mkdir()
+        if (guild.idLong == 182615261403283459) {
+            commands(guild) {
+                addGuildCommand(AboutCommand())
+            }
+        }
 
-        println("${guild.name} is ready!")
+        println("${guild.name} is ready!".formatted(""))
     }
 
-    override fun onStop() {
-        println("Bot is offline!")
+    override fun onStop(jda: JDA) {
+        println("${jda.selfUser.name} is offline!")
     }
 
     override fun token(): String? {

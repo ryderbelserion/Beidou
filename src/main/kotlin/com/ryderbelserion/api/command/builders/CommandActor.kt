@@ -1,7 +1,7 @@
 package com.ryderbelserion.api.command.builders
 
-interface CommandActor {
+abstract class CommandActor {
 
-
+    abstract fun reply(message: String)
 
 }
