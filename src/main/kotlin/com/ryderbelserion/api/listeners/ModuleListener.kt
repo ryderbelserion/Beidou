@@ -19,6 +19,6 @@ class ModuleListener(private val dedicatedModule: DedicatedModule, private val m
     }
 
     override fun onShutdown(event: ShutdownEvent) {
-        this.dedicatedModule.onStop()
+        this.dedicatedModule.onStop(event.jda)
     }
 }

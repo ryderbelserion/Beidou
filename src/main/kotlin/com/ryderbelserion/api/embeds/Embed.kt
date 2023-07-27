@@ -5,6 +5,9 @@ import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.entities.User
 import java.awt.Color
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 class Embed {
 
@@ -18,8 +21,10 @@ class Embed {
     /**
      * Set the default title.
      */
-    fun title(title: String) {
+    fun title(title: String): Embed {
         embed.setTitle(title)
+
+        return this
     }
 
     /**
@@ -28,8 +33,16 @@ class Embed {
      * @param footer - The text to put in the footer.
      * @param icon - The icon whether it's a profile picture or something random.
      */
-    fun footer(footer: String, icon: String? = null) {
+    fun footer(footer: String, icon: String? = null): Embed {
         embed.setFooter(footer, icon)
+
+        return this
+    }
+
+    fun timestamp(): Embed {
+        embed.setTimestamp(LocalDateTime.now().atZone(ZoneId.of("")))
+
+        return this
     }
 
     /**
@@ -37,17 +50,21 @@ class Embed {
      *
      * @param user - The member in question.
      */
-    fun footer(user: User, guild: Guild?) {
+    fun footer(user: User, guild: Guild?): Embed {
         val avatar = guild?.getMember(user)?.effectiveAvatarUrl
 
         embed.setFooter("Requested by: ${user.asMention}", avatar)
+
+        return this
     }
 
     /**
      * Add a list of fields.
      */
-    fun fields(block: Fields.() -> Unit) {
+    fun fields(block: Fields.() -> Unit): Embed {
         block(fields)
+
+        return this
     }
 
     /**
@@ -55,8 +72,10 @@ class Embed {
      *
      * @param hex - The color to choose.
      */
-    fun color(hex: String) {
+    fun color(hex: String): Embed {
         embed.setColor(hex.toColor())
+
+        return this
     }
 
     /**
@@ -64,8 +83,10 @@ class Embed {
      *
      * @param color - A preset enum of colors.
      */
-    fun color(color: EmbedColors) {
+    fun color(color: EmbedColors): Embed {
         embed.setColor(color.code.toColor())
+
+        return this
     }
 
     /**
@@ -73,8 +94,10 @@ class Embed {
      *
      * @param url - The image url to use.
      */
-    fun thumbnail(url: String) {
+    fun thumbnail(url: String): Embed {
         embed.setThumbnail(url)
+
+        return this
     }
 
     /**
@@ -83,10 +106,12 @@ class Embed {
      * @param user - The member in question.
      * @param guild - Used to fetch the member's guild avatar otherwise fetches global avatar.
      */
-    fun thumbnail(user: User, guild: Guild?) {
-        val avatar = guild?.getMember(user)?.effectiveAvatarUrl
+    fun thumbnail(user: User?, guild: Guild?): Embed {
+        val avatar = user?.let { guild?.getMember(it)?.effectiveAvatarUrl }
 
         embed.setThumbnail(avatar)
+
+        return this
     }
 
     /**
@@ -94,8 +119,10 @@ class Embed {
      *
      * @param url - The image url to use.
      */
-    fun image(url: String) {
+    fun image(url: String?): Embed {
         embed.setImage(url)
+
+        return this
     }
 
     /**
@@ -104,8 +131,10 @@ class Embed {
      * @param name - The name of the author.
      * @param image - An optional value to input an image url.
      */
-    fun author(name: String?, image: String? = null) {
+    fun author(name: String?, image: String? = null): Embed {
         embed.setAuthor(name, null, image)
+
+        return this
     }
 
     /**
@@ -114,10 +143,14 @@ class Embed {
      * @param user - The member in question.
      * @param guild - Used to fetch the member's guild avatar otherwise fetches global avatar.
      */
-    fun author(user: User, guild: Guild?) {
-        val avatar = guild?.getMember(user)?.effectiveAvatarUrl
+    fun author(user: User?, guild: Guild?): Embed {
+        val member = user?.let { guild?.getMember(it) }
 
-        embed.setAuthor(user.asMention, null, avatar)
+        val avatar = member?.effectiveAvatarUrl
+
+        embed.setAuthor(member?.effectiveName, null, avatar)
+
+        return this
     }
 
     /**
@@ -125,8 +158,10 @@ class Embed {
      *
      * @param description - The description to use.
      */
-    fun description(description: String) {
+    fun description(description: String): Embed {
         embed.setDescription(description)
+
+        return this
     }
 
     fun build(): MessageEmbed {

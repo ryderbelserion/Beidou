@@ -23,7 +23,7 @@ class Fields(private val embed: EmbedBuilder) {
      * @param value - Whether the field should be inline.
      */
     fun field(field: Field?, value: Boolean = false) {
-        embed.addField(field?.name.toString(), field?.value.toString(), value)
+        embed.addField(field?.name!!, field.value!!, value)
     }
 
     /**
