@@ -40,7 +40,7 @@ class Embed {
     }
 
     fun timestamp(): Embed {
-        embed.setTimestamp(LocalDateTime.now().atZone(ZoneId.of("")))
+        embed.setTimestamp(LocalDateTime.now().atZone(ZoneId.of("America/New_York")))
 
         return this
     }
