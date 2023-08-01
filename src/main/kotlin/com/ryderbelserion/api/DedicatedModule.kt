@@ -5,6 +5,7 @@ import com.ryderbelserion.api.exceptions.ModuleInitializeException
 import com.ryderbelserion.api.listeners.ListenerBuilder
 import com.ryderbelserion.api.listeners.ModuleListener
 import com.ryderbelserion.api.schedules.Scheduler
+import com.ryderbelserion.api.storage.FileHandler
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Guild
@@ -21,6 +22,8 @@ abstract class DedicatedModule(
     private var isActive: Boolean = false
 
     private val jda: JDA = get()
+
+    val handler = FileHandler()
 
     private fun get(): JDA {
         return JDABuilder.createDefault(token(), gateways).enableCache(cache).addEventListeners(getListener()).build()
@@ -70,6 +73,10 @@ abstract class DedicatedModule(
     }
 
     open fun getDataFolder() = File("./bot")
+
+    open fun getGuildFolder(path: String) = getDataFolder().resolve(path)
+
+    open fun getGuildFolderID(path: String, id: Long) = getGuildFolder(path).resolve(id.toString())
 
     open fun getAddonFolder() = getDataFolder().resolve("addons")
 }

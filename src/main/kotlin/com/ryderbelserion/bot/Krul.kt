@@ -2,6 +2,7 @@ package com.ryderbelserion.bot
 
 import com.ryderbelserion.api.DedicatedModule
 import com.ryderbelserion.bot.commands.AboutCommand
+import com.ryderbelserion.bot.configs.Data
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.requests.GatewayIntent
@@ -36,6 +37,8 @@ class Krul : DedicatedModule(
 
     override fun onGuildReady(guild: Guild) {
         createGuildDir(guild.idLong, "guilds")
+
+        handler.addFile(Data(this, "guilds", guild))
 
         commands(guild) {
             addGuildCommand(AboutCommand())

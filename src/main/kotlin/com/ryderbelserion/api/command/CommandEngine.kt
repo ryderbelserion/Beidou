@@ -1,7 +1,9 @@
 package com.ryderbelserion.api.command
 
+import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import net.dv8tion.jda.api.interactions.commands.Command
 
 abstract class CommandEngine(val name: String, val desc: String) : ListenerAdapter() {
 
@@ -17,5 +19,19 @@ abstract class CommandEngine(val name: String, val desc: String) : ListenerAdapt
         if (event.name != name) return
 
         execute(context)
+    }
+
+    override fun onCommandAutoCompleteInteraction(event: CommandAutoCompleteInteractionEvent) {
+        if (event.name != name) return
+
+        val words = arrayOf("apple", "apricot", "banana", "cherry", "coconut", "cranberry")
+
+        val options = words.filter { word ->
+            word.startsWith(event.focusedOption.value)
+        }.map { word ->
+            Command.Choice(word, word)
+        }
+
+        event.replyChoice(options.toString(), "").queue()
     }
 }

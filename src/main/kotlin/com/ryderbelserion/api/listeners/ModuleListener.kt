@@ -1,6 +1,7 @@
 package com.ryderbelserion.api.listeners
 
 import com.ryderbelserion.api.DedicatedModule
+import net.dv8tion.jda.api.events.guild.GuildAvailableEvent
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent
 import net.dv8tion.jda.api.events.session.ReadyEvent
 import net.dv8tion.jda.api.events.session.ShutdownEvent
@@ -15,6 +16,10 @@ class ModuleListener(private val dedicatedModule: DedicatedModule, private val m
     }
 
     override fun onGuildReady(event: GuildReadyEvent) {
+        this.dedicatedModule.onGuildReady(event.guild)
+    }
+
+    override fun onGuildAvailable(event: GuildAvailableEvent) {
         this.dedicatedModule.onGuildReady(event.guild)
     }
 
