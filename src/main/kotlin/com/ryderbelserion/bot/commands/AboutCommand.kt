@@ -10,10 +10,10 @@ class AboutCommand : CommandEngine("about", "Shows information about the bot.") 
     override fun perform(context: CommandContext) {
         val embed = Embed()
             .description("""
-                Hi, My name is **Krul Tepes**!
+                Hi, My name is **Lapis Lazuli**!
                 I am written by ${context.creator()?.effectiveName} using [Kotlin](https://kotlinlang.org/)
                 
-                You can find my source code [here](https://github.com/ryderbelserion/Krul)
+                You can find my source code [here](https://github.com/ryderbelserion/Lapis)
             """.trimIndent())
             .thumbnail(context.bot(), context.guild())
             .author(context.author(), context.guild())
