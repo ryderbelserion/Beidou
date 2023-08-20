@@ -29,8 +29,7 @@ class AboutCommand : CommandEngine("about", "Shows information about the bot.") 
                     """.trimIndent(),
                     true
                 )
-            }
-            .build()
+            }.build()
 
         context.reply(embed, true)
     }
