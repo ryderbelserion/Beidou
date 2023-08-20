@@ -1,9 +1,10 @@
-package com.ryderbelserion.api
+package com.ryderbelserion.api.plugin
 
+import com.ryderbelserion.api.plugin.registry.ModuleRegistration
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 
-abstract class ModuleApplication {
+abstract class ModulePlugin {
 
     abstract fun onReady(jda: JDA)
 
@@ -17,4 +18,11 @@ abstract class ModuleApplication {
 
     abstract fun init(): Boolean
 
+    fun enable() {
+        ModuleRegistration.start(this)
+    }
+
+    fun disable() {
+        ModuleRegistration.stop()
+    }
 }

@@ -1,62 +1,56 @@
-package com.ryderbelserion.alexandrite.api.utils
+package com.ryderbelserion.api.utils
 
-import java.io.BufferedOutputStream
+import com.ryderbelserion.api.plugin.ModulePlugin
+import com.ryderbelserion.api.plugin.registry.ModuleProvider
+import java.io.File
 import java.io.FileOutputStream
-import java.net.JarURLConnection
-import java.nio.file.Files
+import java.io.InputStream
 import java.nio.file.Path
-import java.util.zip.ZipFile
+import java.util.function.Consumer
 
 object FileUtils {
 
-    fun extract(input: String, output: Path, replace: Boolean) {
-        val directory = FileUtils::class.java.getResource(input) ?: return
+    private val plugin: ModulePlugin = ModuleProvider.get()
 
-        if (directory.protocol != "jar") return
+    fun copyFiles(directory: Path, folder: String, names: List<String>) {
+        names.forEach(Consumer { name: String ->
+            copyFile(
+                directory,
+                folder,
+                name
+            )
+        })
+    }
 
-        val jar: ZipFile = try {
-            (directory.openConnection() as JarURLConnection).jarFile
-        } catch (exception: Exception) {
-            throw RuntimeException(exception)
+    fun copyFile(directory: Path, folder: String, name: String) {
+        val file = directory.resolve(name).toFile()
+        if (file.exists()) return
+
+        val dir = directory.toFile()
+        if (!dir.exists()) dir.mkdirs()
+
+        val loader = javaClass.getClassLoader()
+        val url = "$folder/$name"
+
+        val resource = loader?.getResource(url)
+
+        runCatching {
+            resource?.openStream()?.let { grab(it, file) }
+        }.onFailure {
+            // TODO() Add logger
         }
+    }
 
-        val filePath = input.substring(1)
-        val fileEntries = jar.entries()
+    @Throws(Exception::class)
+    private fun grab(input: InputStream, output: File) {
+        input.use { inputStream ->
+            FileOutputStream(output).use { outputStream ->
+                val buf = ByteArray(1024)
+                var amount: Int
 
-        while (fileEntries.hasMoreElements()) {
-            val entry = fileEntries.nextElement()
-            val entryName = entry.name
-
-            if (!entryName.startsWith(filePath)) continue
-
-            val outFile = output.resolve(entryName)
-            val exists = Files.exists(outFile)
-
-            if (!replace && exists) continue
-
-            if (entry.isDirectory) {
-                if (exists) return
-
-                runCatching {
-                    Files.createDirectories(outFile)
-                }
-
-                continue
-            }
-
-            runCatching {
-                jar.getInputStream(entry).use { inputStream ->
-                    BufferedOutputStream(FileOutputStream(outFile.toFile())).use { outputStream ->
-                        val buffer = ByteArray(4096)
-                        var readCount: Int
-
-                        while (inputStream.read(buffer).also { readCount = it } > 0) {
-                            outputStream.write(buffer, 0, readCount)
-                        }
-
-                        outputStream.flush()
-                    }
-                }
+                while (inputStream.read(buf).also {
+                    amount = it
+                    } != -1) { outputStream.write(buf, 0, amount) }
             }
         }
     }

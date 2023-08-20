@@ -2,14 +2,14 @@
 plugins {
     kotlin("jvm") version "1.9.0"
 
-    application
-
     alias(libs.plugins.shadow)
+
+    application
 }
 
 rootProject.group = "com.ryderbelserion"
 rootProject.description = "A discord bot."
-rootProject.version = "1.0.0-rc1"
+rootProject.version = "1.0"
 
 repositories {
     mavenCentral()

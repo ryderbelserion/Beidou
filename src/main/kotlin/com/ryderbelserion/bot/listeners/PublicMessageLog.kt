@@ -9,7 +9,7 @@ class PublicMessageLog : ListenerAdapter() {
 
     //TODO() Use a proper data file.
     //TODO() Add a request context menu to delete a message.
-    //TODO() Add roles that are whitelisted so they don't get logged.
+    //TODO() Add roles that are whitelisted, so they don't get logged.
 
     private val cache = HashMap<String, String>()
 

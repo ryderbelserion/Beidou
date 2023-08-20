@@ -4,8 +4,9 @@ import com.ryderbelserion.api.command.CommandManager
 import com.ryderbelserion.api.exceptions.ModuleInitializeException
 import com.ryderbelserion.api.listeners.ListenerBuilder
 import com.ryderbelserion.api.listeners.ModuleListener
-import com.ryderbelserion.api.schedules.Scheduler
-import com.ryderbelserion.api.storage.FileHandler
+import com.ryderbelserion.api.plugin.ModulePlugin
+import com.ryderbelserion.api.plugin.scheduler.Scheduler
+import com.ryderbelserion.api.plugin.config.FileManager
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Guild
@@ -17,13 +18,13 @@ abstract class DedicatedModule(
     private val gateways: List<GatewayIntent> = emptyList(),
     private val cache: List<CacheFlag> = emptyList(),
     private val extra: DedicatedModule.() -> Unit = {}
-) : ModuleApplication() {
+) : ModulePlugin() {
 
     private var isActive: Boolean = false
 
     private val jda: JDA = get()
 
-    val handler = FileHandler()
+    val handler = FileManager()
 
     private fun get(): JDA {
         return JDABuilder.createDefault(token(), gateways).enableCache(cache).addEventListeners(getListener()).build()

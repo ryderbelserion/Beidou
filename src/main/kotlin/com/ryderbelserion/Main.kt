@@ -1,7 +1,7 @@
 package com.ryderbelserion
 
-import com.ryderbelserion.bot.Krul
+import com.ryderbelserion.bot.Lapis
 
 fun main() {
-    Krul().init()
+    Lapis().init()
 }

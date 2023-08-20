@@ -1,6 +1,6 @@
-package com.ryderbelserion.api.schedules.types
+package com.ryderbelserion.api.plugin.scheduler.types
 
-import com.ryderbelserion.api.schedules.Schedule
+import com.ryderbelserion.api.plugin.scheduler.Schedule
 import java.time.LocalDateTime
 
 /**
@@ -11,7 +11,6 @@ class DateSchedule(
     private val block: suspend () -> Unit,
 ) : Schedule {
 
-    // Will check if the date time is valid or not.
     init {
         if (dateTime.isBefore(LocalDateTime.now())) throw IllegalArgumentException("DateTime must be after now")
     }

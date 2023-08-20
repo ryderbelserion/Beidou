@@ -1,7 +1,7 @@
-package com.ryderbelserion.api.schedules
+package com.ryderbelserion.api.plugin.scheduler
 
-import com.ryderbelserion.api.schedules.types.DateSchedule
-import com.ryderbelserion.api.schedules.types.DaySchedule
+import com.ryderbelserion.api.plugin.scheduler.types.DateSchedule
+import com.ryderbelserion.api.plugin.scheduler.types.DaySchedule
 import kotlinx.coroutines.*
 import java.time.Clock
 import java.time.DayOfWeek

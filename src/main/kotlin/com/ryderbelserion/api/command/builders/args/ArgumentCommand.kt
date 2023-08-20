@@ -12,4 +12,6 @@ abstract class ArgumentCommand {
 
     abstract fun getArgAsFloat(index: Int, notifySender: Boolean): Float
 
+    abstract fun getArgAsCustom(index: Int, notifySender: Boolean): List<String>
+
 }

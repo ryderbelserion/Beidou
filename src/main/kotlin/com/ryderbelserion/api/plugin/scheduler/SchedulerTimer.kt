@@ -1,4 +1,4 @@
-package com.ryderbelserion.api.schedules
+package com.ryderbelserion.api.plugin.scheduler
 
 import java.time.LocalDateTime
 
