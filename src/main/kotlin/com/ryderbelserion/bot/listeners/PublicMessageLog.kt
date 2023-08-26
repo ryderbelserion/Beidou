@@ -29,8 +29,6 @@ class PublicMessageLog : ListenerAdapter() {
     override fun onMessageDelete(event: MessageDeleteEvent) {
         if (!this.cache.containsKey(event.messageId)) return
 
-        event.channel.sendMessage("Message: " + this.cache[event.messageId]).queue()
-
         //TODO() Store the user id then check audit logs to see if it's a ban with deleted messages picked.
 
         this.cache.remove(event.messageId)

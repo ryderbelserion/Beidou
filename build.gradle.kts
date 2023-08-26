@@ -1,8 +1,7 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    kotlin("jvm") version "1.9.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 
-    alias(libs.plugins.shadow)
+    kotlin("jvm") version "1.9.0"
 
     application
 }
