@@ -42,6 +42,10 @@ abstract class DedicatedModule(
         return CommandManager().setJDA(jda).setGuild(guild).apply(configuration)
     }
 
+    fun DedicatedModule.commands(configuration: CommandManager.() -> Unit): CommandManager {
+        return CommandManager().setJDA(jda).apply(configuration)
+    }
+
     override fun init(): Boolean {
         runCatching {
             if (!getDataFolder().exists()) getDataFolder().mkdir()

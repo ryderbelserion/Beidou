@@ -21,11 +21,11 @@ class CommandManager : CommandFlow() {
         return this
     }
 
-    override fun addCommand(engine: CommandEngine) {
-        jda.upsertCommand(engine.name, engine.desc).queue()
+    override fun addCommand(name: String, description: String) {
+        jda.upsertCommand(name, description)
     }
 
-    override fun addGuildCommand(engine: CommandEngine) {
-        guild.upsertCommand(engine.name, engine.desc).queue()
+    override fun addGuildCommand(name: String, description: String) {
+        guild.upsertCommand(name, description)
     }
 }
