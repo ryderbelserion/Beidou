@@ -2,11 +2,9 @@ package com.ryderbelserion.bot
 
 import com.ryderbelserion.api.DedicatedModule
 import com.ryderbelserion.bot.commands.AboutCommand
-import com.ryderbelserion.bot.commands.dev.DevCommand
 import com.ryderbelserion.bot.persist.Guilds
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
-import net.dv8tion.jda.api.interactions.commands.OptionType
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import java.io.File
@@ -32,8 +30,10 @@ class Lapis : DedicatedModule(
 
     override fun onReady(jda: JDA) {
         listeners {
-            register(AboutCommand())
-            register(DevCommand())
+            register(
+                AboutCommand(),
+                //MuteCommand()
+            )
         }
 
         println("${jda.selfUser.name} is ready!")
@@ -47,9 +47,9 @@ class Lapis : DedicatedModule(
         this.handler.addFile(Guilds(file))
 
         commands(guild) {
-            addGuildCommand("about", "Shows info about the bot.")
-
-            addGuildCommand("dev", "Shows the dev panel.")
+            addGuildCommands(
+                AboutCommand()
+            )
         }
 
         println("${guild.name} is ready!")
@@ -60,6 +60,6 @@ class Lapis : DedicatedModule(
     }
 
     override fun token(): String? {
-        return System.getenv("discord_token")
+        return System.getenv("staging_discord_token")
     }
 }

@@ -1,4 +1,4 @@
-package com.ryderbelserion.api.command.builders
+package com.ryderbelserion.api.command.interfaces
 
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.User
 
 abstract class CommandActor {
 
-    abstract fun reply(ephemeral: Boolean = false, message: String)
+    abstract fun reply(message: String, ephemeral: Boolean)
 
     abstract fun reply(embed: MessageEmbed, ephemeral: Boolean = false)
 
