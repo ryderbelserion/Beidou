@@ -4,15 +4,11 @@ import com.ryderbelserion.api.command.CommandContext
 import com.ryderbelserion.api.command.CommandEngine
 import com.ryderbelserion.api.embeds.Embed
 import com.ryderbelserion.api.embeds.EmbedColors
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import net.dv8tion.jda.api.Permission
 
-class AboutCommand : CommandEngine("about", "Shows information about the Discord Bot.") {
+class AboutCommand : CommandEngine("about", "Shows information about the Discord Bot.", Permission.MESSAGE_SEND) {
 
-    override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent): Unit = with(event) {
-        if (event.name != name) return
-
-        val context = CommandContext(event)
-
+    override fun perform(context: CommandContext) {
         val embed = Embed()
             .description("""
                 Hi, My name is **Lapis Lazuli**!

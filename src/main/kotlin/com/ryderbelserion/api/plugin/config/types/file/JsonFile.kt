@@ -38,8 +38,6 @@ class JsonFile(private val context: FileEngine) {
                     this.context.javaClass
                 )
             }
-
-            this.context.load()
         }
     }
 
@@ -48,8 +46,6 @@ class JsonFile(private val context: FileEngine) {
             if (!this.context.file.exists()) this.context.file.createNewFile()
 
             write()
-        }.onSuccess {
-            this.context.save()
         }
     }
 

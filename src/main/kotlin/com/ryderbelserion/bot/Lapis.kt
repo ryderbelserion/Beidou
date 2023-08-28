@@ -2,7 +2,7 @@ package com.ryderbelserion.bot
 
 import com.ryderbelserion.api.DedicatedModule
 import com.ryderbelserion.bot.commands.AboutCommand
-import com.ryderbelserion.bot.persist.Guilds
+import com.ryderbelserion.bot.persist.data.Guilds
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.requests.GatewayIntent

@@ -11,8 +11,4 @@ abstract class FileEngine(private val name: String, @JvmField val path: Path, @J
 
     val builder: GsonBuilder? = null
 
-    abstract fun load()
-
-    abstract fun save()
-
 }
