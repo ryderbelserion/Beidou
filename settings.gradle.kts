@@ -4,4 +4,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "Lapis"
+rootProject.name = "Beidou"
