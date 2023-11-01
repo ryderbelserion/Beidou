@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import java.io.File
 
-class Lapis : DedicatedModule(
+class Beidou : DedicatedModule(
     listOf(
         GatewayIntent.MESSAGE_CONTENT,
         GatewayIntent.SCHEDULED_EVENTS,

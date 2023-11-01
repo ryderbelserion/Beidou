@@ -11,10 +11,10 @@ class AboutCommand : CommandEngine("about", "Shows information about the Discord
     override fun perform(context: CommandContext) {
         val embed = Embed()
             .description("""
-                Hi, My name is **Lapis Lazuli**!
+                Hi, My name is **Beidou**!
                 I am written by ${context.creator()?.effectiveName} using [Kotlin](https://kotlinlang.org/)
                 
-                You can find my source code [here](https://github.com/ryderbelserion/Lapis)
+                You can find my source code [here](https://github.com/ryderbelserion/Beidou)
             """.trimIndent())
             .thumbnail(context.bot(), context.guild())
             .author(context.author(), context.guild())

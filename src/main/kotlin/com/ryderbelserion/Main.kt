@@ -1,7 +1,7 @@
 package com.ryderbelserion
 
-import com.ryderbelserion.bot.Lapis
+import com.ryderbelserion.bot.Beidou
 
 fun main() {
-    Lapis().init()
+    Beidou().init()
 }
