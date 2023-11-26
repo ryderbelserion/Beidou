@@ -1,9 +1,9 @@
 package com.ryderbelserion.bot.commands
 
-import com.ryderbelserion.api.command.CommandContext
-import com.ryderbelserion.api.command.CommandEngine
-import com.ryderbelserion.api.embeds.Embed
-import com.ryderbelserion.api.embeds.EmbedColors
+import com.ryderbelserion.common.command.CommandContext
+import com.ryderbelserion.common.command.CommandEngine
+import com.ryderbelserion.common.embeds.Embed
+import com.ryderbelserion.common.embeds.EmbedColors
 import net.dv8tion.jda.api.Permission
 
 class AboutCommand : CommandEngine("about", "Shows information about the Discord Bot.", Permission.MESSAGE_SEND) {

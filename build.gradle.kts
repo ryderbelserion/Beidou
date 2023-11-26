@@ -12,7 +12,7 @@ base {
 
 rootProject.group = "com.ryderbelserion"
 rootProject.description = "A discord bot."
-rootProject.version = "1.0"
+rootProject.version = "1.1"
 
 repositories {
     mavenCentral()
@@ -22,8 +22,6 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     implementation("com.zaxxer", "HikariCP", "5.1.0")
-
-    implementation("org.jetbrains", "annotations", "24.0.1")
 
     implementation("com.google.code.gson", "gson", "2.10.1")
 

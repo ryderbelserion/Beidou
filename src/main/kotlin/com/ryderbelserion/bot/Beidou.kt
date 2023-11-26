@@ -1,6 +1,6 @@
 package com.ryderbelserion.bot
 
-import com.ryderbelserion.api.DedicatedModule
+import com.ryderbelserion.common.DedicatedModule
 import com.ryderbelserion.bot.commands.AboutCommand
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
