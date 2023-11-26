@@ -1,4 +1,4 @@
-package com.ryderbelserion.api.plugin.config
+package com.ryderbelserion.api.files
 
 import java.io.File
 

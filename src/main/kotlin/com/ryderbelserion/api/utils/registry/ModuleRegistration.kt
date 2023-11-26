@@ -1,6 +1,6 @@
-package com.ryderbelserion.api.plugin.registry
+package com.ryderbelserion.api.utils.registry
 
-import com.ryderbelserion.api.plugin.ModulePlugin
+import com.ryderbelserion.api.ModulePlugin
 import org.jetbrains.annotations.ApiStatus
 import java.lang.reflect.Method
 

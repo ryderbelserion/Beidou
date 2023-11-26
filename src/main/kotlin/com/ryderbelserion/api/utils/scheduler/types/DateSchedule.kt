@@ -1,6 +1,6 @@
-package com.ryderbelserion.api.plugin.scheduler.types
+package com.ryderbelserion.api.utils.scheduler.types
 
-import com.ryderbelserion.api.plugin.scheduler.Schedule
+import com.ryderbelserion.api.utils.scheduler.Schedule
 import java.time.LocalDateTime
 
 /**

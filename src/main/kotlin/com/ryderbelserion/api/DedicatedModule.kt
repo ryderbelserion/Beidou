@@ -1,12 +1,11 @@
 package com.ryderbelserion.api
 
 import com.ryderbelserion.api.command.CommandManager
-import com.ryderbelserion.api.exceptions.ModuleInitializeException
-import com.ryderbelserion.api.listeners.ListenerBuilder
-import com.ryderbelserion.api.listeners.ModuleListener
-import com.ryderbelserion.api.plugin.ModulePlugin
-import com.ryderbelserion.api.plugin.scheduler.Scheduler
-import com.ryderbelserion.api.plugin.config.FileManager
+import com.ryderbelserion.api.utils.exceptions.ModuleInitializeException
+import com.ryderbelserion.api.utils.listeners.ListenerBuilder
+import com.ryderbelserion.api.utils.listeners.ModuleListener
+import com.ryderbelserion.api.utils.scheduler.Scheduler
+import com.ryderbelserion.api.files.FileManager
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Guild

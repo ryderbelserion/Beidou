@@ -1,4 +1,4 @@
-package com.ryderbelserion.api.listeners
+package com.ryderbelserion.api.utils.listeners
 
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.hooks.ListenerAdapter

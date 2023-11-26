@@ -1,7 +1,7 @@
-package com.ryderbelserion.api.plugin.config
+package com.ryderbelserion.api.files
 
-import com.ryderbelserion.api.plugin.config.types.ConfigType
-import com.ryderbelserion.api.plugin.config.types.file.JsonFile
+import com.ryderbelserion.api.files.types.ConfigType
+import com.ryderbelserion.api.files.types.file.JsonFile
 import java.io.File
 
 class FileManager : FileContext {

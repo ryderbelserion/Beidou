@@ -1,6 +1,6 @@
-package com.ryderbelserion.api.plugin
+package com.ryderbelserion.api
 
-import com.ryderbelserion.api.plugin.registry.ModuleRegistration
+import com.ryderbelserion.api.utils.registry.ModuleRegistration
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 

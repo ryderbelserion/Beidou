@@ -1,4 +1,4 @@
-package com.ryderbelserion.api.listeners
+package com.ryderbelserion.api.utils.listeners
 
 import com.ryderbelserion.api.DedicatedModule
 import net.dv8tion.jda.api.events.guild.GuildAvailableEvent

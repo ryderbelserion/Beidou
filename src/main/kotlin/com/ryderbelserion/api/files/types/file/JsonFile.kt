@@ -1,8 +1,8 @@
-package com.ryderbelserion.api.plugin.config.types.file
+package com.ryderbelserion.api.files.types.file
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.ryderbelserion.api.plugin.config.FileEngine
+import com.ryderbelserion.api.files.FileEngine
 import java.io.*
 import java.lang.reflect.Modifier
 import java.nio.charset.StandardCharsets

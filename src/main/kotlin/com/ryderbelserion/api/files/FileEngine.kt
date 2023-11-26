@@ -1,7 +1,7 @@
-package com.ryderbelserion.api.plugin.config
+package com.ryderbelserion.api.files
 
 import com.google.gson.GsonBuilder
-import com.ryderbelserion.api.plugin.config.types.ConfigType
+import com.ryderbelserion.api.files.types.ConfigType
 import java.io.File
 import java.nio.file.Path
 

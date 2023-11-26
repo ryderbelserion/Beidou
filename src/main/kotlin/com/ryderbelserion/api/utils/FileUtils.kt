@@ -1,7 +1,7 @@
 package com.ryderbelserion.api.utils
 
-import com.ryderbelserion.api.plugin.ModulePlugin
-import com.ryderbelserion.api.plugin.registry.ModuleProvider
+import com.ryderbelserion.api.ModulePlugin
+import com.ryderbelserion.api.utils.registry.ModuleProvider
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
