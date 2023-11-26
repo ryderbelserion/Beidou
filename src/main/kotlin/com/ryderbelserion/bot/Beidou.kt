@@ -23,7 +23,7 @@ class Beidou : DedicatedModule(
     )
 ) {
     override fun onStart() {
-        println("Guten Tag!")
+
     }
 
     override fun onReady(jda: JDA) {
