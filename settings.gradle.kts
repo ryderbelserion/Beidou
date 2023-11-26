@@ -5,5 +5,3 @@ pluginManagement {
 }
 
 rootProject.name = "Beidou"
-
-include("common")
