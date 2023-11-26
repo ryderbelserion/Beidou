@@ -2,12 +2,10 @@ package com.ryderbelserion.bot
 
 import com.ryderbelserion.api.DedicatedModule
 import com.ryderbelserion.bot.commands.AboutCommand
-import com.ryderbelserion.bot.persist.data.Guilds
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
-import java.io.File
 
 class Beidou : DedicatedModule(
     listOf(
@@ -31,8 +29,7 @@ class Beidou : DedicatedModule(
     override fun onReady(jda: JDA) {
         listeners {
             register(
-                AboutCommand(),
-                //MuteCommand()
+                AboutCommand()
             )
         }
 
@@ -40,12 +37,6 @@ class Beidou : DedicatedModule(
     }
 
     override fun onGuildReady(guild: Guild) {
-        createGuildDir(guild.idLong, "guilds")
-
-        val file = File("${getDataFolder()}/guilds/${guild.idLong}")
-
-        this.handler.addFile(Guilds(file))
-
         commands(guild) {
             addGuildCommands(
                 AboutCommand()
