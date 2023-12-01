@@ -2,10 +2,12 @@ package com.ryderbelserion.bot
 
 import com.ryderbelserion.common.DedicatedModule
 import com.ryderbelserion.bot.commands.AboutCommand
+import com.ryderbelserion.bot.listeners.FileListener
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
+import java.io.File
 
 class Beidou : DedicatedModule(
     listOf(
@@ -20,10 +22,14 @@ class Beidou : DedicatedModule(
     listOf(
         CacheFlag.VOICE_STATE,
         CacheFlag.EMOJI
-    )
+    ),
+
+    File("./bot")
 ) {
     override fun onStart() {
+        val file = File(getDataFolder(), "videos")
 
+        if (!file.exists()) file.mkdir()
     }
 
     override fun onReady(jda: JDA) {

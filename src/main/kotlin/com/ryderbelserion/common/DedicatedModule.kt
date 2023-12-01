@@ -16,6 +16,7 @@ import java.io.File
 abstract class DedicatedModule(
     private val gateways: List<GatewayIntent> = emptyList(),
     private val cache: List<CacheFlag> = emptyList(),
+    private val file: File,
     private val extra: DedicatedModule.() -> Unit = {}
 ) : ModulePlugin() {
 
@@ -76,7 +77,7 @@ abstract class DedicatedModule(
         if (folder.exists() && !folder.resolve(id.toString()).exists()) folder.resolve(id.toString()).mkdir()
     }
 
-    open fun getDataFolder() = File("./bot")
+    open fun getDataFolder() = this.file
 
     open fun getGuildFolder(path: String) = getDataFolder().resolve(path)
 
