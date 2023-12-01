@@ -33,9 +33,14 @@ class Beidou : DedicatedModule(
     }
 
     override fun onReady(jda: JDA) {
+        val fileListener = FileListener(this)
+
         listeners {
             register(
-                AboutCommand()
+                AboutCommand(),
+
+                // Other listeners
+                fileListener
             )
         }
 
