@@ -64,4 +64,8 @@ class Beidou : DedicatedModule(
     override fun token(): String? {
         return System.getenv("staging_discord_token")
     }
+
+    fun guildUploadLimit(guild: Guild): Long {
+        return guild.maxFileSize / (1024 * 1024)
+    }
 }
