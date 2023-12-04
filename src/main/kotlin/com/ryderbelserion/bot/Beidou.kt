@@ -48,6 +48,10 @@ class Beidou : DedicatedModule(
     }
 
     override fun onGuildReady(guild: Guild) {
+        val guildDir = File(getDataFolder(), "guilds/${guild.idLong}")
+
+        if (!guildDir.exists()) guildDir.mkdirs()
+
         commands(guild) {
             addGuildCommands(
                 AboutCommand()
