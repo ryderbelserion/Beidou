@@ -3,6 +3,7 @@ package com.ryderbelserion.bot
 import com.ryderbelserion.common.DedicatedModule
 import com.ryderbelserion.bot.commands.AboutCommand
 import com.ryderbelserion.bot.listeners.FileListener
+import com.ryderbelserion.bot.listeners.core.DataListener
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.requests.GatewayIntent
@@ -33,10 +34,14 @@ class Beidou : DedicatedModule(
     }
 
     override fun onReady(jda: JDA) {
+        val dataListener = DataListener(this)
         val fileListener = FileListener(this)
 
         listeners {
             register(
+                // We want this first.
+                dataListener,
+
                 AboutCommand(),
 
                 // Other listeners
@@ -48,9 +53,7 @@ class Beidou : DedicatedModule(
     }
 
     override fun onGuildReady(guild: Guild) {
-        val guildDir = File(getDataFolder(), "guilds/${guild.idLong}")
-
-        if (!guildDir.exists()) guildDir.mkdirs()
+        createGuildFolder(guild)
 
         commands(guild) {
             addGuildCommands(
@@ -71,5 +74,11 @@ class Beidou : DedicatedModule(
 
     fun guildUploadLimit(guild: Guild): Long {
         return guild.maxFileSize / (1024 * 1024)
+    }
+
+    fun createGuildFolder(guild: Guild) {
+        val guildDir = File(getDataFolder(), "guilds/${guild.idLong}")
+
+        if (!guildDir.exists()) guildDir.mkdirs()
     }
 }
