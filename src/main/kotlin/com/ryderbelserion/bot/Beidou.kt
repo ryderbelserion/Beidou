@@ -38,8 +38,6 @@ class Beidou : DedicatedModule(
                 // We want this first.
                 GuildListener(this@Beidou),
 
-                // Other listeners.
-
                 // Command Listeners.
                 AboutCommand()
             )

@@ -12,7 +12,7 @@ class AboutCommand : CommandEngine("about", "Shows information about the Discord
         val embed = Embed()
             .description("""
                 Hi, My name is **Beidou**!
-                I am written by ${context.creator()?.effectiveName} using [Kotlin](https://kotlinlang.org/)
+                I am written by ${context.creator()?.asMention} using [Kotlin](https://kotlinlang.org/)
                 
                 You can find my source code [here](https://github.com/ryderbelserion/Beidou)
             """.trimIndent())
