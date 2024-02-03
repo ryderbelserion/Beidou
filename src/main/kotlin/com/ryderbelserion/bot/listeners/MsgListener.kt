@@ -16,13 +16,13 @@ class MsgListener : ListenerAdapter() {
 
         val id = event.messageIdLong
 
-        messages[id] = event.message
+        this.messages[id] = event.message
     }
 
     override fun onMessageDelete(event: MessageDeleteEvent) {
         val channel = event.channel.asTextChannel()
 
-        val data = messages[event.messageIdLong]
+        val data = this.messages[event.messageIdLong]
 
         event.channel
     }
