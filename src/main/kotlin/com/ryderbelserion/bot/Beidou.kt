@@ -2,7 +2,7 @@ package com.ryderbelserion.bot
 
 import com.ryderbelserion.common.DedicatedModule
 import com.ryderbelserion.bot.commands.AboutCommand
-import com.ryderbelserion.bot.listeners.FileListener
+import com.ryderbelserion.bot.listeners.core.GuildListener
 import com.ryderbelserion.bot.listeners.core.DataListener
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
@@ -35,7 +35,6 @@ class Beidou : DedicatedModule(
 
     override fun onReady(jda: JDA) {
         val dataListener = DataListener(this)
-        val fileListener = FileListener(this)
 
         listeners {
             register(
