@@ -21,12 +21,12 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
 
-    implementation("com.zaxxer", "HikariCP", "5.1.0")
+    // implementation("com.zaxxer", "HikariCP", "5.1.0")
 
-    implementation("com.google.code.gson", "gson", "2.10.1")
+    implementation("net.dv8tion", "JDA", "5.0.0-beta.20")
+    implementation("ch.qos.logback", "logback-classic", "1.4.14")
 
-    implementation("net.dv8tion", "JDA", "5.0.0-beta.18")
-    implementation("ch.qos.logback", "logback-classic", "1.4.11")
+    implementation("org.jetbrains.exposed", "exposed-jdbc", "0.47.0")
 
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.7.3")
 }
