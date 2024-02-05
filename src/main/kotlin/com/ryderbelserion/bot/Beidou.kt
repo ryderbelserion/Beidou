@@ -27,9 +27,7 @@ class Beidou : DedicatedModule(
     File("./bot")
 ) {
     override fun onStart() {
-        val file = File(getDataFolder(), "videos")
 
-        if (!file.exists()) file.mkdir()
     }
 
     override fun onReady(jda: JDA) {
