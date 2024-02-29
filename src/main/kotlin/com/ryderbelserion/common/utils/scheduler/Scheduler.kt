@@ -19,26 +19,26 @@ object Scheduler : CoroutineScope {
 
     private val job = Job()
 
-    override val coroutineContext: CoroutineContext get() = job + dispatcher
+    override val coroutineContext: CoroutineContext get() = this.job + this.dispatcher
 
     private val schedules = mutableListOf<Schedule>()
     private var clock = Clock.systemDefaultZone()
     private var isStarted = false
 
     fun interval(period: Duration, delay: Duration = 0.seconds, task: suspend () -> Unit) {
-        schedules.add(ScheduleTimer(period.inWholeSeconds, delay.inWholeSeconds, true, task))
+        this.schedules.add(ScheduleTimer(period.inWholeSeconds, delay.inWholeSeconds, true, task))
     }
 
     fun interval(days: Set<DayOfWeek>, at: LocalTime, task: suspend () -> Unit) {
-        schedules.add(DaySchedule(days, at, true, task))
+        this.schedules.add(DaySchedule(days, at, true, task))
     }
 
     fun at(date: LocalDateTime, task: suspend () -> Unit) {
-        schedules.add(DateSchedule(date, task))
+        this.schedules.add(DateSchedule(date, task))
     }
 
     fun countdown(time: Duration, task: suspend () -> Unit) {
-        schedules.add(ScheduleTimer(0, time.inWholeSeconds, false, task))
+        this.schedules.add(ScheduleTimer(0, time.inWholeSeconds, false, task))
     }
 
     /**
@@ -63,7 +63,7 @@ object Scheduler : CoroutineScope {
             }
         }
 
-        isStarted = true
+        this.isStarted = true
 
         return this
     }
@@ -72,7 +72,7 @@ object Scheduler : CoroutineScope {
      * Launches each schedule.
      */
     private fun launchSchedules(nowMinute: LocalDateTime) {
-        schedules.forEach {
+        this.schedules.forEach {
             launch {
                 if (!it.shouldRun(nowMinute)) return@launch
 

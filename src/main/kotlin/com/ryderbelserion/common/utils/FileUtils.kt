@@ -22,7 +22,7 @@ object FileUtils {
         })
     }
 
-    fun copyFile(directory: Path, folder: String, name: String) {
+    private fun copyFile(directory: Path, folder: String, name: String) {
         val file = directory.resolve(name).toFile()
         if (file.exists()) return
 
@@ -37,7 +37,7 @@ object FileUtils {
         runCatching {
             resource?.openStream()?.let { grab(it, file) }
         }.onFailure {
-            // TODO() Add logger
+            //todo() Add logger
         }
     }
 
@@ -48,9 +48,7 @@ object FileUtils {
                 val buf = ByteArray(1024)
                 var amount: Int
 
-                while (inputStream.read(buf).also {
-                    amount = it
-                    } != -1) { outputStream.write(buf, 0, amount) }
+                while (inputStream.read(buf).also { amount = it } != -1) { outputStream.write(buf, 0, amount) }
             }
         }
     }

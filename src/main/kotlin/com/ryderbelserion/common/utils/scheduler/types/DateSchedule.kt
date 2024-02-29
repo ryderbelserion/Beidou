@@ -12,16 +12,16 @@ class DateSchedule(
 ) : Schedule {
 
     init {
-        if (dateTime.isBefore(LocalDateTime.now())) throw IllegalArgumentException("DateTime must be after now")
+        if (this.dateTime.isBefore(LocalDateTime.now())) throw IllegalArgumentException("DateTime must be after now")
     }
 
     override val isRepeating: Boolean = false
 
     override suspend fun execute() {
-        block()
+        this.block()
     }
 
     override fun shouldRun(nowDateTime: LocalDateTime): Boolean {
-        return nowDateTime.isEqual(dateTime)
+        return nowDateTime.isEqual(this.dateTime)
     }
 }

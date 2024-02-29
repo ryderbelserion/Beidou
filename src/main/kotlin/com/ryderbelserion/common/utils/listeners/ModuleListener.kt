@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter
 class ModuleListener(private val dedicatedModule: DedicatedModule, private val module: DedicatedModule.() -> Unit) : ListenerAdapter() {
 
     override fun onReady(event: ReadyEvent) {
-        this.module(dedicatedModule)
+        this.module(this.dedicatedModule)
 
         this.dedicatedModule.onReady(event.jda)
     }

@@ -14,21 +14,21 @@ class CommandContext(private val event: SlashCommandInteractionEvent): CommandAc
      * Sends a simple string with an ephemeral toggle
      */
     override fun reply(message: String, ephemeral: Boolean) {
-        event.reply(message).setEphemeral(ephemeral).queue()
+        this.event.reply(message).setEphemeral(ephemeral).queue()
     }
 
     /**
      * Sends an embed with an ephemeral toggle
      */
     override fun reply(embed: MessageEmbed, ephemeral: Boolean) {
-        event.replyEmbeds(embed).setEphemeral(ephemeral).queue()
+        this.event.replyEmbeds(embed).setEphemeral(ephemeral).queue()
     }
 
     /**
      * @author of the message
      */
     override fun author(): User? {
-        return event.member?.user
+        return this.event.member?.user
     }
 
     /**
@@ -49,13 +49,13 @@ class CommandContext(private val event: SlashCommandInteractionEvent): CommandAc
      * @return guild the command is executed in
      */
     override fun guild(): Guild? {
-        return event.guild
+        return this.event.guild
     }
 
     /**
      * @return jda instance
      */
     override fun jda(): JDA {
-        return event.jda
+        return this.event.jda
     }
 }

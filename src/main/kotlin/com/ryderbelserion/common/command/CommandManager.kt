@@ -31,14 +31,14 @@ class CommandManager : CommandFlow() {
      * Adds a single global slash command.
      */
     override fun addCommand(engine: CommandEngine) {
-        jda.upsertCommand(engine.name, engine.desc).queue()
+        this.jda.upsertCommand(engine.name, engine.desc).queue()
     }
 
     /**
      * Adds a single slash command to guilds.
      */
     override fun addGuildCommand(engine: CommandEngine) {
-        guild.upsertCommand(engine.name, engine.desc).queue()
+        this.guild.upsertCommand(engine.name, engine.desc).queue()
     }
 
     /**
@@ -52,13 +52,13 @@ class CommandManager : CommandFlow() {
      * Removes all slash commands from guilds.
      */
     fun clearGuildCommands() {
-        guild.updateCommands().queue()
+        this.guild.updateCommands().queue()
     }
 
     /**
      * Removes all global slash commands.
      */
     fun clearGlobalCommands() {
-        jda.updateCommands().queue()
+        this.jda.updateCommands().queue()
     }
 }

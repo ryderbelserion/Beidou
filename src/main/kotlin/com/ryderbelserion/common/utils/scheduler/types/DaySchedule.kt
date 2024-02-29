@@ -17,8 +17,8 @@ class DaySchedule(
     }
 
     override fun shouldRun(nowDateTime: LocalDateTime): Boolean {
-        if (nowDateTime.dayOfWeek !in days) return false
+        if (nowDateTime.dayOfWeek !in this.days) return false
 
-        return nowDateTime.toLocalTime() == time
+        return nowDateTime.toLocalTime() == this.time
     }
 }

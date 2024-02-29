@@ -14,14 +14,14 @@ class Embed {
     private val fields = Fields(embed)
 
     init {
-        embed.setColor(EmbedColors.DEFAULT.code.toColor())
+        this.embed.setColor(EmbedColors.DEFAULT.code.toColor())
     }
 
     /**
      * Set the default title.
      */
     fun title(title: String): Embed {
-        embed.setTitle(title)
+        this.embed.setTitle(title)
 
         return this
     }
@@ -33,13 +33,13 @@ class Embed {
      * @param icon - The icon whether it's a profile picture or something random.
      */
     fun footer(footer: String, icon: String? = null): Embed {
-        embed.setFooter(footer, icon)
+        this.embed.setFooter(footer, icon)
 
         return this
     }
 
     fun timestamp(): Embed {
-        embed.setTimestamp(LocalDateTime.now().atZone(ZoneId.of("America/New_York")))
+        this.embed.setTimestamp(LocalDateTime.now().atZone(ZoneId.of("America/New_York")))
 
         return this
     }
@@ -52,7 +52,7 @@ class Embed {
     fun footer(user: User, guild: Guild?): Embed {
         val avatar = guild?.getMember(user)?.effectiveAvatarUrl
 
-        embed.setFooter("Requested by: ${user.asMention}", avatar)
+        this.embed.setFooter("Requested by: ${user.asMention}", avatar)
 
         return this
     }
@@ -61,7 +61,7 @@ class Embed {
      * Add a list of fields.
      */
     fun fields(block: Fields.() -> Unit): Embed {
-        block(fields)
+        block(this.fields)
 
         return this
     }
@@ -72,7 +72,7 @@ class Embed {
      * @param hex - The color to choose.
      */
     fun color(hex: String): Embed {
-        embed.setColor(hex.toColor())
+        this.embed.setColor(hex.toColor())
 
         return this
     }
@@ -83,7 +83,7 @@ class Embed {
      * @param color - A preset enum of colors.
      */
     fun color(color: EmbedColors): Embed {
-        embed.setColor(color.code.toColor())
+        this.embed.setColor(color.code.toColor())
 
         return this
     }
@@ -94,7 +94,7 @@ class Embed {
      * @param url - The image url to use.
      */
     fun thumbnail(url: String): Embed {
-        embed.setThumbnail(url)
+        this.embed.setThumbnail(url)
 
         return this
     }
@@ -108,7 +108,7 @@ class Embed {
     fun thumbnail(user: User?, guild: Guild?): Embed {
         val avatar = user?.let { guild?.getMember(it)?.effectiveAvatarUrl }
 
-        embed.setThumbnail(avatar)
+        this.embed.setThumbnail(avatar)
 
         return this
     }
@@ -119,7 +119,7 @@ class Embed {
      * @param url - The image url to use.
      */
     fun image(url: String?): Embed {
-        embed.setImage(url)
+        this.embed.setImage(url)
 
         return this
     }
@@ -131,7 +131,7 @@ class Embed {
      * @param image - An optional value to input an image url.
      */
     fun author(name: String?, image: String? = null): Embed {
-        embed.setAuthor(name, null, image)
+        this.embed.setAuthor(name, null, image)
 
         return this
     }
@@ -147,7 +147,7 @@ class Embed {
 
         val avatar = member?.effectiveAvatarUrl
 
-        embed.setAuthor(member?.effectiveName, null, avatar)
+        this.embed.setAuthor(member?.effectiveName, null, avatar)
 
         return this
     }
@@ -158,13 +158,13 @@ class Embed {
      * @param description - The description to use.
      */
     fun description(description: String): Embed {
-        embed.setDescription(description)
+        this.embed.setDescription(description)
 
         return this
     }
 
     fun build(): MessageEmbed {
-        return embed.build()
+        return this.embed.build()
     }
 }
 

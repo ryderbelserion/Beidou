@@ -13,7 +13,7 @@ class Fields(private val embed: EmbedBuilder) {
      * @param value - Whether the field should be inline.
      */
     fun field(title: String, body: String, value: Boolean = false) {
-        embed.addField(title, body, value)
+        this.embed.addField(title, body, value)
     }
 
     /**
@@ -23,7 +23,7 @@ class Fields(private val embed: EmbedBuilder) {
      * @param value - Whether the field should be inline.
      */
     fun field(field: Field?, value: Boolean = false) {
-        embed.addField(field?.name!!, field.value!!, value)
+        this.embed.addField(field?.name!!, field.value!!, value)
     }
 
     /**
@@ -32,6 +32,6 @@ class Fields(private val embed: EmbedBuilder) {
      * @param value - Whether the field should be inline.
      */
     fun empty(value: Boolean = false) {
-        embed.addBlankField(value)
+        this.embed.addBlankField(value)
     }
 }

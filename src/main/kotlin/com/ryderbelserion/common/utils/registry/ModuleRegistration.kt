@@ -11,10 +11,10 @@ object ModuleRegistration {
 
     init {
         try {
-            start = ModuleProvider::class.java.getDeclaredMethod("start", ModulePlugin::class.java)
-            start?.setAccessible(true)
-            stop = ModuleProvider::class.java.getDeclaredMethod("stop")
-            stop?.setAccessible(true)
+            this.start = ModuleProvider::class.java.getDeclaredMethod("start", ModulePlugin::class.java)
+            this.start?.setAccessible(true)
+            this.stop = ModuleProvider::class.java.getDeclaredMethod("stop")
+            this.stop?.setAccessible(true)
         } catch (e: NoSuchMethodException) {
             throw ExceptionInInitializerError(e)
         }
@@ -23,7 +23,7 @@ object ModuleRegistration {
     @ApiStatus.Internal
     fun start(plugin: ModulePlugin?) {
         try {
-            start?.invoke(null, plugin)
+            this.start?.invoke(null, plugin)
         } catch (exception: Exception) {
             println("[ERROR] Failed to enable plugin")
             println("[ERROR] Reason: " + exception.message)
@@ -33,7 +33,7 @@ object ModuleRegistration {
     @ApiStatus.Internal
     fun stop() {
         try {
-            stop?.invoke(null)
+            this.stop?.invoke(null)
         } catch (exception: Exception) {
             println("[ERROR] Failed to disable plugin")
             println("[ERROR] Reason: " + exception.message)
