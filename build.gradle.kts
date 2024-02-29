@@ -19,16 +19,15 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.7.3")
 
-    // implementation("com.zaxxer", "HikariCP", "5.1.0")
-
-    implementation("net.dv8tion", "JDA", "5.0.0-beta.20")
     implementation("ch.qos.logback", "logback-classic", "1.4.14")
 
-    implementation("org.jetbrains.exposed", "exposed-jdbc", "0.47.0")
+    implementation("com.squareup.moshi", "moshi", "1.15.0")
 
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.7.3")
+    implementation("net.dv8tion", "JDA", "5.0.0-beta.20")
+
+    implementation(kotlin("stdlib"))
 }
 
 kotlin {
