@@ -13,7 +13,7 @@ class AboutCommand : CommandEngine("about", "Shows information about the Discord
 
         val embed = Embed()
             .description("""
-                Hi, My name is **Beidou**!
+                Hi, My name is **${context.bot().name}**, A pirate of the seven seas!
                 I am written by ${context.creator()?.asMention} using [Kotlin](https://kotlinlang.org/)
                 
                 You can find my source code [here](https://github.com/ryderbelserion/Beidou)
