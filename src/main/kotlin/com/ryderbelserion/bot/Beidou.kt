@@ -30,13 +30,21 @@ class Beidou : DedicatedModule(
         return Logger.getLogger("Beidou")
     }
 
-    override fun onGuildReady(guild: Guild?) {
-        commands {
-            AboutCommand()
-        }
+    override fun onGuildReady(guild: Guild) {
+        /*commands(guild) {
+            addGuildCommands(
+                AboutCommand()
+            )
+        }*/
     }
 
     override fun onReady(jda: JDA) {
+        commands {
+            addCommand(
+                AboutCommand()
+            )
+        }
+
         listeners {
             register(
                 AboutCommand()
