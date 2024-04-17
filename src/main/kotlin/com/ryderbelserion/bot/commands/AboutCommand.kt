@@ -1,9 +1,9 @@
 package com.ryderbelserion.bot.commands
 
-import com.ryderbelserion.common.command.CommandContext
-import com.ryderbelserion.common.command.CommandEngine
-import com.ryderbelserion.common.embeds.Embed
-import com.ryderbelserion.common.embeds.EmbedColors
+import com.ryderbelserion.vital.commands.CommandContext
+import com.ryderbelserion.vital.commands.CommandEngine
+import com.ryderbelserion.vital.embeds.Embed
+import com.ryderbelserion.vital.embeds.EmbedColors
 import net.dv8tion.jda.api.Permission
 
 class AboutCommand : CommandEngine("about", "Shows information about the Discord Bot.", Permission.MESSAGE_SEND) {
@@ -23,7 +23,7 @@ class AboutCommand : CommandEngine("about", "Shows information about the Discord
             .color(EmbedColors.EDIT)
             .fields {
                 field(
-                    "Other Info",
+                    "",
                     """
                         <:stonks:1134203945917620444> Total Servers: ${context.jda().guilds.size}
                         <:watching:1115489514161455124> Total Members: ${context.jda().guilds.sumOf { it.memberCount }}

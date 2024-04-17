@@ -1,7 +1,7 @@
 plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 
-    kotlin("jvm") version "1.9.21"
+    kotlin("jvm") version "1.9.23"
 
     application
 }
@@ -15,19 +15,15 @@ rootProject.description = "A discord bot."
 rootProject.version = "1.1"
 
 repositories {
+    maven("https://repo.crazycrew.us/releases/")
+
     mavenCentral()
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.7.3")
-
-    implementation("ch.qos.logback", "logback-classic", "1.4.14")
+    api("com.ryderbelserion.vital", "discord", "1.5")
 
     implementation("com.squareup.moshi", "moshi", "1.15.0")
-
-    implementation("net.dv8tion", "JDA", "5.0.0-beta.20")
-
-    implementation(kotlin("stdlib"))
 }
 
 kotlin {

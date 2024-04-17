@@ -1,13 +1,12 @@
 package com.ryderbelserion.bot
 
-import com.ryderbelserion.common.DedicatedModule
 import com.ryderbelserion.bot.commands.AboutCommand
-import com.ryderbelserion.bot.listeners.core.GuildListener
+import com.ryderbelserion.vital.DedicatedModule
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
-import java.io.File
+import java.util.logging.Logger
 
 class Beidou : DedicatedModule(
     listOf(
@@ -24,19 +23,22 @@ class Beidou : DedicatedModule(
         CacheFlag.EMOJI
     ),
 
-    File("./bot")
+    "beidou"
 ) {
-    override fun onStart() {
 
+    override fun getLogger(): Logger {
+        return Logger.getLogger("Beidou")
+    }
+
+    override fun onGuildReady(guild: Guild?) {
+        commands {
+            AboutCommand()
+        }
     }
 
     override fun onReady(jda: JDA) {
         listeners {
             register(
-                // We want this first.
-                GuildListener(this@Beidou),
-
-                // Command Listeners.
                 AboutCommand()
             )
         }
@@ -44,16 +46,8 @@ class Beidou : DedicatedModule(
         println("${jda.selfUser.name} is ready!")
     }
 
-    override fun onGuildReady(guild: Guild) {
-        createGuildFolder(guild)
+    override fun onStart() {
 
-        commands(guild) {
-            addGuildCommands(
-                AboutCommand()
-            )
-        }
-
-        println("${guild.name} is ready!")
     }
 
     override fun onStop(jda: JDA) {
@@ -62,15 +56,5 @@ class Beidou : DedicatedModule(
 
     override fun token(): String? {
         return System.getenv("staging_discord_token")
-    }
-
-    fun uploadLimit(guild: Guild): Long {
-        return guild.maxFileSize / (1024 * 1024)
-    }
-
-    fun createGuildFolder(guild: Guild) {
-        val guildDir = File(getDataFolder(), "guilds/${guild.idLong}")
-
-        if (!guildDir.exists()) guildDir.mkdirs()
     }
 }
