@@ -31,11 +31,7 @@ class Beidou : DedicatedModule(
     }
 
     override fun onGuildReady(guild: Guild) {
-        /*commands(guild) {
-            addGuildCommands(
-                AboutCommand()
-            )
-        }*/
+
     }
 
     override fun onReady(jda: JDA) {
