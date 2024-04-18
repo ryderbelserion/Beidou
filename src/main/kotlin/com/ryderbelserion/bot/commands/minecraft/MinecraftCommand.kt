@@ -29,10 +29,15 @@ public class MinecraftCommand(private val plugin: Beidou) : CommandEngine("minec
         }
 
         runCatching {
+            val icon: String
             val server: Server
 
             runBlocking {
-                server = MinecraftServer(ip).getServer()
+                val ms = MinecraftServer(ip)
+
+                icon = ms.getIcon()
+
+                server = ms.getServer()
             }
 
             val color = if (server.isOnline) EmbedColors.SUCCESS else EmbedColors.FAIL
@@ -42,7 +47,7 @@ public class MinecraftCommand(private val plugin: Beidou) : CommandEngine("minec
                 .fields {
                     field("Server IP", ip, true)
                 }
-                .thumbnail("https://api.mcsrvstat.us/icon/$ip")
+                .thumbnail(icon)
                 .color(color)
 
             if (server.isOnline) {
@@ -64,7 +69,7 @@ public class MinecraftCommand(private val plugin: Beidou) : CommandEngine("minec
     }
 }
 
-public class MinecraftServer(ip: String) {
+public class MinecraftServer(private val ip: String) {
     private val url = "https://api.mcsrvstat.us/3/$ip"
 
     private val client = HttpClient(CIO) {
@@ -77,13 +82,17 @@ public class MinecraftServer(ip: String) {
         }
     }
 
+    public fun getIcon(): String {
+        return "https://api.mcsrvstat.us/icon/$ip"
+    }
+
     public suspend fun getServer(): Server {
         return this.client.get(this.url).body<Server>()
     }
 }
 
 @Serializable
-public data class Server(@SerialName("online") val isOnline: Boolean, val players: Players, val protocol: Protocol, val icon: String, val code: String = "")
+public data class Server(@SerialName("online") val isOnline: Boolean, val players: Players, val protocol: Protocol)
 
 @Serializable
 public data class Players(@SerialName("online") val playerCount: String, @SerialName("max") val maxCount: String)
