@@ -1,12 +1,12 @@
 package com.ryderbelserion.bot.commands
 
-import com.ryderbelserion.vital.commands.CommandContext
-import com.ryderbelserion.vital.commands.CommandEngine
-import com.ryderbelserion.vital.embeds.Embed
-import com.ryderbelserion.vital.embeds.EmbedColors
+import com.ryderbelserion.api.commands.CommandContext
+import com.ryderbelserion.api.commands.CommandEngine
+import com.ryderbelserion.api.embeds.Embed
+import com.ryderbelserion.api.embeds.EmbedColors
 import net.dv8tion.jda.api.Permission
 
-class AboutCommand : CommandEngine("about", "Shows information about the Discord Bot.", Permission.MESSAGE_SEND) {
+public class AboutCommand : CommandEngine("about", "Shows information about the Discord Bot.", Permission.MESSAGE_SEND) {
 
     override fun perform(context: CommandContext) {
         val jda = context.jda()
@@ -32,11 +32,12 @@ class AboutCommand : CommandEngine("about", "Shows information about the Discord
             }
 
         val bot = context.bot()
-        val guild = context.guild()
         val author = context.author()
 
-        if (guild != null) {
-            embed.thumbnail(bot, guild).author(author, guild).footer("Average Ping: ${jda.gatewayPing}", guild.iconUrl)
+        if (context.guild() != null) {
+            val guild = context.guild()
+
+            embed.thumbnail(bot, guild).author(author, guild).footer("Average Ping: ${jda.gatewayPing}", guild?.iconUrl)
         } else {
             embed.thumbnail(bot).author(author).footer("Average Ping: ${jda.gatewayPing}", bot.avatarUrl)
         }
