@@ -1,18 +1,20 @@
 package com.ryderbelserion.bot
 
 import com.ryderbelserion.bot.commands.AboutCommand
+import com.ryderbelserion.api.DedicatedModule
 import com.ryderbelserion.bot.commands.minecraft.MinecraftCommand
-import com.ryderbelserion.vital.DedicatedModule
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.interactions.commands.OptionType
 import net.dv8tion.jda.api.interactions.commands.build.OptionData
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
-import java.util.logging.Logger
 
-class Beidou : DedicatedModule(
+public class Beidou : DedicatedModule(
     listOf(
+        GatewayIntent.DIRECT_MESSAGES,
+        GatewayIntent.DIRECT_MESSAGE_REACTIONS,
+        GatewayIntent.DIRECT_MESSAGE_TYPING,
         GatewayIntent.MESSAGE_CONTENT,
         GatewayIntent.SCHEDULED_EVENTS,
         GatewayIntent.GUILD_MESSAGES,
@@ -25,40 +27,28 @@ class Beidou : DedicatedModule(
         CacheFlag.VOICE_STATE,
         CacheFlag.EMOJI
     ),
-
     "beidou"
 ) {
 
-    override fun getLogger(): Logger {
-        return Logger.getLogger("Beidou")
-    }
-
     override fun onGuildReady(guild: Guild) {
-        /*commands(guild) {
-            purgeGuildCommands()
-        }*/
+        createGuildDir(guild.idLong)
     }
 
     override fun onReady(jda: JDA) {
-        /*commands {
-            purgeGlobalCommands()
-        }*/
-
         commands {
-            addCommand(
-                AboutCommand()
-            )
+            addCommand(AboutCommand())
 
-            /*addCommand(
-                MinecraftCommand(), OptionData(
+            addCommand(
+                MinecraftCommand(this@Beidou), OptionData(
                 OptionType.STRING,
                 "server",
                 "The ip of the minecraft server"
-            ))*/
+            ))
         }
 
         listeners {
             register(
+                MinecraftCommand(this@Beidou),
                 AboutCommand()
             )
         }

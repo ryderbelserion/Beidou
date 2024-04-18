@@ -2,6 +2,6 @@ package com.ryderbelserion
 
 import com.ryderbelserion.bot.Beidou
 
-fun main() {
+public fun main() {
     Beidou().init()
 }
