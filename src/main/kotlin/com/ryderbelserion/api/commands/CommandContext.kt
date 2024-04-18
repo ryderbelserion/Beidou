@@ -8,8 +8,6 @@ import net.dv8tion.jda.api.entities.SelfUser
 import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.interactions.commands.OptionMapping
-import net.dv8tion.jda.api.utils.FileUpload
-import java.io.File
 
 public class CommandContext(private val event: SlashCommandInteractionEvent) : CommandActor {
 
@@ -25,12 +23,6 @@ public class CommandContext(private val event: SlashCommandInteractionEvent) : C
      */
     public override fun reply(message: MessageEmbed, ephemeral: Boolean) {
         this.event.replyEmbeds(message).setEphemeral(ephemeral).queue()
-    }
-
-    public fun reply(message: MessageEmbed, file: File, ephemeral: Boolean) {
-        this.event.channel.sendFiles(FileUpload.fromData(file)).queue()
-
-        this.event.replyEmbeds(message).queue()
     }
 
     /**
