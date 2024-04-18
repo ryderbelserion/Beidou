@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    api("com.ryderbelserion.vital", "discord", "1.5")
+    api("com.ryderbelserion.vital", "discord", "1.6")
 
     implementation("com.squareup.moshi", "moshi", "1.15.0")
 }

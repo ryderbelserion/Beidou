@@ -1,9 +1,12 @@
 package com.ryderbelserion.bot
 
 import com.ryderbelserion.bot.commands.AboutCommand
+import com.ryderbelserion.bot.commands.minecraft.MinecraftCommand
 import com.ryderbelserion.vital.DedicatedModule
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.interactions.commands.OptionType
+import net.dv8tion.jda.api.interactions.commands.build.OptionData
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import java.util.logging.Logger
@@ -31,14 +34,27 @@ class Beidou : DedicatedModule(
     }
 
     override fun onGuildReady(guild: Guild) {
-
+        /*commands(guild) {
+            purgeGuildCommands()
+        }*/
     }
 
     override fun onReady(jda: JDA) {
+        /*commands {
+            purgeGlobalCommands()
+        }*/
+
         commands {
             addCommand(
                 AboutCommand()
             )
+
+            /*addCommand(
+                MinecraftCommand(), OptionData(
+                OptionType.STRING,
+                "server",
+                "The ip of the minecraft server"
+            ))*/
         }
 
         listeners {
