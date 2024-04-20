@@ -10,6 +10,8 @@ import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
+import io.ktor.client.statement.HttpResponse
+import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.SerialName
@@ -28,37 +30,15 @@ public class MinecraftCommand(private val plugin: Beidou) : CommandEngine("minec
             return
         }
 
-        runCatching {
-            val icon: String
-            val server: Server
+        val response: HttpResponse
 
-            runBlocking {
-                val ms = MinecraftServer(ip)
+        val minecraftServer = MinecraftServer(ip)
 
-                icon = ms.getIcon()
+        runBlocking {
+            response = minecraftServer.getResponse()
+        }
 
-                server = ms.getServer()
-            }
-
-            val color = if (server.isOnline) EmbedColors.SUCCESS else EmbedColors.FAIL
-
-            val embed = Embed()
-                .author(context.author())
-                .fields {
-                    field("Server IP", ip, true)
-                }
-                .thumbnail(icon)
-                .color(color)
-
-            if (server.isOnline) {
-                embed.fields {
-                    field("Server Version", server.protocol.version, true)
-                    field("Online/Max", "${server.players.playerCount}/${server.players.maxCount}", true)
-                }
-            }
-
-            context.reply(embed.build(), false)
-        }.onFailure {
+        if (!response.status.isSuccess()) {
             val embed = Embed()
                 .author(context.author())
                 .description("$ip is not online. Retrieved cached data!")
@@ -70,11 +50,38 @@ public class MinecraftCommand(private val plugin: Beidou) : CommandEngine("minec
                 .color(EmbedColors.FAIL)
 
             context.reply(embed.build(), false)
+
+            return
         }
+
+        val server: Server
+        val icon: String
+
+        runBlocking {
+            server = minecraftServer.getServer()
+            icon = minecraftServer.getIcon()
+        }
+
+        val embed = Embed()
+            .author(context.author())
+            .fields {
+                field("Server IP", ip, true)
+            }
+            .thumbnail(icon)
+            .color(EmbedColors.SUCCESS)
+
+        embed.fields {
+            field("Server Version", server.protocol.version, true)
+            field("Online/Max", "${server.players.playerCount}/${server.players.maxCount}", true)
+        }
+
+        context.reply(embed.build(), false)
     }
 }
 
 public class MinecraftServer(private val ip: String) {
+    private val simple = "https://api.mcsrvstat.us/simple/$ip"
+
     private val url = "https://api.mcsrvstat.us/3/$ip"
 
     private val client = HttpClient(CIO) {
@@ -91,13 +98,17 @@ public class MinecraftServer(private val ip: String) {
         return "https://api.mcsrvstat.us/icon/$ip"
     }
 
+    public suspend fun getResponse(): HttpResponse {
+        return this.client.get(this.simple)
+    }
+
     public suspend fun getServer(): Server {
         return this.client.get(this.url).body<Server>()
     }
 }
 
 @Serializable
-public data class Server(@SerialName("online") val isOnline: Boolean, val players: Players, val protocol: Protocol)
+public data class Server(val players: Players, val protocol: Protocol)
 
 @Serializable
 public data class Players(@SerialName("online") val playerCount: String, @SerialName("max") val maxCount: String)
