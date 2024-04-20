@@ -61,7 +61,12 @@ public class MinecraftCommand(private val plugin: Beidou) : CommandEngine("minec
         }.onFailure {
             val embed = Embed()
                 .author(context.author())
-                .description("The server you entered is not online.")
+                .description("$ip is not online. Retrieved cached data!")
+                .fields {
+                    field("Server Version", "1.20.4", true)
+                    field("Online/Max", "0/100", true)
+                }
+
                 .color(EmbedColors.FAIL)
 
             context.reply(embed.build(), false)
