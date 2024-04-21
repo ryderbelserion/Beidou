@@ -10,11 +10,15 @@ public interface CommandFlow {
 
     public fun addCommand(engine: CommandEngine, optionData: OptionData)
 
+    public fun addCommand(engine: CommandEngine, optionData: List<OptionData>)
+
     public fun addCommand(engine: CommandEngine, type: OptionType, name: String, description: String)
 
     public fun addGuildCommand(engine: CommandEngine)
 
     public fun addGuildCommand(engine: CommandEngine, optionData: OptionData)
+
+    public fun addGuildCommand(engine: CommandEngine, optionData: List<OptionData>)
 
     public fun addGuildCommand(engine: CommandEngine, type: OptionType, name: String, description: String)
 

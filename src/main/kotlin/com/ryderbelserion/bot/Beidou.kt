@@ -38,12 +38,12 @@ public class Beidou : DedicatedModule(
         commands {
             addCommand(AboutCommand())
 
-            addCommand(
-                MinecraftCommand(this@Beidou), OptionData(
-                OptionType.STRING,
-                "server",
-                "The ip of the minecraft server"
-            ))
+            addCommand(MinecraftCommand(this@Beidou),
+                listOf(
+                    OptionData(OptionType.STRING, "server", "The ip of the minecraft server"),
+                    OptionData(OptionType.BOOLEAN, "bedrock", "If you want to look for bedrock servers")
+                )
+            )
         }
 
         listeners {

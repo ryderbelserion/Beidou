@@ -30,9 +30,11 @@ public class MinecraftCommand(private val plugin: Beidou) : CommandEngine("minec
             return
         }
 
+        val isBedrock = context.getOption("bedrock")?.asBoolean
+
         val response: HttpResponse
 
-        val minecraftServer = MinecraftServer(ip)
+        val minecraftServer = MinecraftServer(ip, isBedrock)
 
         runBlocking {
             response = minecraftServer.getResponse()
@@ -79,10 +81,12 @@ public class MinecraftCommand(private val plugin: Beidou) : CommandEngine("minec
     }
 }
 
-public class MinecraftServer(private val ip: String) {
-    private val simple = "https://api.mcsrvstat.us/simple/$ip"
+public class MinecraftServer(private val ip: String, isBedrock: Boolean? = false) {
+    private val baseUrl = if (isBedrock == true) "https://api.mcsrvstat.us/bedrock" else "https://api.mcsrvstat.us"
 
-    private val url = "https://api.mcsrvstat.us/3/$ip"
+    private val simple = "$baseUrl/simple/$ip"
+
+    private val url = "$baseUrl/3/$ip"
 
     private val client = HttpClient(CIO) {
         install(ContentNegotiation) {

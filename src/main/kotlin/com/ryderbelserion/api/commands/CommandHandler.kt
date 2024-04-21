@@ -54,6 +54,13 @@ public class CommandHandler : CommandFlow {
     }
 
     /**
+     * Adds multiple global slash commands.
+     */
+    override fun addCommand(engine: CommandEngine, optionData: List<OptionData>) {
+        this.jda.upsertCommand(engine.name, engine.description).addOptions(optionData).queue()
+    }
+
+    /**
      * Adds a single slash command to guilds.
      */
     public override fun addGuildCommand(engine: CommandEngine) {
@@ -71,6 +78,13 @@ public class CommandHandler : CommandFlow {
      * Adds a single slash command to guilds.
      */
     public override fun addGuildCommand(engine: CommandEngine, optionData: OptionData) {
+        this.guild.upsertCommand(engine.name, engine.description).addOptions(optionData).queue()
+    }
+
+    /**
+     * Adds multiple guild slash commands.
+     */
+    override fun addGuildCommand(engine: CommandEngine, optionData: List<OptionData>) {
         this.guild.upsertCommand(engine.name, engine.description).addOptions(optionData).queue()
     }
 
