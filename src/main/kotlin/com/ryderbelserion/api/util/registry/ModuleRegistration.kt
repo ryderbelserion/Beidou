@@ -1,7 +1,6 @@
 package com.ryderbelserion.api.util.registry
 
 import com.ryderbelserion.api.VitalDiscord
-import org.jetbrains.annotations.ApiStatus
 import java.lang.reflect.Method
 
 public object ModuleRegistration {
@@ -20,7 +19,6 @@ public object ModuleRegistration {
         }
     }
 
-    @ApiStatus.Internal
     public fun start(plugin: VitalDiscord?) {
         try {
             start?.invoke(null, plugin)
@@ -30,7 +28,6 @@ public object ModuleRegistration {
         }
     }
 
-    @ApiStatus.Internal
     public fun stop() {
         try {
             stop?.invoke(null)

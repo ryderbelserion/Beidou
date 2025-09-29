@@ -2,7 +2,7 @@ package com.ryderbelserion.api.util.scheduler
 
 import com.ryderbelserion.api.util.scheduler.types.DateSchedule
 import com.ryderbelserion.api.util.scheduler.types.DaySchedule
-import kotlinx.coroutines.*
+//import kotlinx.coroutines.*
 import java.time.Clock
 import java.time.DayOfWeek
 import java.time.LocalDateTime
@@ -13,13 +13,13 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-public object Scheduler : CoroutineScope {
+public object Scheduler {
 
-    private val dispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+    //private val dispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
 
-    private val job = Job()
+    //private val job = Job()
 
-    override val coroutineContext: CoroutineContext get() = job + dispatcher
+    //override val coroutineContext: CoroutineContext get() = job + dispatcher
 
     private val schedules = mutableListOf<Schedule>()
     private var clock = Clock.systemDefaultZone()
@@ -45,7 +45,7 @@ public object Scheduler : CoroutineScope {
      * Start the timer logic.
      */
     public fun start(): Scheduler {
-        launch {
+        /*launch {
             var lastCheck: LocalDateTime? = null
 
             while (true) {
@@ -61,7 +61,7 @@ public object Scheduler : CoroutineScope {
 
                 delay(50)
             }
-        }
+        }*/
 
         this.isStarted = true
 
@@ -73,13 +73,13 @@ public object Scheduler : CoroutineScope {
      */
     private fun launchSchedules(nowMinute: LocalDateTime) {
         this.schedules.forEach {
-            launch {
+            /*launch {
                 if (!it.shouldRun(nowMinute)) return@launch
 
                 it.execute()
 
                 if (!it.isRepeating) schedules.remove(it)
-            }
+            }*/
         }
     }
 }
