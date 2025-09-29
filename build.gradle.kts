@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("com.gradleup.shadow") version "9.0.0-beta4"
+    id("com.gradleup.shadow") version "9.2.2"
 
     kotlin("jvm") version "2.1.0"
 
@@ -18,9 +18,9 @@ repositories {
 }
 
 dependencies {
-    implementation("net.dv8tion", "JDA", "5.2.2")
+    implementation("net.dv8tion", "JDA", "5.6.1")
 
-    implementation("ch.qos.logback", "logback-classic", "1.5.5")
+    implementation("ch.qos.logback", "logback-classic", "1.5.18")
 
     implementation(kotlin("stdlib"))
 }
