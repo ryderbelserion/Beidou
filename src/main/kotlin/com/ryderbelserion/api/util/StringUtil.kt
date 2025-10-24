@@ -1,6 +1,6 @@
 package com.ryderbelserion.api.util
 
-import com.ryderbelserion.api.embeds.Embed
+import com.ryderbelserion.api.builders.embeds.Embed
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
 import java.io.File
@@ -8,14 +8,13 @@ import java.io.FileOutputStream
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
 
-public object StringUtil {
+object StringUtil {
 
     /**
      * Send a message
      */
-    public fun sendMessage(message: String, id: Long, guild: Guild) {
+    fun sendMessage(message: String, id: Long, guild: Guild) {
         if (message.isEmpty() || message.isBlank()) return
 
         val channel = guild.getTextChannelById(id) ?: return
@@ -26,7 +25,7 @@ public object StringUtil {
     /**
      * Send a message
      */
-    public fun sendMessage(
+    fun sendMessage(
         author: Member,
         title: String,
         description: String?,
@@ -45,8 +44,7 @@ public object StringUtil {
         color(color, embed, id, guild)
     }
 
-    @OptIn(ExperimentalEncodingApi::class)
-    public fun convertToImage(base64: String, directory: File, overwrite: Boolean = false): File {
+    fun convertToImage(base64: String, directory: File, overwrite: Boolean = false): File {
         val data: ByteArray = Base64.decode(base64, 0)
 
         if (!Files.exists(Path.of("${directory.path}/icon.png")) || overwrite) {
@@ -61,7 +59,7 @@ public object StringUtil {
     /**
      * Send a message
      */
-    public fun sendMessage(description: String, color: String, id: Long, guild: Guild) {
+    fun sendMessage(description: String, color: String, id: Long, guild: Guild) {
         val embed = Embed()
 
         embed.description(description)

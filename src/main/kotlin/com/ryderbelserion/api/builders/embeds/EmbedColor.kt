@@ -1,6 +1,6 @@
-package com.ryderbelserion.api.embeds
+package com.ryderbelserion.api.builders.embeds
 
-public enum class EmbedColors(public val code: String) {
+enum class EmbedColors(val code: String) {
     DEFAULT("#bff7fd"),
     SUCCESS("#0eeb6a"),
     FAIL("#e0240b"),

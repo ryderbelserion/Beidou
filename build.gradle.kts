@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     id("com.gradleup.shadow") version "9.2.2"
 
-    kotlin("jvm") version "2.1.0"
+    kotlin("jvm") version "2.2.21"
 
     application
 }
@@ -18,22 +18,25 @@ repositories {
 }
 
 dependencies {
-    implementation("net.dv8tion", "JDA", "5.6.1")
+    implementation("ch.qos.logback:logback-classic:1.5.20")
+    implementation("net.sf.jopt-simple:jopt-simple:5.0.4")
+    implementation("net.dv8tion:JDA:6.1.0")
 
-    implementation("ch.qos.logback", "logback-classic", "1.5.18")
+    //implementation("org.jline", "jline", "4.0.0")
 
     implementation(kotlin("stdlib"))
 }
 
 kotlin {
     compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_21)
+        jvmTarget.set(JvmTarget.JVM_24)
         javaParameters = true
     }
 
-    jvmToolchain(21)
-
-    explicitApi()
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(24))
+        vendor.set(JvmVendorSpec.AMAZON)
+    }
 }
 
 application {

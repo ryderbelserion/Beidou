@@ -3,17 +3,17 @@ package com.ryderbelserion.api.util
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.Role
 
-public object RoleUtil {
+object RoleUtil {
 
-    public fun getRoleName(role: Role?): String {
+    fun getRoleName(role: Role?): String {
         return role?.name ?: ""
     }
 
-    public fun getHighestRole(member: Member): Role? {
+    fun getHighestRole(member: Member): Role? {
         return if (member.roles.isEmpty()) null else member.roles[0]
     }
 
-    public fun getHighestRoleWithColor(member: Member): Role? {
+    fun getHighestRoleWithColor(member: Member): Role? {
         for (role in member.roles) {
             if (role.color == null) continue
 

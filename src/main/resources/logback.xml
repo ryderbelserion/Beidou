@@ -1,0 +1,35 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{HH:mm:ss} %level]: [%logger] %msg%n%xEx{full}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <key>logName</key>
+            <defaultValue>test</defaultValue>
+        </discriminator>
+
+        <sift>
+            <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+                <file>beidou/logs/latest.log</file>
+
+                <append>false</append>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <fileNamePattern>logFile.%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
+                </rollingPolicy>
+
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <pattern>[%d{HH:mm:ss} %level]: [%logger] %msg%n%xEx{full}</pattern>
+                </layout>
+            </appender>
+        </sift>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

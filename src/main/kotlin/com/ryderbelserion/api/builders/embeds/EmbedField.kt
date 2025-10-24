@@ -1,9 +1,9 @@
-package com.ryderbelserion.api.embeds
+package com.ryderbelserion.api.builders.embeds
 
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed.Field
 
-public class Fields(private val embed: EmbedBuilder) {
+class Fields(private val embed: EmbedBuilder) {
 
     /**
      * Adds a field using Strings.
@@ -12,7 +12,7 @@ public class Fields(private val embed: EmbedBuilder) {
      * @param body the text for the field description.
      * @param inline whether the field should be inline.
      */
-    public fun field(title: String, body: String, inline: Boolean = false) {
+    fun field(title: String, body: String, inline: Boolean = false) {
         this.embed.addField(title, body, inline)
     }
 
@@ -22,7 +22,7 @@ public class Fields(private val embed: EmbedBuilder) {
      * @param field the field object containing all the information we need.
      * @param inline whether the field should be inline.
      */
-    public fun field(field: Field, inline: Boolean = false) {
+    fun field(field: Field, inline: Boolean = false) {
         this.embed.addField(field.name!!, field.value!!, inline)
     }
 
@@ -31,7 +31,7 @@ public class Fields(private val embed: EmbedBuilder) {
      *
      * @param value whether the field should be inline.
      */
-    public fun empty(value: Boolean = false) {
+    fun empty(value: Boolean = false) {
         this.embed.addBlankField(value)
     }
 }
