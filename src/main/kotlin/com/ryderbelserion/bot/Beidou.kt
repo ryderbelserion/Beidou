@@ -1,6 +1,7 @@
 package com.ryderbelserion.bot
 
 import com.ryderbelserion.api.DiscordPlugin
+import com.ryderbelserion.api.builders.files.enums.FileType
 import com.ryderbelserion.bot.commands.AboutCommand
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
@@ -52,6 +53,14 @@ class Beidou(token: String, logger: Logger) : DiscordPlugin(
     }
 
     override fun onReady(jda: JDA) {
+        val directory = getDirectory()
+
+        listOf(
+            "guilds.json"
+        ).forEach {
+            this.fileManager?.addFile(directory.resolve(it), FileType.JSON)
+        }
+
         commands {
             addCommand(AboutCommand())
 

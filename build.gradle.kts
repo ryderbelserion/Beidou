@@ -22,6 +22,9 @@ dependencies {
     implementation("net.sf.jopt-simple:jopt-simple:5.0.4")
     implementation("net.dv8tion:JDA:6.1.0")
 
+    implementation("org.spongepowered:configurate-gson:4.2.0")
+    implementation("org.spongepowered:configurate-yaml:4.2.0")
+
     //implementation("org.jline", "jline", "4.0.0")
 
     implementation(kotlin("stdlib"))

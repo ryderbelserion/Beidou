@@ -2,6 +2,8 @@ package com.ryderbelserion.api
 
 import com.ryderbelserion.api.builders.commands.CommandHandler
 import com.ryderbelserion.api.builders.ListenerBuilder
+import com.ryderbelserion.api.builders.files.FileManager
+import com.ryderbelserion.bot.configs.ConfigManager
 import com.ryderbelserion.listeners.StatusListener
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
@@ -19,6 +21,10 @@ abstract class DiscordPlugin(
     private val intents: List<GatewayIntent> = emptyList(),
     private val flags: List<CacheFlag> = emptyList()
 ) {
+
+    protected var fileManager: FileManager? = null
+
+    protected var configManager: ConfigManager? = null
 
     private var isActive: Boolean = false
 
@@ -74,6 +80,10 @@ abstract class DiscordPlugin(
             Files.createDirectory(cacheDirectory)
         }
 
+        this.fileManager = FileManager(this)
+
+        this.configManager = ConfigManager(this.fileManager, getDirectory())
+
         this.logger.info("All ready to go!")
     }
 
@@ -95,5 +105,9 @@ abstract class DiscordPlugin(
 
     fun getDirectory(): Path {
         return Path.of("./${this.username}")
+    }
+
+    fun getLogger(): Logger {
+        return this.logger
     }
 }
