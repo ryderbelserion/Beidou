@@ -8,22 +8,25 @@ plugins {
     application
 }
 
-
 rootProject.group = "com.ryderbelserion.beidou"
 rootProject.description = "a discord bot"
 rootProject.version = "1.0.0"
 
 repositories {
+    maven("https://repo.crazycrew.us/snapshots/")
+
     mavenCentral()
 }
 
 dependencies {
+    implementation("com.ryderbelserion.fusion:fusion-files:3.0.0-SNAPSHOT")
+
     implementation("ch.qos.logback:logback-classic:1.5.20")
     implementation("net.sf.jopt-simple:jopt-simple:5.0.4")
     implementation("net.dv8tion:JDA:6.1.0")
 
-    implementation("org.spongepowered:configurate-gson:4.2.0")
-    implementation("org.spongepowered:configurate-yaml:4.2.0")
+    //implementation("org.spongepowered:configurate-gson:4.2.0")
+    //implementation("org.spongepowered:configurate-yaml:4.2.0")
 
     //implementation("org.jline", "jline", "4.0.0")
 

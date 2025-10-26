@@ -1,25 +1,25 @@
 package com.ryderbelserion.bot.configs.types
 
-import com.ryderbelserion.api.builders.files.types.JsonCustomFile
 import com.ryderbelserion.bot.util.ConfigUtil
+import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile
 
 class GuildCache(val file: JsonCustomFile) {
 
-    private val guilds = arrayListOf<Long>()
+    private val guilds = arrayListOf<String>()
 
     fun init() {
         val configuration = file.configuration
 
-        val list = ConfigUtil.getStringList(configuration, "whitelist")
+        val list: List<String> = ConfigUtil.getStringList(configuration, "whitelist")
 
         this.guilds.clear()
 
         list.forEach {
-            it?.toLong()?.let { number -> this.guilds.add(number) }
+            this.guilds.add(it)
         }
     }
 
-    fun getGuilds(): ArrayList<Long> {
+    fun getGuilds(): ArrayList<String> {
         return this.guilds
     }
 }

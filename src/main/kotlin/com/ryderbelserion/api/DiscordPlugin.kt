@@ -2,8 +2,7 @@ package com.ryderbelserion.api
 
 import com.ryderbelserion.api.builders.commands.CommandHandler
 import com.ryderbelserion.api.builders.ListenerBuilder
-import com.ryderbelserion.api.builders.files.FileManager
-import com.ryderbelserion.bot.configs.ConfigManager
+import com.ryderbelserion.fusion.files.FileManager
 import com.ryderbelserion.listeners.StatusListener
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
@@ -17,14 +16,12 @@ import java.nio.file.Path
 abstract class DiscordPlugin(
     private val username: String,
     private val token: String,
-    protected val logger: Logger,
+    val logger: Logger,
     private val intents: List<GatewayIntent> = emptyList(),
     private val flags: List<CacheFlag> = emptyList()
 ) {
 
     protected var fileManager: FileManager? = null
-
-    protected var configManager: ConfigManager? = null
 
     private var isActive: Boolean = false
 
@@ -80,11 +77,11 @@ abstract class DiscordPlugin(
             Files.createDirectory(cacheDirectory)
         }
 
-        this.fileManager = FileManager(this)
-
-        this.configManager = ConfigManager(this.fileManager, getDirectory())
+        this.fileManager = FileManager(getDirectory())
 
         this.logger.info("All ready to go!")
+
+        this.isActive = true
     }
 
     fun getGuildDirectory(id: String?): Path {
@@ -105,9 +102,5 @@ abstract class DiscordPlugin(
 
     fun getDirectory(): Path {
         return Path.of("./${this.username}")
-    }
-
-    fun getLogger(): Logger {
-        return this.logger
     }
 }
