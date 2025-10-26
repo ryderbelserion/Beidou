@@ -71,13 +71,17 @@ class Beidou(token: String, logger: Logger) : DiscordPlugin(
     }
 
     override fun onReady(jda: JDA) {
-        val directory = getDirectory()
-
-        listOf(
+        /*listOf(
             "guilds.json"
         ).forEach {
+            println(directory.resolve(it))
+
             this.fileManager?.addFile(directory.resolve(it), FileType.JSON)
-        }
+        }*/
+
+        val directory = getDirectory()
+
+        this.fileManager?.addFile(directory.resolve("guilds.json"), FileType.JSON)
 
         this.configManager = ConfigManager(this.fileManager, getDirectory())
 
