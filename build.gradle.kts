@@ -23,8 +23,6 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.20")
     implementation("net.sf.jopt-simple:jopt-simple:5.0.4")
     implementation("net.dv8tion:JDA:6.1.0")
-
-    //implementation("org.jline", "jline", "4.0.0")
 }
 
 java {
@@ -34,7 +32,6 @@ java {
     }
 }
 
-
 application {
     mainClass.set("com.ryderbelserion.discord.Main")
 }
@@ -43,5 +40,13 @@ tasks {
     compileJava {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(24)
+    }
+
+    shadowJar {
+        manifest {
+            attributes["Main-Class"] = "com.ryderbelserion.discord.Main"
+        }
+
+        archiveClassifier.set("")
     }
 }

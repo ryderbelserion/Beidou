@@ -48,6 +48,8 @@ public abstract class DiscordPlugin {
         this.commandHandler = new CommandHandler(jda);
     }
 
+    public abstract void onReload();
+
     public abstract void onStop(@NotNull final JDA jda);
 
     public @NotNull final Path getGuildDirectory(@NotNull final String id) {

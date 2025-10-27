@@ -5,7 +5,6 @@ import com.ryderbelserion.discord.api.commands.CommandEngine;
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.embeds.EmbedColor;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.User;
@@ -14,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class AboutCommand extends CommandEngine {
 
     public AboutCommand() {
-        super("about", "Shows information about the Discord Bot.", Permission.MESSAGE_SEND);
+        super("about", "Shows information about the Discord Bot.");
     }
 
     @Override

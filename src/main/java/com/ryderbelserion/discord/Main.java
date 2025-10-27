@@ -16,7 +16,7 @@ public class Main {
         final Logger logger = LoggerFactory.getLogger(Beidou.class);
 
         manager.getOptionByName("token").ifPresent(action -> {
-            manager.getOption().ifPresent( option -> {
+            manager.getOption().ifPresent(option -> {
                 final TokenOption tokenOption = (TokenOption) action;
 
                 tokenOption.getValue(option).ifPresentOrElse(token -> {

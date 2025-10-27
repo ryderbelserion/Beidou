@@ -3,6 +3,7 @@ package com.ryderbelserion.discord.bot;
 import com.ryderbelserion.discord.api.DiscordPlugin;
 import com.ryderbelserion.discord.api.commands.CommandEngine;
 import com.ryderbelserion.discord.bot.commands.AboutCommand;
+import com.ryderbelserion.discord.bot.commands.ReloadCommand;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import net.dv8tion.jda.api.JDA;
@@ -82,17 +83,24 @@ public class Beidou extends DiscordPlugin {
     public void onReady(@NotNull final JDA jda) {
         super.onReady(jda);
 
-        final List<CommandEngine> commands = new ArrayList<>() {{
-            add(new AboutCommand());
-        }};
+        List.of(
+                // bot creator commands
+                new ReloadCommand(this),
 
-        commands.forEach(command -> {
+                // generic bot information
+                new AboutCommand()
+        ).forEach(command -> {
             this.commandHandler.addCommand(command);
 
             addEventListener(command);
         });
 
         this.logger.info("{} is ready!", jda.getSelfUser().getName());
+    }
+
+    @Override
+    public void onReload() {
+        this.configManager.reload();
     }
 
     @Override

@@ -46,6 +46,11 @@ public class CommandContext implements CommandActor {
     }
 
     @Override
+    public boolean isCreator(@NotNull final String id) {
+        return id.equalsIgnoreCase("209853986646261762");
+    }
+
+    @Override
     public User getCreator() {
         return getJDA().getUserById("209853986646261762");
     }

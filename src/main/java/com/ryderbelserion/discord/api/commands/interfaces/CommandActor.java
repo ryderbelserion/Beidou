@@ -44,6 +44,13 @@ public interface CommandActor {
     User getCreator();
 
     /**
+     * Checks if the user is the creator of the bot.
+     * @param id the id
+     * @return true or false
+     */
+    boolean isCreator(final String id);
+
+    /**
      * @return the bot.
      */
     SelfUser getBot();
