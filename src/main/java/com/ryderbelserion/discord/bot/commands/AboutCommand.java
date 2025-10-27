@@ -26,7 +26,7 @@ public class AboutCommand extends CommandEngine {
         final Embed embed = new Embed()
                 .description("""
                         Hi, My name is **%s**, A pirate of the seven seas!
-                        I am written by %s using [Kotlin](https://kotlinlang.org/)
+                        I am written by %s using [Java](https://www.java.com/en/)
                         
                         You can find my source code [here](https://github.com/ryderbelserion/Beidou)
                         """.formatted(bot.getName(), context.getCreator().getAsMention()).trim())
