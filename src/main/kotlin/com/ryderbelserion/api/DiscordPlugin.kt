@@ -3,7 +3,6 @@ package com.ryderbelserion.api
 import com.ryderbelserion.api.builders.commands.CommandHandler
 import com.ryderbelserion.api.builders.ListenerBuilder
 import com.ryderbelserion.fusion.files.FileManager
-import com.ryderbelserion.listeners.StatusListener
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Guild
@@ -30,7 +29,6 @@ abstract class DiscordPlugin(
     private fun jda(): JDA {
         return JDABuilder.createDefault(this.token, this.intents)
             .enableCache(this.flags)
-            .addEventListeners(StatusListener(this))
             .build()
     }
 

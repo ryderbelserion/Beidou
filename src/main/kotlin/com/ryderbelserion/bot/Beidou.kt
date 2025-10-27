@@ -2,14 +2,11 @@ package com.ryderbelserion.bot
 
 import com.ryderbelserion.api.DiscordPlugin
 import com.ryderbelserion.bot.commands.AboutCommand
-import com.ryderbelserion.bot.configs.ConfigManager
-import com.ryderbelserion.fusion.files.enums.FileType
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import org.slf4j.Logger
-import java.nio.file.Files
 
 class Beidou(token: String, logger: Logger) : DiscordPlugin(
     username = "beidou",
@@ -39,52 +36,11 @@ class Beidou(token: String, logger: Logger) : DiscordPlugin(
         CacheFlag.EMOJI
     )
 ) {
-    private var configManager: ConfigManager? = null
-
     override fun onGuildReady(guild: Guild) {
-        val owner = guild.ownerId
-        val name = guild.owner?.effectiveName
-        val guildName = guild.name
-        val id = guild.id
 
-        /*val isWhitelisted: Boolean = this.configManager?.getGuildCache()?.getGuilds()?.contains(id) == true
-
-        if (!isWhitelisted) {
-            this.logger.info("$name ($owner) tried adding me to $guildName ($id) while they are not whitelisted.")
-
-            guild.leave().queue {
-                this.logger.info("Successfully left the server $guildName ($id) owned by $name ($owner).")
-            }
-
-            return
-        }*/
-
-        this.logger.info("The server $guildName ($id) is whitelisted, and owned by $name ($owner).")
-
-        val folder = getGuildDirectory(id)
-
-        if (!Files.exists(folder)) {
-            Files.createDirectory(folder)
-
-            this.logger.info("Created guild $folder!")
-        }
     }
 
     override fun onReady(jda: JDA) {
-        /*listOf(
-            "guilds.json"
-        ).forEach {
-            println(directory.resolve(it))
-
-            this.fileManager?.addFile(directory.resolve(it), FileType.JSON)
-        }*/
-
-        val directory = getDirectory()
-
-        this.fileManager?.addFile(directory.resolve("guilds.json"), FileType.JSON)
-
-        this.configManager = ConfigManager(this.fileManager, getDirectory())
-
         commands {
             addCommand(AboutCommand())
 

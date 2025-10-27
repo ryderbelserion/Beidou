@@ -16,8 +16,8 @@ import java.util.List;
 
 public abstract class DiscordPlugin {
 
-    private final String username;
-    private final Logger logger;
+    protected final String username;
+    protected final Logger logger;
 
     private final JDA jda;
 
@@ -37,8 +37,8 @@ public abstract class DiscordPlugin {
                 .build();
     }
 
-    private boolean isActive = false;
-    private FileManager fileManager;
+    protected boolean isActive = false;
+    protected FileManager fileManager;
 
     public abstract void onGuildReady(@NotNull final Guild guild);
 
