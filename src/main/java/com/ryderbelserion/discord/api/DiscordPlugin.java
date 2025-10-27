@@ -1,5 +1,6 @@
 package com.ryderbelserion.discord.api;
 
+import com.ryderbelserion.discord.api.commands.CommandHandler;
 import com.ryderbelserion.discord.api.listeners.StatusListener;
 import com.ryderbelserion.fusion.files.FileManager;
 import net.dv8tion.jda.api.JDA;
@@ -37,12 +38,15 @@ public abstract class DiscordPlugin {
                 .build();
     }
 
+    protected CommandHandler commandHandler;
     protected boolean isActive = false;
     protected FileManager fileManager;
 
     public abstract void onGuildReady(@NotNull final Guild guild);
 
-    public abstract void onReady(@NotNull final JDA jda);
+    public void onReady(@NotNull final JDA jda) {
+        this.commandHandler = new CommandHandler(jda);
+    }
 
     public abstract void onStop(@NotNull final JDA jda);
 
@@ -72,6 +76,10 @@ public abstract class DiscordPlugin {
 
     public @NotNull final Path getDirectory() {
         return Path.of("./%s".formatted(this.username));
+    }
+
+    public void addEventListener(@NotNull final Object... listeners) {
+        this.jda.addEventListener(listeners);
     }
 
     public @NotNull final Logger getLogger() {

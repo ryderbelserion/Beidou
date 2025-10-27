@@ -1,9 +1,7 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     id("com.gradleup.shadow") version "9.2.2"
 
-    kotlin("jvm") version "2.2.21"
+    `java-library`
 
     application
 }
@@ -27,22 +25,23 @@ dependencies {
     implementation("net.dv8tion:JDA:6.1.0")
 
     //implementation("org.jline", "jline", "4.0.0")
-
-    implementation(kotlin("stdlib"))
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_24)
-        javaParameters = true
-    }
-
-    jvmToolchain {
+java {
+    toolchain {
         languageVersion.set(JavaLanguageVersion.of(24))
         vendor.set(JvmVendorSpec.AMAZON)
     }
 }
 
+
 application {
-    mainClass.set("com.ryderbelserion.MainKt")
+    mainClass.set("com.ryderbelserion.discord.Main")
+}
+
+tasks {
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release.set(24)
+    }
 }
