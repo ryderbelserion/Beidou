@@ -1,9 +1,8 @@
 package com.ryderbelserion.discord.bot;
 
 import com.ryderbelserion.discord.api.DiscordPlugin;
-import com.ryderbelserion.discord.api.commands.CommandEngine;
-import com.ryderbelserion.discord.bot.commands.AboutCommand;
-import com.ryderbelserion.discord.bot.commands.ReloadCommand;
+import com.ryderbelserion.discord.bot.commands.owner.AboutCommand;
+import com.ryderbelserion.discord.bot.commands.owner.ReloadCommand;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import net.dv8tion.jda.api.JDA;
@@ -15,7 +14,6 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

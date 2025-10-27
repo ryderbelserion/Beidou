@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.bot.commands;
+package com.ryderbelserion.discord.bot.commands.owner;
 
 import com.ryderbelserion.discord.api.commands.CommandContext;
 import com.ryderbelserion.discord.api.commands.CommandEngine;
