@@ -4,10 +4,13 @@ import com.ryderbelserion.discord.api.DiscordPlugin;
 import com.ryderbelserion.discord.bot.commands.owner.AboutCommand;
 import com.ryderbelserion.discord.bot.commands.owner.ReloadCommand;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
+import com.ryderbelserion.discord.bot.guilds.GuildManager;
+import com.ryderbelserion.discord.bot.guilds.listeners.MessageAudits;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +49,7 @@ public class Beidou extends DiscordPlugin {
     }
 
     private ConfigManager configManager;
+    private GuildManager guildManager;
 
     @Override
     public void onGuildReady(@NotNull final Guild guild) {
@@ -80,6 +84,8 @@ public class Beidou extends DiscordPlugin {
         this.fileManager.extractFile(getDirectory().resolve("guilds").resolve("config.yml"), directory.resolve("config.yml"));
 
         this.fileManager.addFile(directory.resolve("config.yml"), FileType.YAML, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
+
+        this.guildManager.addGuild(guildId, directory);
     }
 
     @Override
@@ -98,12 +104,44 @@ public class Beidou extends DiscordPlugin {
             addEventListener(command);
         });
 
+        List.of(
+                new MessageAudits(this)
+        ).forEach(this::addEventListener);
+
         this.logger.info("{} is ready!", jda.getSelfUser().getName());
     }
 
     @Override
-    public void onReload() {
+    public void onReload(@NotNull final JDA jda) {
         this.configManager.reload();
+
+        final List<Guild> guilds = jda.getGuilds();
+
+        for (final Guild guild : guilds) {
+            final String guildName = guild.getName();
+            final String guildId = guild.getId();
+
+            final Member owner = guild.getOwner();
+
+            final List<String> cache = this.configManager.getGuildCache().getGuilds();
+
+            final boolean isWhitelisted = cache.contains(guildId);
+
+            if (!isWhitelisted) {
+                final String name = Objects.requireNonNull(owner).getEffectiveName();
+                final String id = owner.getId();
+
+                this.logger.info("{} ({}) tried adding me to {} ({}) while they are not whitelisted.", name, id, guildName, guildId);
+
+                guild.leave().queue(_ -> this.logger.info("Successfully left the server {} ({}) owned by {} ({}) due to not being whitelisted", guildName, guildId, name, id));
+
+                break;
+            }
+
+            this.guildManager.removeGuild(guildId);
+
+            this.guildManager.addGuild(guildId, getGuildDirectory(guildId));
+        }
     }
 
     @Override
@@ -121,5 +159,11 @@ public class Beidou extends DiscordPlugin {
 
         this.configManager = new ConfigManager(this.fileManager, getDirectory());
         this.configManager.init();
+
+        this.guildManager = new GuildManager(this.fileManager);
+    }
+
+    public @NotNull final GuildManager getGuildManager() {
+        return this.guildManager;
     }
 }

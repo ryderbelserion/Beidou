@@ -25,6 +25,8 @@ public class ConfigManager {
     }
 
     public void reload() {
+        this.fileManager.refresh(false);
+
         this.guildCache.init();
     }
 

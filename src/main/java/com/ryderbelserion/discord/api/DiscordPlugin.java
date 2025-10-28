@@ -48,7 +48,7 @@ public abstract class DiscordPlugin {
         this.commandHandler = new CommandHandler(jda);
     }
 
-    public abstract void onReload();
+    public abstract void onReload(@NotNull final JDA jda);
 
     public abstract void onStop(@NotNull final JDA jda);
 

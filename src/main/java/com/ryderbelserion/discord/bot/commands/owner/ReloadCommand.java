@@ -21,9 +21,10 @@ public class ReloadCommand extends CommandEngine {
     @Override
     protected void perform(@NotNull final CommandContext context) {
         final User user = context.getAuthor();
+        final String id = context.getGuild().getId();
 
         if (context.isCreator(user.getId())) {
-            this.beidou.onReload();
+            this.beidou.onReload(context.getJDA());
 
             final Embed embed = new Embed()
                     .description("We're setting sail! Men, to your posts! A new adventure is about to begin!")
