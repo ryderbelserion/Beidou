@@ -4,6 +4,7 @@ import com.ryderbelserion.discord.api.DiscordPlugin;
 import com.ryderbelserion.discord.bot.commands.owner.AboutCommand;
 import com.ryderbelserion.discord.bot.commands.owner.ReloadCommand;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
+import com.ryderbelserion.discord.bot.guilds.GuildListener;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import com.ryderbelserion.discord.bot.guilds.listeners.MessageAudits;
 import com.ryderbelserion.fusion.files.enums.FileAction;
@@ -12,7 +13,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
@@ -61,14 +61,10 @@ public class Beidou extends DiscordPlugin {
         final String guildName = guild.getName();
         final String guildId = guild.getId();
 
-        final List<String> guilds = this.configManager.getGuildCache().getGuilds();
+        if (!isWhitelisted(guildId)) {
+            leaveGuild(guild, guildId, name, id);
 
-        final boolean isWhitelisted = guilds.contains(guildId);
-
-        if (!isWhitelisted) {
-            this.logger.info("{} ({}) tried adding me to {} ({}) while they are not whitelisted.", name, id, guildName, guildId);
-
-            guild.leave().queue(_ -> this.logger.info("Successfully left the server {} ({}) owned by {} ({}) due to not being whitelisted", guildName, guildId, name, id));
+            return;
         }
 
         final Path directory = getGuildDirectory(guildId);
@@ -116,6 +112,9 @@ public class Beidou extends DiscordPlugin {
         });
 
         List.of(
+                // monitor joined guilds
+                new GuildListener(this),
+
                 new MessageAudits(this)
         ).forEach(this::addEventListener);
 
@@ -129,22 +128,15 @@ public class Beidou extends DiscordPlugin {
         final List<Guild> guilds = jda.getGuilds();
 
         for (final Guild guild : guilds) {
-            final String guildName = guild.getName();
             final String guildId = guild.getId();
 
             final Member owner = guild.getOwner();
 
-            final List<String> cache = this.configManager.getGuildCache().getGuilds();
-
-            final boolean isWhitelisted = cache.contains(guildId);
-
-            if (!isWhitelisted) {
+            if (!isWhitelisted(guildId)) {
                 final String name = Objects.requireNonNull(owner).getEffectiveName();
                 final String id = owner.getId();
 
-                this.logger.info("{} ({}) tried adding me to {} ({}) while they are not whitelisted.", name, id, guildName, guildId);
-
-                guild.leave().queue(_ -> this.logger.info("Successfully left the server {} ({}) owned by {} ({}) due to not being whitelisted", guildName, guildId, name, id));
+                leaveGuild(guild, guildId, name, id);
 
                 break;
             }
@@ -172,6 +164,21 @@ public class Beidou extends DiscordPlugin {
         this.configManager.init();
 
         this.guildManager = new GuildManager(this.fileManager, this.logger);
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public boolean isWhitelisted(@NotNull final String guildId) {
+        final List<String> cache = this.configManager.getGuildCache().getGuilds();
+
+        return cache.contains(guildId);
+    }
+
+    public void leaveGuild(@NotNull final Guild guild, final String guildId, final String username, final String userId) {
+        final String guildName = guild.getName();
+
+        this.logger.info("{} ({}) tried adding me to {} ({}) while they are not whitelisted.", username, userId, guildName, guildId);
+
+        guild.leave().queue(_ -> this.logger.info("Successfully left the server {} ({}) owned by {} ({}) due to not being whitelisted", guildName, guildId, username, userId));
     }
 
     public @NotNull final GuildManager getGuildManager() {
