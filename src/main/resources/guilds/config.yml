@@ -1,0 +1,21 @@
+# Channel related settings to logs
+channels:
+  # Settings related to msg logs
+  message-logs:
+    # The default channel for logging messages
+    default: ""
+    # The individual types to log
+    types:
+      # A list of channels to log deletions to.
+      deletion: []
+      # A list of channels to log message edits to.
+      edits: []
+    # A list of roles to be ignored when logging.
+    # You must use the role id.
+    roles: []
+    # A list of channels to be ignored when logging.
+    # You must use the channel id.
+    channels: []
+    # A list of users to be ignored when logging.
+    # You must use the user id.
+    users: []
