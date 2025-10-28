@@ -12,7 +12,6 @@ import com.ryderbelserion.fusion.files.enums.FileType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
@@ -128,22 +127,7 @@ public class Beidou extends DiscordPlugin {
         final List<Guild> guilds = jda.getGuilds();
 
         for (final Guild guild : guilds) {
-            final String guildId = guild.getId();
-
-            final Member owner = guild.getOwner();
-
-            if (!isWhitelisted(guildId)) {
-                final String name = Objects.requireNonNull(owner).getEffectiveName();
-                final String id = owner.getId();
-
-                leaveGuild(guild, guildId, name, id);
-
-                break;
-            }
-
-            this.guildManager.removeGuild(guildId);
-
-            this.guildManager.addGuild(guildId, getGuildDirectory(guildId));
+            this.onGuildReady(guild);
         }
     }
 
