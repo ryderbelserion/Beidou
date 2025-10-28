@@ -4,6 +4,7 @@ import com.ryderbelserion.discord.api.DiscordPlugin;
 import com.ryderbelserion.discord.bot.commands.owner.AboutCommand;
 import com.ryderbelserion.discord.bot.commands.owner.ReloadCommand;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
+import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -75,6 +76,10 @@ public class Beidou extends DiscordPlugin {
         } catch (final IOException exception) {
             exception.printStackTrace();
         }
+
+        this.fileManager.extractFile(getDirectory().resolve("guilds").resolve("config.yml"), directory.resolve("config.yml"));
+
+        this.fileManager.addFile(directory.resolve("config.yml"), FileType.YAML, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
     }
 
     @Override
