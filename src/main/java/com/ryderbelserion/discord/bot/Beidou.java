@@ -78,7 +78,7 @@ public class Beidou extends DiscordPlugin {
             exception.printStackTrace();
         }
 
-        this.fileManager.extractFile(getDirectory().resolve("guilds").resolve("config.yml"), directory.resolve("config.yml"));
+        this.fileManager.extractFile("guilds/config.yml", directory.resolve("config.yml"));
 
         this.fileManager.addFile(directory.resolve("config.yml"), FileType.YAML, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
 
