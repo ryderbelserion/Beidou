@@ -2,6 +2,8 @@
 channels:
   # Settings related to msg logs
   message-logs:
+    # Should logging be enabled?
+    is-logging: false
     # The default channel for logging messages
     default: ""
     # The individual types to log

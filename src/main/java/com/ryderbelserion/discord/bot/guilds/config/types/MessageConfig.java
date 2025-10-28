@@ -24,10 +24,14 @@ public class MessageConfig {
 
     private final String defaultChannel;
 
+    private final boolean isLogging;
+
     private final Logger logger;
 
     public MessageConfig(@NotNull final CommentedConfigurationNode config, @NotNull final Logger logger) {
         this.defaultChannel = config.node("default").getString("");
+
+        this.isLogging = config.node("is-logging").getBoolean(false);
 
         this.channels.put("delete", ConfigUtils.getStringList(config.node("types", "deletion")));
         this.channels.put("edit", ConfigUtils.getStringList(config.node("types", "edits")));
@@ -40,6 +44,12 @@ public class MessageConfig {
     }
 
     public void log(@NotNull final String type, @NotNull final TextChannel channel, @NotNull final Guild guild, @NotNull final User user) {
+        if (this.isLogging) {
+            this.logger.warn("The logging module for message logging is disabled!");
+
+            return;
+        }
+
         final List<String> channels = this.channels.get(type);
 
         final boolean isEmpty = this.defaultChannel.isEmpty();
