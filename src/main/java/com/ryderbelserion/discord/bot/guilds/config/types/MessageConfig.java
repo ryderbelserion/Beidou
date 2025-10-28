@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,9 @@ public class MessageConfig {
 
     private final String defaultChannel;
 
-    public MessageConfig(@NotNull final CommentedConfigurationNode config) {
+    private final Logger logger;
+
+    public MessageConfig(@NotNull final CommentedConfigurationNode config, @NotNull final Logger logger) {
         this.defaultChannel = config.node("default").getString("");
 
         this.channels.put("delete", ConfigUtils.getStringList(config.node("types", "deletion")));
@@ -32,6 +35,8 @@ public class MessageConfig {
         this.ignoredChannels = ConfigUtils.getStringList(config.node("channels"));
         this.ignoredRoles = ConfigUtils.getStringList(config.node("roles"));
         this.ignoredUsers = ConfigUtils.getStringList(config.node("users"));
+
+        this.logger = logger;
     }
 
     public void log(@NotNull final String type, @NotNull final TextChannel channel, @NotNull final Guild guild, @NotNull final User user) {
@@ -43,7 +48,13 @@ public class MessageConfig {
 
         final String user_id = user.getId();
 
-        if (this.ignoredChannels.contains(channel_id) || this.ignoredUsers.contains(user_id)) {
+        if (this.ignoredUsers.contains(user_id)) {
+            this.logger.warn("The user {} bypasses message editing/deletion, because they have are set to be ignored.", user_id);
+
+            return;
+        }
+
+        if (this.ignoredChannels.contains(channel_id)) {
             return;
         }
 
@@ -66,6 +77,8 @@ public class MessageConfig {
         }
 
         if (hasRole) { // has ignored role, do not log/edit
+            this.logger.warn("The user {} bypasses message editing/deletion, because they have a role that is ignored", user_id);
+
             return;
         }
 
@@ -73,22 +86,20 @@ public class MessageConfig {
             case "delete" -> {
                 final Embed embed = new Embed().description("A message was deleted!");
 
-                //todo() log deletion to multiple channels.
-
                 boolean hasLogged = false;
 
                 for (final String id : channels) {
                     final TextChannel textChannel = guild.getTextChannelById(id);
 
-                    if (textChannel == null) {
-                        //todo() tell them the channel is invalid.
+                    if (textChannel != null) {
+                        textChannel.sendMessageEmbeds(embed.build()).queue();
+
+                        hasLogged = true;
 
                         continue;
                     }
 
-                    textChannel.sendMessageEmbeds(embed.build()).queue();
-
-                    hasLogged = true;
+                    this.logger.warn("The channel id {} when logging deleted messages for multiple channels does not belong to an existing channel!", id);
                 }
 
                 if (hasLogged) return;
@@ -102,29 +113,27 @@ public class MessageConfig {
                         return;
                     }
 
-                    //todo() tell them the channel id supplied is invalid
+                    this.logger.warn("The channel id {} when logging deleted messages does not belong to an existing channel!", this.defaultChannel);
                 }
             }
 
             case "edit" -> {
                 final Embed embed = new Embed().description("A message was edited!");
 
-                //todo() log edits to multiple channels.
-
                 boolean hasLogged = false;
 
                 for (final String id : channels) {
                     final TextChannel textChannel = guild.getTextChannelById(id);
 
-                    if (textChannel == null) {
-                        //todo() tell them the channel is invalid.
+                    if (textChannel != null) {
+                        textChannel.sendMessageEmbeds(embed.build()).queue();
+
+                        hasLogged = true;
 
                         continue;
                     }
 
-                    textChannel.sendMessageEmbeds(embed.build()).queue();
-
-                    hasLogged = true;
+                    this.logger.warn("The channel id {} when logging edited messages for multiple channels does not belong to an existing channel!", id);
                 }
 
                 if (hasLogged) return;
@@ -138,7 +147,7 @@ public class MessageConfig {
                         return;
                     }
 
-                    //todo() tell them the channel id supplied is invalid
+                    this.logger.warn("The channel id {} when logging edited messages does not belong to an existing channel!", this.defaultChannel);
                 }
             }
         }

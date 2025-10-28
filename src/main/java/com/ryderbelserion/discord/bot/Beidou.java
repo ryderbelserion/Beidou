@@ -9,8 +9,10 @@ import com.ryderbelserion.discord.bot.guilds.listeners.MessageAudits;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
@@ -92,6 +94,15 @@ public class Beidou extends DiscordPlugin {
     public void onReady(@NotNull final JDA jda) {
         super.onReady(jda);
 
+        final Activity customStatus = Activity.customStatus("Watching %s members".formatted(
+                jda.getGuilds()
+                        .stream()
+                        .mapToInt(Guild::getMemberCount)
+                        .sum()
+                ));
+
+        jda.getPresence().setPresence(customStatus, false);
+
         List.of(
                 // bot creator commands
                 new ReloadCommand(this),
@@ -160,7 +171,7 @@ public class Beidou extends DiscordPlugin {
         this.configManager = new ConfigManager(this.fileManager, getDirectory());
         this.configManager.init();
 
-        this.guildManager = new GuildManager(this.fileManager);
+        this.guildManager = new GuildManager(this.fileManager, this.logger);
     }
 
     public @NotNull final GuildManager getGuildManager() {
