@@ -60,7 +60,7 @@ public class MessageAudits extends ListenerAdapter {
 
         final Guild guild = event.getGuild();
 
-        this.guildManager.getGuild(guild.getId()).ifPresent(action -> {
+        this.guildManager.getGuild(guild.getId()).ifPresent(action -> { // log to channel
             final MessageConfig config = action.getConfig().getMessageConfig();
 
             config.log(
@@ -81,9 +81,9 @@ public class MessageAudits extends ListenerAdapter {
 
         final Guild guild = event.getGuild();
 
-        final User user = event.getJDA().getSelfUser(); //todo() pull user from cache.
+        final User user = event.getJDA().getSelfUser(); //todo() pull user from database.
 
-        this.guildManager.getGuild(guild.getId()).ifPresent(action -> {
+        this.guildManager.getGuild(guild.getId()).ifPresent(action -> { // log to channel
             final MessageConfig config = action.getConfig().getMessageConfig();
 
             config.log(
