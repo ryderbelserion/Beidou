@@ -9,6 +9,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import java.util.Objects;
 
 public class CommandContext implements CommandActor {
 
@@ -19,54 +21,54 @@ public class CommandContext implements CommandActor {
     }
 
     @Override
-    public void reply(@NotNull final String message, final boolean ephemeral) {
+    public final void reply(@NotNull final String message, final boolean ephemeral) {
         this.event.reply(message).setEphemeral(ephemeral).queue();
     }
 
     @Override
-    public void reply(@NotNull final MessageEmbed embed, final boolean ephemeral) {
+    public final void reply(@NotNull final MessageEmbed embed, final boolean ephemeral) {
         this.event.replyEmbeds(embed).setEphemeral(ephemeral).queue();
     }
 
     @Override
-    public CommandContext defer(final boolean ephemeral) {
+    public @NotNull final CommandContext defer(final boolean ephemeral) {
         this.event.deferReply(ephemeral).queue();
 
         return this;
     }
 
     @Override
-    public OptionMapping getOption(@NotNull final String option) {
+    public @Nullable final OptionMapping getOption(@NotNull final String option) {
         return this.event.getOption(option);
     }
 
     @Override
-    public User getAuthor() {
+    public @NotNull final User getAuthor() {
         return this.event.getUser();
     }
 
     @Override
-    public boolean isCreator(@NotNull final String id) {
-        return id.equalsIgnoreCase("209853986646261762");
+    public final boolean isCreator(@NotNull final String id) {
+        return id.equalsIgnoreCase(getCreator().getId());
     }
 
     @Override
-    public User getCreator() {
-        return getJDA().getUserById("209853986646261762");
+    public @NotNull final User getCreator() {
+        return Objects.requireNonNull(getJDA().getUserById("209853986646261762"));
     }
 
     @Override
-    public SelfUser getBot() {
+    public @NotNull final SelfUser getBot() {
         return getJDA().getSelfUser();
     }
 
     @Override
-    public Guild getGuild() {
+    public @Nullable final Guild getGuild() {
         return this.event.getGuild();
     }
 
     @Override
-    public JDA getJDA() {
+    public @NotNull final JDA getJDA() {
         return this.event.getJDA();
     }
 }

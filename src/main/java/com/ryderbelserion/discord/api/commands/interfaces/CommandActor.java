@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface CommandActor {
 
@@ -26,43 +27,43 @@ public interface CommandActor {
      *
      * @return the object
      */
-    CommandContext defer(final boolean ephemeral);
+    @NotNull CommandContext defer(final boolean ephemeral);
 
     /**
      * Gets the option from the event.
      */
-    OptionMapping getOption(@NotNull final String option);
+    @Nullable OptionMapping getOption(@NotNull final String option);
 
     /**
      * @author of the message.
      */
-    User getAuthor();
+    @NotNull User getAuthor();
 
     /**
      * @return the one who created the bot.
      */
-    User getCreator();
+    @NotNull User getCreator();
 
     /**
      * Checks if the user is the creator of the bot.
      * @param id the id
      * @return true or false
      */
-    boolean isCreator(final String id);
+    boolean isCreator(@NotNull final String id);
 
     /**
      * @return the bot.
      */
-    SelfUser getBot();
+    @NotNull SelfUser getBot();
 
     /**
      * @return guild the command is executed in.
      */
-    Guild getGuild();
+    @Nullable Guild getGuild();
 
     /**
      * @return jda instance.
      */
-    JDA getJDA();
+    @NotNull JDA getJDA();
 
 }
