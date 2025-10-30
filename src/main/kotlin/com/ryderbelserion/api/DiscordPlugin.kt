@@ -79,6 +79,8 @@ abstract class DiscordPlugin(
 
         this.fileManager = FileManager(getDirectory())
 
+        this.fileManager?.compressFile(directory.resolve("logs").resolve("latest.log"), directory.resolve("logs"))
+
         this.logger.info("All ready to go!")
 
         this.isActive = true
