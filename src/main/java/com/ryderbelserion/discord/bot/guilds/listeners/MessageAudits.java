@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +20,28 @@ public class MessageAudits extends ListenerAdapter {
 
     public MessageAudits(@NotNull final Beidou beidou) {
         this.guildManager = beidou.getGuildManager();
+    }
+
+    @Override
+    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+        if (!event.isFromGuild()) return;
+
+        final User user = event.getAuthor();
+
+        if (user.isSystem()) return;
+
+        final Guild guild = event.getGuild();
+
+        this.guildManager.getGuild(guild.getId()).ifPresent(action -> {
+            //final GuildMessage root = action.getGuildMessage();
+
+            //final Message message = event.getMessage();
+
+            //final String content = message.getContentDisplay();
+            //final String id = message.getId();
+
+            //root.addMessage(content, message.getAuthor().getId(), id);
+        });
     }
 
     @Override

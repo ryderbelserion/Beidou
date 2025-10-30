@@ -13,15 +13,15 @@ public class BeidouGuild {
     private GuildConfig guildConfig;
 
     public BeidouGuild(@NotNull final FileManager fileManager, @NotNull final Logger logger, @NotNull final Path directory) {
-        fileManager.getYamlFile(directory.resolve("config.yml")).ifPresent(customFile -> {
-            this.config = customFile.getConfiguration();
-        });
+        init(fileManager, logger, directory);
+    }
 
-        if (this.config == null) {
-            return;
+    public void init(@NotNull final FileManager fileManager, @NotNull final Logger logger, @NotNull final Path directory) {
+        fileManager.getYamlFile(directory.resolve("config.yml")).ifPresent(customFile -> this.config = customFile.getConfiguration());
+
+        if (this.config != null) {
+            this.guildConfig = new GuildConfig(this.config, logger);
         }
-
-        this.guildConfig = new GuildConfig(this.config, logger);
     }
 
     public @NotNull final GuildConfig getConfig() {
