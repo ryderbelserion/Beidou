@@ -151,7 +151,7 @@ class Embed {
      * @param url the url to use.
      * @return the embed class with updated information.
      */
-    fun author(name: String, url: String): Embed {
+    fun author(name: String, url: String?): Embed {
         this.builder.setAuthor(name, null, url)
 
         return this

@@ -14,12 +14,18 @@ object RoleUtil {
     }
 
     fun getHighestRoleWithColor(member: Member): Role? {
-        for (role in member.roles) {
-            if (role.color == null) continue
+        var foundRole: Role? = null
 
-            return role
+        for (role in member.roles) {
+            if (role.color == null) {
+                continue
+            }
+
+            foundRole = role
+
+            break
         }
 
-        return null
+        return foundRole
     }
 }
