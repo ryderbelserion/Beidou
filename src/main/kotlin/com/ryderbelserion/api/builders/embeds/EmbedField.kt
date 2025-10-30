@@ -3,7 +3,7 @@ package com.ryderbelserion.api.builders.embeds
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed.Field
 
-class Fields(private val embed: EmbedBuilder) {
+class EmbedField(private val embed: EmbedBuilder) {
 
     /**
      * Adds a field using Strings.

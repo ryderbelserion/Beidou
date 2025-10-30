@@ -3,7 +3,7 @@ package com.ryderbelserion.bot.commands
 import com.ryderbelserion.api.builders.commands.CommandContext
 import com.ryderbelserion.api.builders.commands.CommandEngine
 import com.ryderbelserion.api.builders.embeds.Embed
-import com.ryderbelserion.api.builders.embeds.EmbedColors
+import com.ryderbelserion.api.builders.embeds.EmbedColor
 import com.ryderbelserion.bot.Beidou
 
 class AboutCommand(val beidou: Beidou) : CommandEngine("about", "Shows information about the Discord Bot.") {
@@ -23,7 +23,7 @@ class AboutCommand(val beidou: Beidou) : CommandEngine("about", "Shows informati
                 You can find my source code [here](https://github.com/ryderbelserion/Beidou)
             """.trimIndent())
             .timestamp()
-            .color(EmbedColors.EDIT)
+            .color(EmbedColor.EDIT)
             .fields {
                 field(
                     "",
@@ -40,7 +40,7 @@ class AboutCommand(val beidou: Beidou) : CommandEngine("about", "Shows informati
         val guild = context.guild()
 
         if (guild != null) {
-            embed.thumbnail(bot, guild).author(author, guild).footer("Average Ping: ${jda.gatewayPing}", guild?.iconUrl)
+            embed.thumbnail(bot, guild).author(author, guild).footer("Average Ping: ${jda.gatewayPing}", guild.iconUrl)
         } else {
             embed.thumbnail(bot).author(author).footer("Average Ping: ${jda.gatewayPing}", bot.avatarUrl)
         }

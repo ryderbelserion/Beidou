@@ -11,7 +11,7 @@ import java.time.ZoneId
 class Embed {
 
     private val builder = EmbedBuilder()
-    private val fields = Fields(this.builder)
+    private val fields = EmbedField(this.builder)
 
     /**
      * Sets the title of the embed.
@@ -45,9 +45,7 @@ class Embed {
      * @return the embed class with updated information.
      */
     fun footer(user: User): Embed {
-        this.builder.setFooter("Requested by: ${user.asMention}", user.effectiveAvatarUrl)
-
-        return this
+        return footer("Requested by: ${user.asMention}", user.getEffectiveAvatarUrl())
     }
 
     /**
@@ -56,11 +54,12 @@ class Embed {
      * @param user - The member in question.
      */
     fun footer(user: User, guild: Guild): Embed {
-        val avatar = guild.getMember(user)?.effectiveAvatarUrl
+        val member = guild.getMemberById(user.id)
 
-        this.builder.setFooter("Requested by: ${user.asMention}", avatar)
-
-        return this
+        return footer(
+            "Requested by: ${user.asMention}",
+            member?.getEffectiveAvatarUrl() ?: user.getEffectiveAvatarUrl()
+        )
     }
 
     /**
@@ -76,6 +75,28 @@ class Embed {
     }
 
     /**
+     * Set the thumbnail using the user object.
+     *
+     * @param user - The member in question.
+     * @param guild - Used to fetch the member's guild avatar otherwise fetches global avatar.
+     */
+    fun thumbnail(user: User, guild: Guild): Embed {
+        val member = guild.getMemberById(user.getId())
+
+        return thumbnail(member?.getEffectiveAvatarUrl() ?: user.getEffectiveAvatarUrl())
+    }
+
+    /**
+     * Sets the thumbnail using a user object.
+     *
+     * @param user the user to use.
+     * @return the embed class with updated information.
+     */
+    fun thumbnail(user: User): Embed {
+        return thumbnail(user.getEffectiveAvatarUrl())
+    }
+
+    /**
      * Sets the thumbnail using a url.
      *
      * @param url the url to use.
@@ -88,27 +109,25 @@ class Embed {
     }
 
     /**
-     * Set the thumbnail using the user object.
+     * Set the image using the user object.
      *
      * @param user - The member in question.
      * @param guild - Used to fetch the member's guild avatar otherwise fetches global avatar.
      */
-    fun thumbnail(user: User, guild: Guild?): Embed {
-        val avatar = user.let { guild?.getMember(it)?.effectiveAvatarUrl }
+    fun image(user: User, guild: Guild): Embed {
+        val member = guild.getMemberById(user.id)
 
-        this.builder.setThumbnail(avatar)
-
-        return this
+        return image(member?.getEffectiveAvatarUrl() ?: user.getEffectiveAvatarUrl())
     }
 
     /**
-     * Sets the thumbnail using a user object.
+     * Sets the embed image using a user object.
      *
      * @param user the user to use.
      * @return the embed class with updated information.
      */
-    fun thumbnail(user: User): Embed {
-        this.builder.setThumbnail(user.effectiveAvatarUrl)
+    fun image(user: User): Embed {
+        this.builder.setImage(user.getEffectiveAvatarUrl())
 
         return this
     }
@@ -126,38 +145,14 @@ class Embed {
     }
 
     /**
-     * Sets the embed image using a user object.
-     *
-     * @param user the user to use.
-     * @return the embed class with updated information.
-     */
-    fun image(user: User): Embed {
-        this.builder.setImage(user.effectiveAvatarUrl)
-
-        return this
-    }
-
-    /**
      * Sets the author using name/url
      *
      * @param name the name to use.
      * @param url the url to use.
      * @return the embed class with updated information.
      */
-    fun author(name: String, url: String? = null): Embed {
+    fun author(name: String, url: String): Embed {
         this.builder.setAuthor(name, null, url)
-
-        return this
-    }
-
-    /**
-     * Sets the author using a user object.
-     *
-     * @param user the user to use.
-     * @return the embed class with updated information.
-     */
-    fun author(user: User): Embed {
-        this.builder.setAuthor(user.effectiveName, null, user.effectiveAvatarUrl)
 
         return this
     }
@@ -168,24 +163,32 @@ class Embed {
      * @param user - The member in question.
      * @param guild - Used to fetch the member's guild avatar otherwise fetches global avatar.
      */
-    fun author(user: User, guild: Guild?): Embed {
-        val member = user.let { guild?.getMember(it) }
+    fun author(user: User, guild: Guild): Embed {
+        val member = guild.getMemberById(user.getId())
 
-        val avatar = member?.effectiveAvatarUrl
+        val avatar = if (member == null) user.getEffectiveAvatarUrl() else member.getEffectiveAvatarUrl()
 
-        this.builder.setAuthor(member?.effectiveName, null, avatar)
+        return author(user.getEffectiveName(), avatar)
+    }
 
-        return this
+    /**
+     * Sets the author using a user object.
+     *
+     * @param user the user to use.
+     * @return the embed class with updated information.
+     */
+    fun author(user: User): Embed {
+        return author(user.getEffectiveName(), user.getEffectiveAvatarUrl())
     }
 
     /**
      * Sets the color of the embed.
      *
-     * @param value the color to use.
+     * @param color the color to use.
      * @return the embed class with updated information.
      */
-    fun color(value: String): Embed {
-        this.builder.setColor(value.toColor())
+    fun color(color: String): Embed {
+        this.builder.setColor(color.toColor())
 
         return this
     }
@@ -195,8 +198,8 @@ class Embed {
      *
      * @param color - A preset enum of colors.
      */
-    fun color(color: EmbedColors): Embed {
-        this.builder.setColor(color.code.toColor())
+    fun color(color: EmbedColor): Embed {
+        this.builder.setColor(color.color)
 
         return this
     }
@@ -207,20 +210,29 @@ class Embed {
      * @param timezone the timezone to use for embeds.
      * @return the embed class with updated information.
      */
-    fun timestamp(timezone: String = "America/New_York"): Embed {
+    fun timestamp(timezone: String): Embed {
         this.builder.setTimestamp(LocalDateTime.now().atZone(ZoneId.of(timezone)))
 
         return this
     }
 
     /**
-     * Add multiple fields to the embed.
+     * Sets the timezone in the embed.
      *
-     * @param block the list of fields to add.
      * @return the embed class with updated information.
      */
-    fun fields(block: Fields.() -> Unit): Embed {
-        block(this.fields)
+    fun timestamp(): Embed {
+        return timestamp("America/New_York")
+    }
+
+    /**
+     * Add multiple fields to the embed.
+     *
+     * @param fields the list of fields to add.
+     * @return the embed class with updated information.
+     */
+    fun fields(fields: EmbedField.() -> Unit): Embed {
+        fields(this.fields)
 
         return this
     }
