@@ -4,9 +4,13 @@ import com.ryderbelserion.api.builders.commands.CommandContext
 import com.ryderbelserion.api.builders.commands.CommandEngine
 import com.ryderbelserion.api.builders.embeds.Embed
 import com.ryderbelserion.api.builders.embeds.EmbedColors
-import net.dv8tion.jda.api.Permission
+import com.ryderbelserion.bot.Beidou
 
-class AboutCommand : CommandEngine("about", "Shows information about the Discord Bot.", Permission.MESSAGE_SEND) {
+class AboutCommand(val beidou: Beidou) : CommandEngine("about", "Shows information about the Discord Bot.") {
+
+    init {
+        this.beidou.addEventListener(this)
+    }
 
     override fun perform(context: CommandContext) {
         val jda = context.jda()

@@ -6,110 +6,71 @@ import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.interactions.commands.OptionType
 import net.dv8tion.jda.api.interactions.commands.build.OptionData
 
-class CommandHandler : CommandFlow {
+class CommandHandler(private val jda: JDA) : CommandFlow {
 
-    private lateinit var jda: JDA
     private lateinit var guild: Guild
 
-    /**
-     * Sets the guild to add slash commands to.
-     */
-    fun setGuild(guild: Guild): CommandHandler {
-        this.guild = guild
-
-        return this
-    }
-
-    /**
-     * Sets the jda instance.
-     */
-    fun setJDA(jda: JDA): CommandHandler {
-        this.jda = jda
-
-        return this
-    }
-
-    /**
-     * Adds a single global slash command.
-     */
     override fun addCommand(engine: CommandEngine) {
         this.jda.upsertCommand(engine.name, engine.description).queue()
     }
 
-    /**
-     * Adds a single global slash command.
-     */
-    override fun addCommand(engine: CommandEngine, type: OptionType, name: String, description: String) {
-        this.jda.upsertCommand(engine.name, engine.description).addOption(type, name, description).queue()
-    }
-
-    /**
-     * Adds a single global slash command.
-     */
     override fun addCommand(engine: CommandEngine, optionData: OptionData) {
         this.jda.upsertCommand(engine.name, engine.description).addOptions(optionData).queue()
     }
 
-    /**
-     * Adds multiple global slash commands.
-     */
-    override fun addCommand(engine: CommandEngine, optionData: List<OptionData>) {
-        this.jda.upsertCommand(engine.name, engine.description).addOptions(optionData).queue()
+    override fun addCommand(engine: CommandEngine, optionDataList: MutableList<OptionData?>) {
+        this.jda.upsertCommand(engine.name, engine.description).addOptions(optionDataList).queue()
     }
 
-    /**
-     * Adds a single slash command to guilds.
-     */
-    override fun addGuildCommand(engine: CommandEngine) {
-        this.guild.upsertCommand(engine.name, engine.description).queue()
+    override fun addCommand(engine: CommandEngine, type: OptionType, name: String, description: String) {
+        this.jda.upsertCommand(engine.name, engine.description).addOption(type, name, description).queue()
     }
 
-    /**
-     * Adds a single slash command to guilds.
-     */
-    override fun addGuildCommand(engine: CommandEngine, type: OptionType, name: String, description: String) {
-        this.guild.upsertCommand(engine.name, engine.description).addOption(type, name, description).queue()
+    override fun addGuildCommand(guild: Guild, engine: CommandEngine) {
+        guild.upsertCommand(engine.name, engine.description).queue()
     }
 
-    /**
-     * Adds a single slash command to guilds.
-     */
-    override fun addGuildCommand(engine: CommandEngine, optionData: OptionData) {
-        this.guild.upsertCommand(engine.name, engine.description).addOptions(optionData).queue()
+    override fun addGuildCommand(guild: Guild, engine: CommandEngine, optionData: OptionData) {
+        guild.upsertCommand(engine.name, engine.description).addOptions(optionData).queue()
     }
 
-    /**
-     * Adds multiple guild slash commands.
-     */
-    override fun addGuildCommand(engine: CommandEngine, optionData: List<OptionData>) {
-        this.guild.upsertCommand(engine.name, engine.description).addOptions(optionData).queue()
+    override fun addGuildCommand(guild: Guild, engine: CommandEngine, optionDataList: MutableList<OptionData?>) {
+        guild.upsertCommand(engine.name, engine.description).addOptions(optionDataList).queue()
     }
 
-    /**
-     * Adds multiple slash commands to guilds.
-     */
-    override fun addGuildCommands(vararg engine: CommandEngine) {
-        engine.forEach { addGuildCommand(it) }
+    override fun addGuildCommand(
+        guild: Guild,
+        engine: CommandEngine,
+        type: OptionType,
+        name: String,
+        description: String
+    ) {
+        guild.upsertCommand(engine.name, engine.description).addOption(type, name, description).queue()
     }
 
-    /**
-     * Adds multiple global slash commands.
-     */
-    override fun addCommands(vararg engine: CommandEngine) {
-        engine.forEach { addCommand(it) }
+    override fun addGuildCommands(guild: Guild, vararg engines: CommandEngine) {
+        for (engine in engines) {
+            addGuildCommand(guild, engine)
+        }
     }
 
-    /**
-     * Removes all slash commands from guilds.
-     */
-    override fun purgeGuildCommands() {
-        this.guild.updateCommands().queue()
+    override fun addCommands(vararg engines: CommandEngine) {
+        for (engine in engines) {
+            addCommand(engine)
+        }
     }
 
-    /**
-     * Removes all global slash commands.
-     */
+    override fun purgeGuildCommands(guild: Guild) {
+        guild.updateCommands().queue()
+    }
+
     override fun purgeGlobalCommands() {
         this.jda.updateCommands().queue()
+    }
+
+    fun guild(guild: Guild): CommandHandler {
+        this.guild = guild
+
+        return this
     }
 }

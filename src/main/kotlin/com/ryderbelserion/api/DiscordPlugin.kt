@@ -1,7 +1,7 @@
 package com.ryderbelserion.api
 
-import com.ryderbelserion.api.builders.commands.CommandHandler
 import com.ryderbelserion.api.builders.ListenerBuilder
+import com.ryderbelserion.api.builders.commands.CommandHandler
 import com.ryderbelserion.fusion.files.FileManager
 import com.ryderbelserion.listeners.StatusListener
 import net.dv8tion.jda.api.JDA
@@ -39,11 +39,11 @@ abstract class DiscordPlugin(
     }
 
     fun DiscordPlugin.commands(guild: Guild, configuration: CommandHandler.() -> Unit): CommandHandler {
-        return CommandHandler().setJDA(this.jda).setGuild(guild).apply(configuration)
+        return CommandHandler(this.jda).guild(guild).apply(configuration)
     }
 
     fun DiscordPlugin.commands(configuration: CommandHandler.() -> Unit): CommandHandler {
-        return CommandHandler().setJDA(this.jda).apply(configuration)
+        return CommandHandler(this.jda).apply(configuration)
     }
 
     abstract fun onGuildReady(guild: Guild)
@@ -82,6 +82,10 @@ abstract class DiscordPlugin(
         this.logger.info("All ready to go!")
 
         this.isActive = true
+    }
+
+    fun addEventListener(vararg listeners: Any) {
+        this.jda.addEventListener(*listeners)
     }
 
     fun getGuildDirectory(id: String?): Path {

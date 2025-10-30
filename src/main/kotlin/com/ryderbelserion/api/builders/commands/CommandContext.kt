@@ -21,8 +21,8 @@ class CommandContext(private val event: SlashCommandInteractionEvent) : CommandA
     /**
      * Sends an embed with an ephemeral toggle.
      */
-    override fun reply(message: MessageEmbed, ephemeral: Boolean) {
-        this.event.replyEmbeds(message).setEphemeral(ephemeral).queue()
+    override fun reply(embed: MessageEmbed, ephemeral: Boolean) {
+        this.event.replyEmbeds(embed).setEphemeral(ephemeral).queue()
     }
 
     /**
@@ -55,6 +55,15 @@ class CommandContext(private val event: SlashCommandInteractionEvent) : CommandA
      */
     override fun creator(): User? {
         return jda().getUserById("209853986646261762")
+    }
+
+    /**
+     * Checks if the user is the creator of the bot.
+     * @param id the id
+     * @return true or false
+     */
+    override fun isCreator(id: String?): Boolean {
+        return id.equals(creator()?.id, ignoreCase = true)
     }
 
     /**

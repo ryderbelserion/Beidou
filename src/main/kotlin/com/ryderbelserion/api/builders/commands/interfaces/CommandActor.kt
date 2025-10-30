@@ -10,22 +10,58 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping
 
 interface CommandActor {
 
+    /**
+     * Sends a simple string with an ephemeral toggle.
+     */
     fun reply(message: String, ephemeral: Boolean)
 
-    fun reply(message: MessageEmbed, ephemeral: Boolean)
+    /**
+     * Sends an embed with an ephemeral toggle.
+     */
+    fun reply(embed: MessageEmbed, ephemeral: Boolean)
 
-    fun defer(ephemeral: Boolean): CommandContext
+    /**
+     * Defer a reply, Sends the thinking... message to a user.
+     *
+     * @return the object
+     */
+    fun defer(ephemeral: Boolean): CommandContext?
 
+    /**
+     * Gets the option from the event.
+     */
     fun getOption(option: String): OptionMapping?
 
+    /**
+     * @author of the message.
+     */
     fun author(): User?
 
+    /**
+     * @return the one who created the bot.
+     */
     fun creator(): User?
 
-    fun bot(): SelfUser
+    /**
+     * Checks if the user is the creator of the bot.
+     * @param id the id
+     * @return true or false
+     */
+    fun isCreator(id: String?): Boolean
 
+    /**
+     * @return the bot.
+     */
+    fun bot(): SelfUser?
+
+    /**
+     * @return guild the command is executed in.
+     */
     fun guild(): Guild?
 
-    fun jda(): JDA
+    /**
+     * @return jda instance.
+     */
+    fun jda(): JDA?
 
 }

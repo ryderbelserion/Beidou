@@ -86,7 +86,7 @@ class Beidou(token: String, logger: Logger) : DiscordPlugin(
         this.configManager = ConfigManager(this.fileManager, getDirectory())
 
         commands {
-            addCommand(AboutCommand())
+            addCommand(AboutCommand(this@Beidou))
 
             /*addCommand(MinecraftCommand(this@Beidou),
                 listOf(
@@ -94,12 +94,6 @@ class Beidou(token: String, logger: Logger) : DiscordPlugin(
                     OptionData(OptionType.BOOLEAN, "bedrock", "If you want to look for bedrock servers")
                 )
             )*/
-        }
-
-        listeners {
-            register(
-                AboutCommand()
-            )
         }
 
         this.logger.info("${jda.selfUser.name} is ready!")
