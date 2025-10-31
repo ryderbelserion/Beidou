@@ -4,8 +4,8 @@ settings:
   threads:
     # Thread creation for announcements
     creation:
-      # Should we create channels?
-      enabled: true
+      # Should we create threads on these channels?
+      enabled: false
       # A list of channels to automatically create threads for on every message.
       channels: []
       # A list of users, which determines if they can make a thread.
