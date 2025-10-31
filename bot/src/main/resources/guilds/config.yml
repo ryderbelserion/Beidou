@@ -31,3 +31,16 @@ settings:
       # A list of users to be ignored when logging.
       # You must use the user id.
       users: []
+  embed:
+    # Should the embed be enabled?
+    enabled: false
+    # The title of the embed.
+    title: "This is text with {user} variable."
+    # The description of the embed.
+    description: []
+    # The footer settings
+    footer:
+      # Should the footer be enabled?
+      enabled: false
+      # Timestamp Timezone
+      timezone: "America/New_York"

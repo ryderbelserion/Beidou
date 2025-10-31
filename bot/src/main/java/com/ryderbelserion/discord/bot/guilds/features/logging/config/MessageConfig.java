@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.Channel;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import org.jetbrains.annotations.NotNull;
@@ -100,7 +102,7 @@ public class MessageConfig {
                 boolean hasLogged = false;
 
                 for (final String id : channels) {
-                    final TextChannel textChannel = guild.getTextChannelById(id);
+                    final TextChannel textChannel = guild.getChannelById(TextChannel.class, id);
 
                     if (textChannel != null) {
                         textChannel.sendMessageEmbeds(embed.build()).queue();

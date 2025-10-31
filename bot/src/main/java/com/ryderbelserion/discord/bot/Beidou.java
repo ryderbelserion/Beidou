@@ -81,7 +81,9 @@ public class Beidou extends DiscordPlugin {
 
         List.of(
                 "cache.json",
-                "config.yml"
+
+                "config.yml",
+                "traffic.yml"
         ).forEach(file -> {
             FileType fileType = null;
 

@@ -1,0 +1,17 @@
+# Traffic related settings
+traffic:
+  join-module:
+    # Role settings
+    role-settings:
+      # Should we give a role(s) on join?
+      enabled: false
+      # A list of role ids to give.
+      roles: []
+    join-channel:
+      - ""
+    embed:
+      toggle: false
+      title: "Welcome to {server} {player}"
+      description: []
+      fields: {}
+      footer: ""
