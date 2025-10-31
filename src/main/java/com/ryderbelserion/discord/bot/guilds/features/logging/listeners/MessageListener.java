@@ -65,7 +65,7 @@ public class MessageListener extends ListenerAdapter {
 
             config.log(
                     "edit",
-                    event.getChannel().asTextChannel(),
+                    event.getChannel(),
                     guild,
                     user
             );
@@ -88,7 +88,7 @@ public class MessageListener extends ListenerAdapter {
 
             config.log(
                     "delete",
-                    channel.asTextChannel(),
+                    channel,
                     guild,
                     user
             );

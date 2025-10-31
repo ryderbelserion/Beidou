@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -43,7 +44,7 @@ public class MessageConfig {
         this.logger = logger;
     }
 
-    public void log(@NotNull final String type, @NotNull final TextChannel channel, @NotNull final Guild guild, @NotNull final User user) {
+    public void log(@NotNull final String type, @NotNull final MessageChannelUnion channel, @NotNull final Guild guild, @NotNull final User user) {
         if (this.isLogging) {
             this.logger.warn("The logging module for message logging is disabled!");
 
