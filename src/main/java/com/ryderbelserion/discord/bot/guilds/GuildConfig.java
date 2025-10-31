@@ -1,6 +1,6 @@
-package com.ryderbelserion.discord.bot.guilds.config;
+package com.ryderbelserion.discord.bot.guilds;
 
-import com.ryderbelserion.discord.bot.guilds.config.types.MessageConfig;
+import com.ryderbelserion.discord.bot.guilds.features.logging.config.MessageConfig;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.CommentedConfigurationNode;

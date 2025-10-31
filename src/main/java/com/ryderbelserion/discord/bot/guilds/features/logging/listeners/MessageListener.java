@@ -1,8 +1,8 @@
-package com.ryderbelserion.discord.bot.guilds.listeners;
+package com.ryderbelserion.discord.bot.guilds.features.logging.listeners;
 
 import com.ryderbelserion.discord.bot.Beidou;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
-import com.ryderbelserion.discord.bot.guilds.config.types.MessageConfig;
+import com.ryderbelserion.discord.bot.guilds.features.logging.config.MessageConfig;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;

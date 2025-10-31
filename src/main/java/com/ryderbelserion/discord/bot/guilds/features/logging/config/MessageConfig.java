@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.bot.guilds.config.types;
+package com.ryderbelserion.discord.bot.guilds.features.logging.config;
 
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.utils.ConfigUtils;

@@ -6,7 +6,7 @@ import com.ryderbelserion.discord.bot.commands.owner.ReloadCommand;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
 import com.ryderbelserion.discord.bot.guilds.GuildListener;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
-import com.ryderbelserion.discord.bot.guilds.listeners.MessageListener;
+import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.MessageListener;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import net.dv8tion.jda.api.JDA;

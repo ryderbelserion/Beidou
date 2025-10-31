@@ -1,6 +1,6 @@
 package com.ryderbelserion.discord.bot.guilds.objects;
 
-import com.ryderbelserion.discord.bot.guilds.config.GuildConfig;
+import com.ryderbelserion.discord.bot.guilds.GuildConfig;
 import com.ryderbelserion.fusion.files.FileManager;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
