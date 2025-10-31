@@ -1,3 +1,17 @@
+# General Settings
+settings:
+  # Thread related settings
+  threads:
+    # Thread creation for announcements
+    creation:
+      # Should we create channels?
+      enabled: true
+      # A list of channels to automatically create threads for on every message.
+      channels: []
+      # A list of users, which determines if they can make a thread.
+      # If this list is empty, everyone makes a thread.
+      users: []
+
 # Channel related settings to logs
 channels:
   # Settings related to msg logs

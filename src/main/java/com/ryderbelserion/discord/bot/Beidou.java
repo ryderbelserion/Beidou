@@ -7,6 +7,7 @@ import com.ryderbelserion.discord.bot.configs.ConfigManager;
 import com.ryderbelserion.discord.bot.guilds.GuildListener;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.MessageListener;
+import com.ryderbelserion.discord.bot.guilds.features.threads.ThreadListener;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import net.dv8tion.jda.api.JDA;
@@ -113,6 +114,8 @@ public class Beidou extends DiscordPlugin {
         List.of(
                 // monitor joined guilds
                 new GuildListener(this),
+
+                new ThreadListener(this),
 
                 new MessageListener(this)
         ).forEach(this::addEventListener);
