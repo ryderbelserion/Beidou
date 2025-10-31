@@ -2,6 +2,7 @@ package com.ryderbelserion.discord.bot.guilds;
 
 import com.ryderbelserion.discord.bot.guilds.objects.BeidouGuild;
 import com.ryderbelserion.fusion.files.FileManager;
+import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import java.nio.file.Path;
@@ -22,8 +23,16 @@ public class GuildManager {
         this.logger = logger;
     }
 
-    public void addGuild(@NotNull final String id, @NotNull final Path directory) {
-        this.guilds.putIfAbsent(id, new BeidouGuild(this.fileManager, this.logger, directory));
+    public void addGuild(@NotNull final Guild guild, @NotNull final Path directory) {
+        final String id = guild.getId();
+
+        if (this.guilds.containsKey(id)) {
+            this.guilds.get(id).init(this.fileManager, this.logger, directory, guild);
+
+            return;
+        }
+
+        this.guilds.putIfAbsent(id, new BeidouGuild(this.fileManager, this.logger, directory, guild));
     }
 
     public void removeGuild(@NotNull final String id) {
