@@ -79,11 +79,29 @@ public class Beidou extends DiscordPlugin {
             exception.printStackTrace();
         }
 
-        this.fileManager.extractFile("guilds/config.yml", directory.resolve("config.yml"));
+        List.of(
+                "cache.json",
+                "config.yml"
+        ).forEach(file -> {
+            FileType fileType = null;
 
-        this.fileManager.addFile(directory.resolve("config.yml"), FileType.YAML, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
+            final String extension = file.split("\\.")[1];
 
-        this.guildManager.addGuild(guildId, directory);
+            switch (extension) {
+                case "json" -> fileType = FileType.JSON;
+                case "yml" -> fileType = FileType.YAML;
+            }
+
+            final Path path = directory.resolve(file);
+
+            this.fileManager.extractFile("guilds/%s".formatted(file), path);
+
+            if (fileType != null) {
+                this.fileManager.addFile(path, fileType, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
+            }
+        });
+
+        this.guildManager.addGuild(guild, directory);
     }
 
     @Override
