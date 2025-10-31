@@ -2,6 +2,7 @@ package com.ryderbelserion.discord.api;
 
 import com.ryderbelserion.discord.api.commands.CommandHandler;
 import com.ryderbelserion.discord.api.listeners.StatusListener;
+import com.ryderbelserion.fusion.addons.AddonManager;
 import com.ryderbelserion.fusion.files.FileManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
