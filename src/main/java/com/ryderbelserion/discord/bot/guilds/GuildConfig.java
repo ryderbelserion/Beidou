@@ -12,7 +12,7 @@ public class GuildConfig {
     private final ThreadConfig threadConfig;
 
     public GuildConfig(@NotNull final CommentedConfigurationNode config, @NotNull final Logger logger) {
-        this.messageConfig = new MessageConfig(config.node("channels", "message-logs"), logger);
+        this.messageConfig = new MessageConfig(config.node("settings", "channels", "message-logs"), logger);
 
         this.threadConfig = new ThreadConfig(config.node("settings", "threads", "creation"));
     }
