@@ -19,11 +19,7 @@ public class Main {
             manager.getOption().ifPresent(option -> {
                 final TokenOption tokenOption = (TokenOption) action;
 
-                tokenOption.getValue(option).ifPresentOrElse(token -> {
-                    new Beidou(token, logger).init();
-                }, () -> {
-                    logger.warn("Failed to start Discord Bot, Token not found!");
-                });
+                tokenOption.getValue(option).ifPresentOrElse(token -> new Beidou(token, logger).init(), () -> logger.warn("Failed to start Discord Bot, Token not found!"));
             });
         });
     }

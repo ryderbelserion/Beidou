@@ -8,6 +8,11 @@ rootProject.name = "Beidou"
 
 includeProject("bot")
 
+listOf(
+    "addons/crazycrew/weebs" to "weebs"
+).forEach {
+    includeProject(it.first, it.second)
+}
 
 fun includeProject(name: String) {
     includeProject(name) {
