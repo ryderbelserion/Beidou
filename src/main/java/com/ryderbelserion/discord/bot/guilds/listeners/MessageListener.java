@@ -14,11 +14,11 @@ import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-public class MessageAudits extends ListenerAdapter {
+public class MessageListener extends ListenerAdapter {
 
     private final GuildManager guildManager;
 
-    public MessageAudits(@NotNull final Beidou beidou) {
+    public MessageListener(@NotNull final Beidou beidou) {
         this.guildManager = beidou.getGuildManager();
     }
 
