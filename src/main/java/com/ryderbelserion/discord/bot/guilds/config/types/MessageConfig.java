@@ -50,7 +50,7 @@ public class MessageConfig {
             return;
         }
 
-        final List<String> channels = this.channels.get(type);
+        final List<String> channels = this.channels.getOrDefault(type, List.of());
 
         final boolean isEmpty = this.defaultChannel.isEmpty();
 
