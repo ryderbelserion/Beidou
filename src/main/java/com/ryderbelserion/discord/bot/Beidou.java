@@ -101,6 +101,16 @@ public class Beidou extends DiscordPlugin {
             }
         });
 
+        final Path addons = directory.resolve("addons");
+
+        try {
+            if (!Files.exists(addons)) {
+                Files.createDirectory(addons);
+            }
+        } catch (final IOException exception) {
+            exception.printStackTrace();
+        }
+
         this.guildManager.addGuild(guild, directory);
     }
 

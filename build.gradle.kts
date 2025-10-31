@@ -19,6 +19,7 @@ repositories {
 
 dependencies {
     implementation("com.ryderbelserion.fusion:fusion-files:3.0.0-SNAPSHOT")
+    implementation("com.ryderbelserion.fusion:fusion-addons:0.1.0")
 
     implementation("ch.qos.logback:logback-classic:1.5.20")
     implementation("net.sf.jopt-simple:jopt-simple:5.0.4")
