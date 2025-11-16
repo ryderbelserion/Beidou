@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
+import java.util.Map;
 
 public class GuildConfig {
 
@@ -40,9 +41,11 @@ public class GuildConfig {
         final TextChannel channel = guild.getTextChannelById("1142581790620524596");
 
         if (channel != null) {
-            new BeidouEmbed(config, new HashMap<>() {{
-                put("{user}", "this is replaced");
-            }}).sendEmbed(channel, user);
+            new BeidouEmbed(config,
+                    Map.of(
+                            "{user}", "This is replaced"
+                    ))
+            .sendEmbed(channel, user);
         }
     }
 }
