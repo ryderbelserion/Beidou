@@ -43,7 +43,7 @@ public class GuildConfig {
         if (channel != null) {
             new BeidouEmbed(config,
                     Map.of(
-                            "{user}", "This is replaced"
+                            "{user}", user.getAsMention()
                     ))
             .sendEmbed(channel, user);
         }
