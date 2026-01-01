@@ -24,13 +24,13 @@ public class GuildListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        final Guild guild = event.getGuild();
+        /*final Guild guild = event.getGuild();
         final String id = guild.getId();
 
         if (!id.equalsIgnoreCase("1142362341095251998")) return;
 
         this.beidou.getGuildManager().getGuild(id).ifPresent(action -> {
             action.getConfig().test(guild, event.getAuthor());
-        });
+        });*/
     }
 }
