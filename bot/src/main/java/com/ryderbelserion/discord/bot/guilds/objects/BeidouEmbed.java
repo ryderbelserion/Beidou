@@ -28,8 +28,6 @@ public class BeidouEmbed {
     }
 
     public void sendEmbed(@NotNull final TextChannel channel, @NotNull final User user) {
-        System.out.println("Enabled: %s".formatted(this.isEnabled));
-
         if (!this.isEnabled) return;
 
         final Embed embed = new Embed();
@@ -46,8 +44,7 @@ public class BeidouEmbed {
             embed.footer(user);
         }
 
-        System.out.println("Title %s".formatted(this.title));
-        System.out.println("Description %s".formatted(this.description));
+        embed.timestamp(this.timezone);
 
         channel.sendMessageEmbeds(embed.build()).queue();
     }
