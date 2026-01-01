@@ -21,7 +21,6 @@ public class ReloadCommand extends CommandEngine {
     @Override
     protected void perform(@NotNull final CommandContext context) {
         final User user = context.getAuthor();
-        //final String id = context.getGuild().getId();
 
         if (context.isCreator(user.getId())) {
             this.beidou.onReload(context.getJDA());
