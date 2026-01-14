@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.bot.configs.types;
+package com.ryderbelserion.discord.bot.configs.types.guilds;
 
 import com.ryderbelserion.discord.api.utils.ConfigUtils;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;

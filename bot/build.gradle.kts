@@ -1,5 +1,5 @@
 plugins {
-    id("com.gradleup.shadow") version "9.2.2"
+    alias(libs.plugins.shadow)
 
     `java-library`
 
@@ -18,12 +18,9 @@ repositories {
 }
 
 dependencies {
-    implementation("com.ryderbelserion.fusion:fusion-files:3.0.0-SNAPSHOT")
-    implementation("com.ryderbelserion.fusion:fusion-addons:0.3.0")
-
-    implementation("ch.qos.logback:logback-classic:1.5.20")
-    implementation("net.sf.jopt-simple:jopt-simple:5.0.4")
-    implementation("net.dv8tion:JDA:6.1.0")
+    api(libs.bundles.discord)
+    api(libs.bundles.fusion)
+    api(libs.hikari)
 }
 
 java {

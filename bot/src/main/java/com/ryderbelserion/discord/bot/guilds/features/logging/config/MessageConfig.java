@@ -44,7 +44,7 @@ public class MessageConfig {
         this.logger = logger;
     }
 
-    public void log(@NotNull final String type, @NotNull final MessageChannelUnion channel, @NotNull final Guild guild, @NotNull final User user) {
+    public void log(@NotNull final String messageId, @NotNull final String type, @NotNull final MessageChannelUnion channel, @NotNull final Guild guild, @NotNull final User user) {
         if (this.isLogging) {
             this.logger.warn("The logging module for message logging is disabled!");
 

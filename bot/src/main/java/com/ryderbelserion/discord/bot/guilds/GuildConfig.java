@@ -2,14 +2,13 @@ package com.ryderbelserion.discord.bot.guilds;
 
 import com.ryderbelserion.discord.bot.guilds.features.logging.config.MessageConfig;
 import com.ryderbelserion.discord.bot.guilds.features.threads.config.ThreadConfig;
-import com.ryderbelserion.discord.bot.guilds.objects.BeidouEmbed;
+import com.ryderbelserion.discord.bot.api.objects.BeidouEmbed;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-import java.util.HashMap;
 import java.util.Map;
 
 public class GuildConfig {

@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.bot.guilds.objects;
+package com.ryderbelserion.discord.bot.api.objects;
 
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.utils.ConfigUtils;

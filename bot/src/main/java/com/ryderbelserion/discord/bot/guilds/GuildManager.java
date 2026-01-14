@@ -1,6 +1,6 @@
 package com.ryderbelserion.discord.bot.guilds;
 
-import com.ryderbelserion.discord.bot.guilds.objects.BeidouGuild;
+import com.ryderbelserion.discord.bot.api.objects.BeidouGuild;
 import com.ryderbelserion.fusion.files.FileManager;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;

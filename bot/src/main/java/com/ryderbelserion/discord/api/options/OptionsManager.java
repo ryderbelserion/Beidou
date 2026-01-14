@@ -1,6 +1,7 @@
 package com.ryderbelserion.discord.api.options;
 
 import com.ryderbelserion.discord.api.options.interfaces.IOption;
+import com.ryderbelserion.discord.api.options.types.EnvOption;
 import com.ryderbelserion.discord.api.options.types.TokenOption;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -33,7 +34,8 @@ public class OptionsManager {
 
     public void init(@NotNull final String[] args) {
         List.of(
-                new TokenOption(this.parser)
+                new TokenOption(this.parser),
+                new EnvOption(this.parser)
         ).forEach(option -> this.cache.put(option.getName(), option.init()));
 
         this.options = this.parser.parse(args);

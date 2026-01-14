@@ -1,6 +1,6 @@
 package com.ryderbelserion.discord.bot.configs;
 
-import com.ryderbelserion.discord.bot.configs.types.GuildCache;
+import com.ryderbelserion.discord.bot.configs.types.guilds.GuildCache;
 import com.ryderbelserion.fusion.files.FileManager;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;

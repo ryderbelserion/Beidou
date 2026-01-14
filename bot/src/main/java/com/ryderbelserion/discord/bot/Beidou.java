@@ -1,9 +1,12 @@
 package com.ryderbelserion.discord.bot;
 
 import com.ryderbelserion.discord.api.DiscordPlugin;
+import com.ryderbelserion.discord.api.options.OptionsManager;
+import com.ryderbelserion.discord.api.options.types.EnvOption;
 import com.ryderbelserion.discord.bot.commands.owner.AboutCommand;
 import com.ryderbelserion.discord.bot.commands.owner.ReloadCommand;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
+import com.ryderbelserion.discord.bot.api.environment.enums.Environment;
 import com.ryderbelserion.discord.bot.guilds.GuildListener;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.MessageListener;
@@ -20,12 +23,13 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Beidou extends DiscordPlugin {
 
-    public Beidou(@NotNull final String token, @NotNull final Logger logger) {
+    private Environment environment;
+
+    public Beidou(@NotNull final String token, @NotNull final Logger logger, @NotNull final OptionsManager manager) {
         super(List.of(
                 // direct messages
                 GatewayIntent.DIRECT_MESSAGE_REACTIONS,
@@ -48,6 +52,12 @@ public class Beidou extends DiscordPlugin {
                 CacheFlag.VOICE_STATE,
                 CacheFlag.EMOJI
         ), "beidou", logger, token);
+
+        manager.getOptionByName("environment").ifPresent(action -> manager.getOption().ifPresent(option -> {
+            final EnvOption envOption = (EnvOption) action;
+
+            envOption.getValue(option).ifPresentOrElse(env -> environment = env, () -> environment = Environment.RELEASE);
+        }));
     }
 
     private ConfigManager configManager;
@@ -85,22 +95,19 @@ public class Beidou extends DiscordPlugin {
                 "config.yml",
                 "traffic.yml"
         ).forEach(file -> {
-            FileType fileType = null;
-
             final String extension = file.split("\\.")[1];
 
-            switch (extension) {
+            FileType fileType = switch (extension) {
                 case "json" -> fileType = FileType.JSON;
                 case "yml" -> fileType = FileType.YAML;
-            }
+                default -> throw new IllegalStateException("Unexpected value: " + extension);
+            };
 
             final Path path = directory.resolve(file);
 
             this.fileManager.extractFile("guilds/%s".formatted(file), path);
 
-            if (fileType != null) {
-                this.fileManager.addFile(path, fileType, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
-            }
+            this.fileManager.addFile(path, fileType, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
         });
 
         final Path addons = directory.resolve("addons");
@@ -141,14 +148,11 @@ public class Beidou extends DiscordPlugin {
             addEventListener(command);
         });
 
-        List.of(
-                // monitor joined guilds
-                new GuildListener(this),
+        switch (this.environment) {
+            case RELEASE -> this.addEventListener(new GuildListener(this), new ThreadListener(this));
 
-                new ThreadListener(this),
-
-                new MessageListener(this)
-        ).forEach(this::addEventListener);
+            case DEVELOPMENT -> this.addEventListener(new GuildListener(this), new ThreadListener(this), new MessageListener(this));
+        }
 
         this.logger.info("{} is ready!", jda.getSelfUser().getName());
     }
@@ -175,7 +179,8 @@ public class Beidou extends DiscordPlugin {
 
         final Path directory = getDirectory();
 
-        this.fileManager.addFile(directory.resolve("guilds.json"), FileType.JSON);
+        this.fileManager.addFile(directory.resolve("guilds.json"), FileType.JSON)
+                .addFile(directory.resolve("config.yml"), FileType.YAML);
 
         this.configManager = new ConfigManager(this.fileManager, getDirectory());
         this.configManager.init();
@@ -200,5 +205,9 @@ public class Beidou extends DiscordPlugin {
 
     public @NotNull final GuildManager getGuildManager() {
         return this.guildManager;
+    }
+
+    public @NotNull final Environment getEnvironment() {
+        return environment;
     }
 }

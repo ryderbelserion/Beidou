@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.bot.guilds.objects;
+package com.ryderbelserion.discord.bot.api.objects;
 
 import com.ryderbelserion.discord.bot.guilds.GuildConfig;
 import com.ryderbelserion.fusion.addons.AddonManager;
@@ -15,13 +15,18 @@ public class BeidouGuild {
 
     private CommentedConfigurationNode config;
     private GuildConfig guildConfig;
+    private final Path directory;
+    private final String id;
 
     private final AddonManager addonManager;
+    private final FileManager fileManager;
 
     public BeidouGuild(@NotNull final FileManager fileManager, @NotNull final Logger logger, @NotNull final Path directory, @NotNull final Guild guild) {
-        this.addonManager = new AddonManager(directory);
+        this.addonManager = new AddonManager(this.directory = directory);
 
-        init(fileManager, logger, directory, guild);
+        this.id = guild.getId();
+
+        init(this.fileManager = fileManager, logger, directory, guild);
     }
 
     public void init(@NotNull final FileManager fileManager, @NotNull final Logger logger, @NotNull final Path directory, @NotNull final Guild guild) {
@@ -56,7 +61,19 @@ public class BeidouGuild {
         return this.addonManager;
     }
 
+    public @NotNull final FileManager getFileManager() {
+        return this.fileManager;
+    }
+
     public @NotNull final GuildConfig getConfig() {
         return this.guildConfig;
+    }
+
+    public @NotNull final Path getDirectory() {
+        return this.directory;
+    }
+
+    public @NotNull final String getId() {
+        return this.id;
     }
 }

@@ -13,13 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.ryderbelserion.fusion:fusion-addons:0.3.0")
-
-    compileOnly("ch.qos.logback:logback-classic:1.5.20")
-    compileOnly("net.sf.jopt-simple:jopt-simple:5.0.4")
-    compileOnly("net.dv8tion:JDA:6.1.0")
-
-    compileOnly(project(":beidou-bot"))
+    compileOnlyApi(project(":beidou-bot"))
 }
 
 java {
