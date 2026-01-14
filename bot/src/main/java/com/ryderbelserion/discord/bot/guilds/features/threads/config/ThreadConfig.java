@@ -35,6 +35,8 @@ public class ThreadConfig {
 
         if (!users.isEmpty() && !users.contains(user.getId())) return;
 
-        message.createThreadChannel(message.getContentDisplay()).queue(action -> action.addThreadMember(user).queue());
+        final String display = message.getContentDisplay();
+
+        message.createThreadChannel(display.substring(0, Math.min(100, display.length()))).queue(action -> action.addThreadMember(user).queue());
     }
 }
