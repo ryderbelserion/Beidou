@@ -14,7 +14,6 @@ import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.MessageL
 import com.ryderbelserion.discord.bot.guilds.features.threads.ThreadListener;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
@@ -129,27 +128,7 @@ public class Beidou extends DiscordPlugin {
     public void onReady(@NotNull final JDA jda) {
         super.onReady(jda);
 
-        final Path directory = getDirectory();
-
-        List.of(
-                "config.yml"
-        ).forEach(file -> {
-            final String extension = file.split("\\.")[1];
-
-            final FileType fileType = switch (extension) {
-                case "json" -> FileType.JSON;
-                case "yml" -> FileType.YAML;
-                default -> throw new IllegalStateException("Unexpected value: " + extension);
-            };
-
-            final Path path = directory.resolve(file);
-
-            this.fileManager.addFile(path, fileType);
-        });
-
-        final YamlCustomFile customFile = this.fileManager.getYamlFile(directory.resolve("config.yml")).orElseThrow();
-
-        final BotConfig config = new BotConfig(customFile.getConfiguration());
+        final BotConfig config = this.configManager.getConfig();
 
         if (config.isCustomStatusEnabled()) {
             final Activity customStatus = Activity.customStatus(replacePlaceholder(config.getCustomStatus(), Map.of(
@@ -187,6 +166,19 @@ public class Beidou extends DiscordPlugin {
     public void onReload(@NotNull final JDA jda) {
         this.configManager.reload();
 
+        final BotConfig config = this.configManager.getConfig();
+
+        if (config.isCustomStatusEnabled()) {
+            final Activity customStatus = Activity.customStatus(replacePlaceholder(config.getCustomStatus(), Map.of(
+                    "{count}", String.valueOf(jda.getGuilds()
+                            .stream()
+                            .mapToInt(Guild::getMemberCount)
+                            .sum())
+            )));
+
+            jda.getPresence().setPresence(customStatus, false);
+        }
+
         final List<Guild> guilds = jda.getGuilds();
 
         for (final Guild guild : guilds) {
@@ -208,7 +200,7 @@ public class Beidou extends DiscordPlugin {
         this.fileManager.addFile(directory.resolve("guilds.json"), FileType.JSON)
                 .addFile(directory.resolve("config.yml"), FileType.YAML);
 
-        this.configManager = new ConfigManager(this.fileManager, getDirectory());
+        this.configManager = new ConfigManager(this.fileManager, directory);
         this.configManager.init();
 
         this.guildManager = new GuildManager(this.fileManager, this.logger);
