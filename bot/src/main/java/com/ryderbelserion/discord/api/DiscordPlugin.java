@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 public abstract class DiscordPlugin {
 
@@ -79,6 +80,25 @@ public abstract class DiscordPlugin {
 
     public @NotNull final Path getDirectory() {
         return Path.of("./%s".formatted(this.username));
+    }
+
+    public String replacePlaceholder(@NotNull final String message, @NotNull final Map<String, String> placeholders) {
+        String safeMessage = message;
+
+        if (!placeholders.isEmpty()) {
+            for (final Map.Entry<String, String> key : placeholders.entrySet()) {
+                if (key == null) continue;
+
+                final String placeholder = key.getKey();
+                final String value = key.getValue();
+
+                if (placeholder != null && value != null) {
+                    safeMessage = safeMessage.replace(placeholder, value).replace(placeholder.toLowerCase(), value);
+                }
+            }
+        }
+
+        return safeMessage;
     }
 
     public void addEventListener(@NotNull final Object... listeners) {

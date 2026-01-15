@@ -7,12 +7,14 @@ import com.ryderbelserion.discord.bot.commands.owner.AboutCommand;
 import com.ryderbelserion.discord.bot.commands.owner.ReloadCommand;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
 import com.ryderbelserion.discord.bot.api.environment.enums.Environment;
+import com.ryderbelserion.discord.bot.configs.types.BotConfig;
 import com.ryderbelserion.discord.bot.guilds.GuildListener;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.MessageListener;
 import com.ryderbelserion.discord.bot.guilds.features.threads.ThreadListener;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
@@ -127,14 +129,38 @@ public class Beidou extends DiscordPlugin {
     public void onReady(@NotNull final JDA jda) {
         super.onReady(jda);
 
-        final Activity customStatus = Activity.customStatus("Watching %s members".formatted(
-                jda.getGuilds()
-                        .stream()
-                        .mapToInt(Guild::getMemberCount)
-                        .sum()
-                ));
+        final Path directory = getDirectory();
 
-        jda.getPresence().setPresence(customStatus, false);
+        List.of(
+                "config.yml"
+        ).forEach(file -> {
+            final String extension = file.split("\\.")[1];
+
+            final FileType fileType = switch (extension) {
+                case "json" -> FileType.JSON;
+                case "yml" -> FileType.YAML;
+                default -> throw new IllegalStateException("Unexpected value: " + extension);
+            };
+
+            final Path path = directory.resolve(file);
+
+            this.fileManager.addFile(path, fileType);
+        });
+
+        final YamlCustomFile customFile = this.fileManager.getYamlFile(directory.resolve("config.yml")).orElseThrow();
+
+        final BotConfig config = new BotConfig(customFile.getConfiguration());
+
+        if (config.isCustomStatusEnabled()) {
+            final Activity customStatus = Activity.customStatus(replacePlaceholder(config.getCustomStatus(), Map.of(
+                    "{count}", String.valueOf(jda.getGuilds()
+                            .stream()
+                            .mapToInt(Guild::getMemberCount)
+                            .sum())
+            )));
+
+            jda.getPresence().setPresence(customStatus, false);
+        }
 
         List.of(
                 // bot creator commands

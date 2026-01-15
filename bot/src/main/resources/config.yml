@@ -1,5 +1,12 @@
 # Github: https://github.com/ryderbelserion
 root:
+  # Bot Presence Settings
+  presence:
+    # Should this be enabled?
+    toggle: true
+    # Available Placeholders: {count}
+    status: "Watching {count} members"
+
   # Configuration options related to the plugin database!
   storage:
     # The type of database which we store data in!
