@@ -97,9 +97,9 @@ public class Beidou extends DiscordPlugin {
         ).forEach(file -> {
             final String extension = file.split("\\.")[1];
 
-            FileType fileType = switch (extension) {
-                case "json" -> fileType = FileType.JSON;
-                case "yml" -> fileType = FileType.YAML;
+            final FileType fileType = switch (extension) {
+                case "json" -> FileType.JSON;
+                case "yml" -> FileType.YAML;
                 default -> throw new IllegalStateException("Unexpected value: " + extension);
             };
 
