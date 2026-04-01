@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 public class Beidou extends DiscordPlugin {
@@ -120,11 +121,47 @@ public class Beidou extends DiscordPlugin {
             this.fileManager.addFile(path, fileType, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
         });
 
-        this.fileManager.extractFolder("commands", directory);
-        this.fileManager.extractFolder("embeds", directory);
+        final Path commandFolder = directory.resolve("commands");
+        final Path embedFolder = directory.resolve("embeds");
 
-        this.fileManager.addFolder(directory.resolve("commands"), FileType.YAML);
-        this.fileManager.addFolder(directory.resolve("embeds"), FileType.YAML);
+        if (!Files.exists(commandFolder) || !Files.exists(embedFolder)) {
+            this.fileManager.extractFolder("defaults", directory);
+        }
+
+        final Path folder = directory.resolve("defaults");
+
+        if (!Files.exists(embedFolder)) {
+            final Path target = folder.resolve("embeds");
+
+            if (Files.exists(target)) {
+                try {
+                    Files.move(target, embedFolder, StandardCopyOption.REPLACE_EXISTING);
+                } catch (final IOException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
+
+        if (!Files.exists(commandFolder)) {
+            final Path target = folder.resolve("commands");
+
+            if (Files.exists(target)) {
+                try {
+                    Files.move(target, commandFolder, StandardCopyOption.REPLACE_EXISTING);
+                } catch (final IOException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
+
+        try {
+            Files.deleteIfExists(folder);
+        } catch (final IOException exception) {
+            exception.printStackTrace();
+        }
+
+        this.fileManager.addFolder(directory.resolve("commands"), FileType.YAML, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
+        this.fileManager.addFolder(directory.resolve("embeds"), FileType.YAML, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
 
         final Path addons = directory.resolve("addons");
 

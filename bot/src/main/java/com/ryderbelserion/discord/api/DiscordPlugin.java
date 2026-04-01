@@ -69,6 +69,14 @@ public abstract class DiscordPlugin {
         return getDirectory().resolve("cache");
     }
 
+    public @NotNull final Path getCommandsDirectory(@NotNull final String id) {
+        return getGuildDirectory(id).resolve("commands");
+    }
+
+    public @NotNull final Path getEmbedsDirectory(@NotNull final String id) {
+        return getGuildDirectory(id).resolve("embeds");
+    }
+
     public @NotNull final String getUsername() {
         return this.username;
     }
