@@ -9,6 +9,9 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BeidouCommand {
 
     private final String command;
@@ -16,6 +19,7 @@ public class BeidouCommand {
     private final boolean isEnabled;
     private final boolean isSlash;
     private final BeidouEmbed defaultEmbed;
+    private final List<BeidouEmbed> extraEmbeds = new ArrayList<>();
     private final String defaultMessage;
 
     public BeidouCommand(@NotNull final String id, @NotNull final CommentedConfigurationNode configuration, @NotNull final EmbedManager manager) {
@@ -23,7 +27,16 @@ public class BeidouCommand {
         this.isEnabled = configuration.node("enabled").getBoolean(false);
         this.description = configuration.node("description").getString("");
         this.isSlash = configuration.node("is-slash").getBoolean(true);
-        this.defaultEmbed = manager.getEmbed(id, configuration.node("embed").getString("")).orElse(null);
+        this.defaultEmbed = manager.getEmbed(id, configuration.node("embed", "default").getString("")).orElse(null);
+
+        final List<String> extra = ConfigUtils.getStringList(configuration.node("embed", "extra"));
+
+        for (final String line : extra) {
+            if (line.isBlank()) continue;
+
+            manager.getEmbed(id, line).ifPresent(this.extraEmbeds::add);
+        }
+
         this.defaultMessage = StringUtils.toString(ConfigUtils.getStringList(configuration.node("message")));
     }
 
@@ -45,7 +58,7 @@ public class BeidouCommand {
         if (this.defaultEmbed == null && this.defaultMessage.isEmpty()) return;
 
         if (this.defaultEmbed != null) {
-            this.defaultEmbed.sendEmbed(event, user);
+            this.defaultEmbed.sendEmbed(event, user, this.extraEmbeds);
 
             return;
         }

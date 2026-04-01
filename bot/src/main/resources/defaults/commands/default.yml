@@ -8,8 +8,12 @@ description: "The default command."
 # Should this be a slash command?
 is-slash: true
 
-# The embed message to send, if blank. we do not send an embed.
-embed: "default.yml"
+# The embed settings.
+embed:
+  # The default embed message to send, if blank. we do not send an embed.
+  default: "default.yml"
+  # The extra embeds to send, which gets stamped on at the end.
+  extra: []
 
 # The messages to send, if the embed is blank.
 # If the message section is empty, we do not send a message.

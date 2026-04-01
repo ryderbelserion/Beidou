@@ -26,6 +26,7 @@ public class BeidouEmbed {
 
     private final boolean hasFooter;
     private final String timezone;
+    private final String color;
 
     public BeidouEmbed(@NotNull final CommentedConfigurationNode configuration, @NotNull final Map<String, String> placeholders) {
         this.description = StringUtils.replacePlaceholders(StringUtils.toString(ConfigUtils.getStringList(configuration.node("description"))), placeholders);
@@ -39,6 +40,8 @@ public class BeidouEmbed {
 
         this.hasFooter = configuration.node("footer", "enabled").getBoolean(false);
         this.timezone = configuration.node("footer", "timezone").getString("America/New_York");
+
+        this.color = configuration.node("color").getString("#e91e63");
     }
 
     public @Nullable final MessageEmbed buildEmbed(@NotNull final Consumer<Embed> consumer) {
@@ -62,12 +65,14 @@ public class BeidouEmbed {
 
         embed.timestamp(this.timezone);
 
+        embed.color(this.color);
+
         consumer.accept(embed);
 
         return embed.build();
     }
 
-    public void sendEmbed(@NotNull final SlashCommandInteractionEvent event, @NotNull final User user) { // slash interactions
+    public void sendEmbed(@NotNull final SlashCommandInteractionEvent event, @NotNull final User user, @NotNull final List<BeidouEmbed> embeds) { // slash interactions
         final MessageEmbed message = buildEmbed(consumer -> {
             if (this.hasFooter) {
                 consumer.footer(user);
@@ -78,10 +83,30 @@ public class BeidouEmbed {
             return;
         }
 
-        event.replyEmbeds(message).setEphemeral(this.isSilent).queue();
+        final List<MessageEmbed> values = new ArrayList<>();
+
+        if (!embeds.isEmpty()) {
+            for (final BeidouEmbed embed : embeds) {
+                final MessageEmbed key = embed.buildEmbed(consumer -> {
+                    if (embed.hasFooter()) {
+                        consumer.footer(user);
+                    }
+                });
+
+                if (key == null) continue;
+
+                values.add(key);
+            }
+        }
+
+        event.replyEmbeds(message).addEmbeds(values).setEphemeral(this.isSilent).queue();
     }
 
-    public void sendEmbed(@NotNull final MessageChannelUnion channel, @NotNull final User user) { // channel replies
+    public void sendEmbed(@NotNull final SlashCommandInteractionEvent event, @NotNull final User user) {
+        sendEmbed(event, user, List.of());
+    }
+
+    public void sendEmbed(@NotNull final MessageChannelUnion channel, @NotNull final User user, @NotNull final List<BeidouEmbed> embeds) { // channel replies
         final MessageEmbed message = buildEmbed(consumer -> {
             if (this.hasFooter) {
                 consumer.footer(user);
@@ -92,6 +117,30 @@ public class BeidouEmbed {
             return;
         }
 
-        channel.sendMessageEmbeds(message).queue();
+        final List<MessageEmbed> values = new ArrayList<>();
+
+        if (!embeds.isEmpty()) {
+            for (final BeidouEmbed embed : embeds) {
+                final MessageEmbed key = embed.buildEmbed(consumer -> {
+                    if (embed.hasFooter()) {
+                        consumer.footer(user);
+                    }
+                });
+
+                if (key == null) continue;
+
+                values.add(key);
+            }
+        }
+
+        channel.sendMessageEmbeds(message).addEmbeds(values).queue();
+    }
+
+    public void sendEmbed(@NotNull final MessageChannelUnion channel, @NotNull final User user) {
+        sendEmbed(channel, user, List.of());
+    }
+
+    public final boolean hasFooter() {
+        return this.hasFooter;
     }
 }
