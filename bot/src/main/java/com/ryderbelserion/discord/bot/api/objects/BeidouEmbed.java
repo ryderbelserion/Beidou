@@ -75,8 +75,6 @@ public class BeidouEmbed {
             }
         });
 
-        embed.timestamp(this.timezone);
-
         embed.color(this.color);
 
         consumer.accept(embed);
@@ -105,10 +103,10 @@ public class BeidouEmbed {
                 } else {
                     consumer.footer(this.footer, this.icon);
                 }
-            }
 
-            if (this.hasTimeStamp) {
-                consumer.timestamp(this.timezone);
+                if (this.hasTimeStamp) {
+                    consumer.timestamp(this.timezone);
+                }
             }
         });
 
@@ -128,6 +126,10 @@ public class BeidouEmbed {
                             consumer.footer(user);
                         } else {
                             consumer.footer(footer, embed.getIcon());
+                        }
+
+                        if (embed.hasTimeStamp()) {
+                            consumer.timestamp(embed.getTimezone());
                         }
                     }
                 });
@@ -174,10 +176,10 @@ public class BeidouEmbed {
                 } else {
                     consumer.footer(this.footer, this.icon);
                 }
-            }
 
-            if (this.hasTimeStamp) {
-                consumer.timestamp(this.timezone);
+                if (this.hasTimeStamp) {
+                    consumer.timestamp(this.timezone);
+                }
             }
         });
 
@@ -198,10 +200,10 @@ public class BeidouEmbed {
                         } else {
                             consumer.footer(footer, embed.getIcon());
                         }
-                    }
 
-                    if (embed.hasTimeStamp()) {
-                        consumer.timestamp(embed.getTimezone());
+                        if (embed.hasTimeStamp()) {
+                            consumer.timestamp(embed.getTimezone());
+                        }
                     }
                 });
 
