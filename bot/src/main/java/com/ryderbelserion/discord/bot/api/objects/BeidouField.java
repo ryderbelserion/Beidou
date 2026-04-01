@@ -4,7 +4,6 @@ import com.ryderbelserion.discord.api.utils.ConfigUtils;
 import com.ryderbelserion.discord.api.utils.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-import java.util.Map;
 
 public class BeidouField {
 
@@ -12,9 +11,9 @@ public class BeidouField {
     private final String body;
     private final boolean inline;
 
-    public BeidouField(@NotNull final CommentedConfigurationNode configuration, @NotNull final Map<String, String> placeholders) {
+    public BeidouField(@NotNull final CommentedConfigurationNode configuration) {
         this.title = configuration.node("title").getString("");
-        this.body = StringUtils.replacePlaceholders(StringUtils.toString(ConfigUtils.getStringList(configuration.node("body"))), placeholders);
+        this.body = StringUtils.toString(ConfigUtils.getStringList(configuration.node("body")));
         this.inline = configuration.node("inline").getBoolean(false);
     }
 

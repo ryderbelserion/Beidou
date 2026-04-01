@@ -34,8 +34,7 @@ public class EmbedManager {
             final String fileName = path.getFileName().toString();
 
             this.embeds.computeIfAbsent(id, _ -> new HashMap<>()).putIfAbsent(fileName, new BeidouEmbed(
-                    configuration.node("embed"),
-                    Map.of("{timestamp}", fileName)
+                    configuration.node("embed")
             ));
         }
     }

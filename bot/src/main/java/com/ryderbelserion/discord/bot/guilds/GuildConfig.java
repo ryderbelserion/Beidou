@@ -39,13 +39,12 @@ public class GuildConfig {
         final CommentedConfigurationNode config = this.config.node("settings.embed");
 
         final TextChannel channel = guild.getTextChannelById("1142581790620524596");
-
+        Map.of(
+                "{user}", user.getAsMention(),
+                "{timestamp}", ""
+        );
         if (channel != null) {
-            new BeidouEmbed(config,
-                    Map.of(
-                            "{user}", user.getAsMention(),
-                            "{timestamp}", ""
-                    ))
+            new BeidouEmbed(config)
             .sendEmbed((MessageChannelUnion) channel, user);
         }
     }

@@ -11,6 +11,7 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class BeidouCommand {
 
@@ -58,7 +59,7 @@ public class BeidouCommand {
         if (this.defaultEmbed == null && this.defaultMessage.isEmpty()) return;
 
         if (this.defaultEmbed != null) {
-            this.defaultEmbed.sendEmbed(event, user, this.extraEmbeds);
+            this.defaultEmbed.sendEmbed(event, user, Map.of(), this.extraEmbeds);
 
             return;
         }
