@@ -3,6 +3,7 @@ package com.ryderbelserion.discord.api.commands;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class CommandEngine extends ListenerAdapter {
@@ -15,6 +16,8 @@ public abstract class CommandEngine extends ListenerAdapter {
         this.name = name;
         this.description = description;
     }
+
+    protected abstract CommandData getCommandData();
 
     protected abstract void perform(@NotNull final CommandContext context);
 

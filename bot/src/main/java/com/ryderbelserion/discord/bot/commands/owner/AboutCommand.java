@@ -8,12 +8,19 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
 
 public class AboutCommand extends CommandEngine {
 
     public AboutCommand() {
         super("about", "Shows information about the Discord Bot.");
+    }
+
+    @Override
+    protected @NotNull final CommandData getCommandData() {
+        return Commands.slash(getName(), getDescription());
     }
 
     @Override
