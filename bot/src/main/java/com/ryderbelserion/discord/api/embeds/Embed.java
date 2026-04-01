@@ -36,8 +36,8 @@ public class Embed {
      * @param icon the icon in the footer.
      * @return the embed class with updated information.
      */
-    public Embed footer(@NotNull final String text, @Nullable final String icon) {
-        if (icon == null) {
+    public Embed footer(@NotNull final String text, @NotNull final String icon) {
+        if (icon.isBlank()) {
             this.builder.setFooter(text);
 
             return this;
@@ -55,7 +55,7 @@ public class Embed {
      * @return the embed class with updated information.
      */
     public Embed footer(@NotNull final User user) {
-        return footer("Requested by: %s".formatted(user.getAsMention()), user.getEffectiveAvatarUrl());
+        return footer("Requested by: %s".formatted(user.getEffectiveName()), user.getEffectiveAvatarUrl());
     }
 
     /**
@@ -66,7 +66,7 @@ public class Embed {
     public Embed footer(@NotNull final User user, @NotNull final Guild guild) {
         final Member member = guild.getMemberById(user.getId());
 
-        return footer("Requested by: %s".formatted(user.getAsMention()), member == null ? user.getEffectiveAvatarUrl() : member.getEffectiveAvatarUrl());
+        return footer("Requested by: %s".formatted(user.getEffectiveName()), member == null ? user.getEffectiveAvatarUrl() : member.getEffectiveAvatarUrl());
     }
 
     /**

@@ -28,6 +28,18 @@ embed:
       # Should the field be inline?
       inline: false
   # The embed footer
-  footer: "{timestamp}"
+  footer:
+    # Should the footer be enabled?
+    enabled: true
+    # Should we fall back on the user who ran the command, if no values below are found?
+    user-fallback: true
+    # The timezone
+    timezone: "America/New_York"
+    # Should a timestamp be added?
+    timestamp: false
+    # The value for the footer, if blank. user is used instead.
+    value: ""
+    # The value for the footer icon, if blank. we will ignore it.
+    icon: ""
   # The color of the embed.
   color: "#FCFCFC"

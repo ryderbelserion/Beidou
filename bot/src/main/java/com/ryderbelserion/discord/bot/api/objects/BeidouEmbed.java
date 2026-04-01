@@ -25,9 +25,14 @@ public class BeidouEmbed {
     private final boolean isSilent;
     private final String title;
 
+    private final boolean isUserFallBackEnabled;
     private final boolean hasFooter;
+    private final String footer;
+    private final String icon;
+
     private final String timezone;
     private final String color;
+
     private final boolean hasTimeStamp;
 
     public BeidouEmbed(@NotNull final CommentedConfigurationNode configuration) {
@@ -40,7 +45,11 @@ public class BeidouEmbed {
             this.fields.add(new BeidouField(node));
         }
 
+        this.isUserFallBackEnabled = configuration.node("footer", "user-fallback").getBoolean(true);
         this.hasFooter = configuration.node("footer", "enabled").getBoolean(false);
+        this.footer = configuration.node("footer", "value").getString("");
+        this.icon = configuration.node("footer", "icon").getString("");
+
         this.timezone = configuration.node("footer", "timezone").getString("America/New_York");
         this.hasTimeStamp = configuration.node("footer", "timestamp").getBoolean(false);
 
@@ -91,7 +100,11 @@ public class BeidouEmbed {
 
         final MessageEmbed message = buildEmbed(placeholders, consumer -> {
             if (this.hasFooter) {
-                consumer.footer(user);
+                if (this.footer.isBlank() && this.isUserFallBackEnabled) {
+                    consumer.footer(user);
+                } else {
+                    consumer.footer(this.footer, this.icon);
+                }
             }
 
             if (this.hasTimeStamp) {
@@ -109,7 +122,13 @@ public class BeidouEmbed {
             for (final BeidouEmbed embed : embeds) {
                 final MessageEmbed key = embed.buildEmbed(placeholders, consumer -> {
                     if (embed.hasFooter()) {
-                        consumer.footer(user);
+                        final String footer = embed.getFooter();
+
+                        if (footer.isBlank() && embed.isUserFallBackEnabled()) {
+                            consumer.footer(user);
+                        } else {
+                            consumer.footer(footer, embed.getIcon());
+                        }
                     }
                 });
 
@@ -150,7 +169,11 @@ public class BeidouEmbed {
 
         final MessageEmbed message = buildEmbed(placeholders, consumer -> {
             if (this.hasFooter) {
-                consumer.footer(user);
+                if (this.footer.isBlank() && this.isUserFallBackEnabled) {
+                    consumer.footer(user);
+                } else {
+                    consumer.footer(this.footer, this.icon);
+                }
             }
 
             if (this.hasTimeStamp) {
@@ -168,7 +191,13 @@ public class BeidouEmbed {
             for (final BeidouEmbed embed : embeds) {
                 final MessageEmbed key = embed.buildEmbed(placeholders, consumer -> {
                     if (embed.hasFooter()) {
-                        consumer.footer(user);
+                        final String footer = embed.getFooter();
+
+                        if (footer.isBlank() && embed.isUserFallBackEnabled()) {
+                            consumer.footer(user);
+                        } else {
+                            consumer.footer(footer, embed.getIcon());
+                        }
                     }
 
                     if (embed.hasTimeStamp()) {
@@ -197,8 +226,20 @@ public class BeidouEmbed {
         sendEmbed(channel, user, Map.of(), List.of());
     }
 
+    public final boolean isUserFallBackEnabled() {
+        return this.isUserFallBackEnabled;
+    }
+
     public @NotNull final String getTimezone() {
         return this.timezone;
+    }
+
+    public @NotNull final String getFooter() {
+        return this.footer;
+    }
+
+    public @NotNull final String getIcon() {
+        return this.icon;
     }
 
     public final boolean hasFooter() {

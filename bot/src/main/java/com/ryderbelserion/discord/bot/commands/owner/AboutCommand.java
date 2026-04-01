@@ -56,9 +56,9 @@ public class AboutCommand extends CommandEngine {
         final Guild guild = context.getGuild();
 
         if (guild != null) {
-            embed.thumbnail(bot, guild).author(author, guild).footer("Average Ping: %s".formatted(jda.getGatewayPing()), guild.getIconUrl());
+            embed.thumbnail(bot, guild).author(author, guild).footer("Average Ping: %s".formatted(jda.getGatewayPing()), guild.getIconUrl() == null ? "" : guild.getIconUrl());
         } else {
-            embed.thumbnail(bot).author(author).footer("Average Ping: %s".formatted(jda.getGatewayPing()), bot.getAvatarUrl());
+            embed.thumbnail(bot).author(author).footer("Average Ping: %s".formatted(jda.getGatewayPing()), bot.getAvatarUrl() == null ? "" : bot.getAvatarUrl());
         }
 
         context.reply(embed.build(), true);
