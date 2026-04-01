@@ -1,7 +1,9 @@
 # The embed to send.
 embed:
-  # Should the embed send on player join?
-  toggle: false
+  # Should the embed be enabled?
+  enabled: true
+  # Should the response be silent?
+  silent: true
   # The embed title
   title: "Example"
   # The embed description

@@ -1,8 +1,6 @@
 package com.ryderbelserion.discord.api;
 
-import com.ryderbelserion.discord.api.commands.CommandHandler;
 import com.ryderbelserion.discord.api.listeners.StatusListener;
-import com.ryderbelserion.fusion.addons.AddonManager;
 import com.ryderbelserion.fusion.files.FileManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -40,17 +38,14 @@ public abstract class DiscordPlugin {
                 .build();
     }
 
-    protected CommandHandler commandHandler;
     protected boolean isActive = false;
     protected FileManager fileManager;
 
     public abstract void onGuildReady(@NotNull final Guild guild);
 
-    public void onReady(@NotNull final JDA jda) {
-        this.commandHandler = new CommandHandler(jda);
-    }
-
     public abstract void onReload(@NotNull final JDA jda);
+
+    public abstract void onReady(@NotNull final JDA jda);
 
     public abstract void onStop(@NotNull final JDA jda);
 
@@ -149,9 +144,5 @@ public abstract class DiscordPlugin {
         this.logger.info("All ready to go!");
 
         this.isActive = true;
-    }
-
-    public @NotNull final CommandHandler getCommandHandler() {
-        return this.commandHandler;
     }
 }

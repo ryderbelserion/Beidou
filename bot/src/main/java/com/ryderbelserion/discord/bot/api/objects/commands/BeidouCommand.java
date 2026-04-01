@@ -5,7 +5,6 @@ import com.ryderbelserion.discord.api.utils.StringUtils;
 import com.ryderbelserion.discord.bot.api.managers.EmbedManager;
 import com.ryderbelserion.discord.bot.api.objects.BeidouEmbed;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -14,19 +13,23 @@ public class BeidouCommand {
 
     private final String command;
     private final String description;
+    private final boolean isEnabled;
     private final boolean isSlash;
     private final BeidouEmbed defaultEmbed;
     private final String defaultMessage;
 
     public BeidouCommand(@NotNull final String id, @NotNull final CommentedConfigurationNode configuration, @NotNull final EmbedManager manager) {
         this.command = configuration.node("name").getString("");
+        this.isEnabled = configuration.node("enabled").getBoolean(false);
         this.description = configuration.node("description").getString("");
         this.isSlash = configuration.node("is-slash").getBoolean(true);
-        this.defaultEmbed = manager.getEmbed(id, configuration.node("default").getString("")).orElse(null);
+        this.defaultEmbed = manager.getEmbed(id, configuration.node("embed").getString("")).orElse(null);
         this.defaultMessage = StringUtils.toString(ConfigUtils.getStringList(configuration.node("message")));
     }
 
     public void interact(@NotNull final SlashCommandInteractionEvent event) {
+        if (!this.isEnabled) return;
+
         if (this.command.isBlank()) return;
 
         if (!this.isSlash) return;
@@ -41,15 +44,13 @@ public class BeidouCommand {
 
         if (this.defaultEmbed == null && this.defaultMessage.isEmpty()) return;
 
-        final MessageChannelUnion channel = event.getChannel();
-
         if (this.defaultEmbed != null) {
-            this.defaultEmbed.sendEmbed(channel, user);
+            this.defaultEmbed.sendEmbed(event, user);
 
             return;
         }
 
-        channel.sendMessage(this.defaultMessage).queue();
+        event.reply(this.defaultMessage).queue();
     }
 
     public @NotNull final String getDescription() {
@@ -58,5 +59,9 @@ public class BeidouCommand {
 
     public @NotNull final String getCommand() {
         return this.command;
+    }
+
+    public final boolean isEnabled() {
+        return this.isEnabled;
     }
 }

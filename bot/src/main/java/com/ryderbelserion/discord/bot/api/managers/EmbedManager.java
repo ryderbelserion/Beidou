@@ -8,10 +8,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class EmbedManager {
 
@@ -37,7 +34,7 @@ public class EmbedManager {
             final String fileName = path.getFileName().toString();
 
             this.embeds.computeIfAbsent(id, _ -> new HashMap<>()).putIfAbsent(fileName, new BeidouEmbed(
-                    configuration,
+                    configuration.node("embed"),
                     Map.of("{timestamp}", fileName)
             ));
         }

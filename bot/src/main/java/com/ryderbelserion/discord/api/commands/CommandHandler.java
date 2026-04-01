@@ -10,9 +10,9 @@ import java.util.List;
 
 public class CommandHandler implements CommandFlow {
 
-    private final JDA jda;
+    private JDA jda;
 
-    public CommandHandler(@NotNull final JDA jda) {
+    public void setJda(@NotNull final JDA jda) {
         this.jda = jda;
     }
 

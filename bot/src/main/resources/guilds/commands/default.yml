@@ -1,5 +1,7 @@
 # The name of the command.
 name: "default"
+# Should the command be enabled?
+enabled: false
 # The description of the command.
 description: "The default command."
 
@@ -7,7 +9,7 @@ description: "The default command."
 is-slash: true
 
 # The embed message to send, if blank. we do not send an embed.
-embed: "default"
+embed: "default.yml"
 
 # The messages to send, if the embed is blank.
 # If the message section is empty, we do not send a message.

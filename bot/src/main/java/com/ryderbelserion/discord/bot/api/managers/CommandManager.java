@@ -35,6 +35,8 @@ public class CommandManager {
     }
 
     public void init() {
+        this.handler.purgeGuildCommands(this.guild);
+
         this.commands.clear();
 
         for (final Path path : this.fileManager.getFilesByPath(this.path.resolve("commands"), ".yml", 1)) {
@@ -44,9 +46,9 @@ public class CommandManager {
 
             final CommentedConfigurationNode configuration = optional.get().getConfiguration();
 
-            //final String fileName = path.getFileName().toString();
-
             final BeidouCommand command = new BeidouCommand(this.id, configuration, this.embedManager);
+
+            if (!command.isEnabled()) continue;
 
             final String name = command.getCommand();
             final String desc = command.getDescription();

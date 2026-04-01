@@ -1,6 +1,7 @@
 package com.ryderbelserion.discord.bot;
 
 import com.ryderbelserion.discord.api.DiscordPlugin;
+import com.ryderbelserion.discord.api.commands.CommandHandler;
 import com.ryderbelserion.discord.api.options.OptionsManager;
 import com.ryderbelserion.discord.api.options.types.EnvOption;
 import com.ryderbelserion.discord.bot.api.managers.EmbedManager;
@@ -30,6 +31,7 @@ import java.util.*;
 
 public class Beidou extends DiscordPlugin {
 
+    private final CommandHandler commandHandler;
     private final EmbedManager embedManager;
 
     private Environment environment;
@@ -64,6 +66,7 @@ public class Beidou extends DiscordPlugin {
             envOption.getValue(option).ifPresentOrElse(env -> environment = env, () -> environment = Environment.RELEASE);
         }));
 
+        this.commandHandler = new CommandHandler();
         this.embedManager = new EmbedManager();
     }
 
@@ -138,7 +141,7 @@ public class Beidou extends DiscordPlugin {
 
     @Override
     public void onReady(@NotNull final JDA jda) {
-        super.onReady(jda);
+        this.commandHandler.setJda(jda);
 
         final BotConfig config = this.configManager.getConfig();
 
@@ -243,6 +246,10 @@ public class Beidou extends DiscordPlugin {
         this.logger.info("{} ({}) tried adding me to {} ({}) while they are not whitelisted.", username, userId, guildName, guildId);
 
         guild.leave().queue(_ -> this.logger.info("Successfully left the server {} ({}) owned by {} ({}) due to not being whitelisted", guildName, guildId, username, userId));
+    }
+
+    public @NotNull final CommandHandler getCommandHandler() {
+        return this.commandHandler;
     }
 
     public @NotNull final GuildManager getGuildManager() {
