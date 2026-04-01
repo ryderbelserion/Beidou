@@ -150,4 +150,8 @@ public abstract class DiscordPlugin {
 
         this.isActive = true;
     }
+
+    public @NotNull final CommandHandler getCommandHandler() {
+        return this.commandHandler;
+    }
 }

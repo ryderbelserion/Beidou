@@ -6,6 +6,7 @@ import com.ryderbelserion.discord.bot.api.objects.BeidouEmbed;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -34,7 +35,7 @@ public class GuildConfig {
         return this.threadConfig;
     }
 
-    public void test(@NotNull final Guild guild, @NotNull final User user) {
+    public void thread(@NotNull final Guild guild, @NotNull final User user) {
         final CommentedConfigurationNode config = this.config.node("settings.embed");
 
         final TextChannel channel = guild.getTextChannelById("1142581790620524596");
@@ -42,9 +43,10 @@ public class GuildConfig {
         if (channel != null) {
             new BeidouEmbed(config,
                     Map.of(
-                            "{user}", user.getAsMention()
+                            "{user}", user.getAsMention(),
+                            "{timestamp}", ""
                     ))
-            .sendEmbed(channel, user);
+            .sendEmbed((MessageChannelUnion) channel, user);
         }
     }
 }

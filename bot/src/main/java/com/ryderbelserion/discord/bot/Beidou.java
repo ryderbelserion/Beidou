@@ -3,6 +3,7 @@ package com.ryderbelserion.discord.bot;
 import com.ryderbelserion.discord.api.DiscordPlugin;
 import com.ryderbelserion.discord.api.options.OptionsManager;
 import com.ryderbelserion.discord.api.options.types.EnvOption;
+import com.ryderbelserion.discord.bot.api.managers.EmbedManager;
 import com.ryderbelserion.discord.bot.commands.owner.AboutCommand;
 import com.ryderbelserion.discord.bot.commands.owner.ReloadCommand;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
@@ -10,7 +11,8 @@ import com.ryderbelserion.discord.bot.api.environment.enums.Environment;
 import com.ryderbelserion.discord.bot.configs.types.BotConfig;
 import com.ryderbelserion.discord.bot.guilds.GuildListener;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
-import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.MessageListener;
+import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.GuildMessageListener;
+import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.GuildSlashListener;
 import com.ryderbelserion.discord.bot.guilds.features.threads.ThreadListener;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
@@ -27,6 +29,8 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class Beidou extends DiscordPlugin {
+
+    private final EmbedManager embedManager;
 
     private Environment environment;
 
@@ -59,6 +63,8 @@ public class Beidou extends DiscordPlugin {
 
             envOption.getValue(option).ifPresentOrElse(env -> environment = env, () -> environment = Environment.RELEASE);
         }));
+
+        this.embedManager = new EmbedManager();
     }
 
     private ConfigManager configManager;
@@ -111,6 +117,12 @@ public class Beidou extends DiscordPlugin {
             this.fileManager.addFile(path, fileType, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
         });
 
+        this.fileManager.extractFolder("commands", directory);
+        this.fileManager.extractFolder("embeds", directory);
+
+        this.fileManager.addFolder(directory.resolve("commands"), FileType.YAML);
+        this.fileManager.addFolder(directory.resolve("embeds"), FileType.YAML);
+
         final Path addons = directory.resolve("addons");
 
         try {
@@ -154,9 +166,21 @@ public class Beidou extends DiscordPlugin {
         });
 
         switch (this.environment) {
-            case RELEASE -> this.addEventListener(new GuildListener(this), new ThreadListener(this));
+            case RELEASE -> this.addEventListener(
+                    new GuildListener(this),
+                    new ThreadListener(this),
 
-            case DEVELOPMENT -> this.addEventListener(new GuildListener(this), new ThreadListener(this), new MessageListener(this));
+                    new GuildSlashListener(this)
+            );
+
+            case DEVELOPMENT -> this.addEventListener(
+                    new GuildListener(this),
+                    new ThreadListener(this),
+
+                    new GuildSlashListener(this),
+
+                    new GuildMessageListener(this)
+            );
         }
 
         this.logger.info("{} is ready!", jda.getSelfUser().getName());
@@ -203,7 +227,7 @@ public class Beidou extends DiscordPlugin {
         this.configManager = new ConfigManager(this.fileManager, directory);
         this.configManager.init();
 
-        this.guildManager = new GuildManager(this.fileManager, this.logger);
+        this.guildManager = new GuildManager(this);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -223,6 +247,10 @@ public class Beidou extends DiscordPlugin {
 
     public @NotNull final GuildManager getGuildManager() {
         return this.guildManager;
+    }
+
+    public @NotNull final EmbedManager getEmbedManager() {
+        return this.embedManager;
     }
 
     public @NotNull final Environment getEnvironment() {

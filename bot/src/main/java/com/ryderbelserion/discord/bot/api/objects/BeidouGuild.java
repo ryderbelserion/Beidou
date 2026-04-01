@@ -1,5 +1,9 @@
 package com.ryderbelserion.discord.bot.api.objects;
 
+import com.ryderbelserion.discord.api.commands.CommandHandler;
+import com.ryderbelserion.discord.bot.Beidou;
+import com.ryderbelserion.discord.bot.api.managers.CommandManager;
+import com.ryderbelserion.discord.bot.api.managers.EmbedManager;
 import com.ryderbelserion.discord.bot.guilds.GuildConfig;
 import com.ryderbelserion.fusion.addons.AddonManager;
 import com.ryderbelserion.fusion.files.FileManager;
@@ -19,24 +23,35 @@ public class BeidouGuild {
     private final String id;
 
     private final AddonManager addonManager;
+    private final EmbedManager embedManager;
     private final FileManager fileManager;
+    private final CommandHandler handler;
+    private final Logger logger;
+    private final Guild guild;
 
-    public BeidouGuild(@NotNull final FileManager fileManager, @NotNull final Logger logger, @NotNull final Path directory, @NotNull final Guild guild) {
+    public BeidouGuild(@NotNull final Beidou instance, @NotNull final Path directory, @NotNull final Guild guild) {
         this.addonManager = new AddonManager(this.directory = directory);
 
         this.id = guild.getId();
 
-        init(this.fileManager = fileManager, logger, directory, guild);
+        this.fileManager = instance.getFileManager();
+        this.handler = instance.getCommandHandler();
+        this.embedManager = instance.getEmbedManager();
+        this.logger = instance.getLogger();
+
+        this.guild = guild;
     }
 
-    public void init(@NotNull final FileManager fileManager, @NotNull final Logger logger, @NotNull final Path directory, @NotNull final Guild guild) {
-        fileManager.getYamlFile(directory.resolve("config.yml")).ifPresent(customFile -> this.config = customFile.getConfiguration());
+    private CommandManager commandManager;
 
-        fileManager.getJsonFile(directory.resolve("cache.json")).ifPresent(customFile -> {
+    public void init() {
+        this.fileManager.getYamlFile(this.directory.resolve("config.yml")).ifPresent(customFile -> this.config = customFile.getConfiguration());
+
+        this.fileManager.getJsonFile(this.directory.resolve("cache.json")).ifPresent(customFile -> {
             final BasicConfigurationNode cache = customFile.getConfiguration();
 
             try {
-                cache.node("name").set(String.class, guild.getName());
+                cache.node("name").set(String.class, this.guild.getName());
 
                 customFile.save();
             } catch (final SerializationException exception) {
@@ -45,16 +60,32 @@ public class BeidouGuild {
         });
 
         if (this.config != null) {
-            this.guildConfig = new GuildConfig(this.config, logger);
+            this.guildConfig = new GuildConfig(this.config, this.logger);
         }
+
+        this.embedManager.init(this);
+
+        if (this.commandManager == null) {
+            this.commandManager = new CommandManager(this);
+        }
+
+        this.commandManager.init();
 
         if (this.addonManager != null) {
             this.addonManager.load(1);
 
             this.addonManager.enableAddons();
 
-            logger.warn("Successfully loaded {} addons.", this.addonManager.getAddons().size());
+            this.logger.warn("Successfully loaded {} addons.", this.addonManager.getAddons().size());
         }
+    }
+
+    public @NotNull final CommandManager getCommandManager() {
+        return this.commandManager;
+    }
+
+    public @NotNull final EmbedManager getEmbedManager() {
+        return this.embedManager;
     }
 
     public @NotNull final AddonManager getAddonManager() {
@@ -65,12 +96,20 @@ public class BeidouGuild {
         return this.fileManager;
     }
 
+    public @NotNull final CommandHandler getHandler() {
+        return this.handler;
+    }
+
     public @NotNull final GuildConfig getConfig() {
         return this.guildConfig;
     }
 
     public @NotNull final Path getDirectory() {
         return this.directory;
+    }
+
+    public @NotNull final Guild getGuild() {
+        return this.guild;
     }
 
     public @NotNull final String getId() {

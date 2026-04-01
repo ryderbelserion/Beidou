@@ -27,6 +27,13 @@ public class EmbedField {
         field(title, body, false);
     }
 
+    public void field(@NotNull final MessageEmbed.Field field) {
+        final String name = field.getName();
+        final String value = field.getValue();
+
+        field(name != null ? name : "", value != null ? value : "", field.isInline());
+    }
+
     public void empty(final boolean inline) {
         this.builder.addBlankField(inline);
     }

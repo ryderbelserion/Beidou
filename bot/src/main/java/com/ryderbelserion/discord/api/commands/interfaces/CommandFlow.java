@@ -25,6 +25,8 @@ public interface CommandFlow {
 
     void addGuildCommand(@NotNull final Guild guild, @NotNull final CommandEngine engine, @NotNull final OptionType type, @NotNull final String name, @NotNull final String description);
 
+    void addGuildCommand(@NotNull final Guild guild, @NotNull final String command, @NotNull final String description);
+
     void addGuildCommands(@NotNull final Guild guild, @NotNull final CommandEngine... engines);
 
     void addCommands(@NotNull final CommandEngine... engines);

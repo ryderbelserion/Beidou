@@ -1,0 +1,14 @@
+# The name of the command.
+name: "default"
+# The description of the command.
+description: "The default command."
+
+# Should this be a slash command?
+is-slash: true
+
+# The embed message to send, if blank. we do not send an embed.
+embed: "default"
+
+# The messages to send, if the embed is blank.
+# If the message section is empty, we do not send a message.
+message: []

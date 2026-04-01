@@ -1,0 +1,31 @@
+# The embed to send.
+embed:
+  # Should the embed send on player join?
+  toggle: false
+  # The embed title
+  title: "Example"
+  # The embed description
+  description:
+    - "The embed description"
+  # The embed fields
+  fields:
+    "1":
+      # The title of the field.
+      title: "Default"
+      # The body of the field.
+      body:
+        - "This is an example."
+      # Should the field be inline?
+      inline: false
+    "2":
+      # The title of the field.
+      title: "Default x2"
+      # The body of the field.
+      body:
+        - "This is another example."
+      # Should the field be inline?
+      inline: false
+  # The embed footer
+  footer: "{timestamp}"
+  # The color of the embed.
+  color: "#FCFCFC"

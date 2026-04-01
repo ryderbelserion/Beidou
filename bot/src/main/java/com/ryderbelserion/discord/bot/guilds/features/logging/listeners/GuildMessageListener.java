@@ -4,7 +4,6 @@ import com.ryderbelserion.discord.bot.Beidou;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import com.ryderbelserion.discord.bot.guilds.features.logging.config.MessageConfig;
 import com.ryderbelserion.fusion.files.FileManager;
-import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
@@ -17,13 +16,11 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 
-import java.util.Optional;
-
-public class MessageListener extends ListenerAdapter {
+public class GuildMessageListener extends ListenerAdapter {
 
     private final GuildManager guildManager;
 
-    public MessageListener(@NotNull final Beidou beidou) {
+    public GuildMessageListener(@NotNull final Beidou beidou) {
         this.guildManager = beidou.getGuildManager();
     }
 
@@ -54,8 +51,6 @@ public class MessageListener extends ListenerAdapter {
                 } catch (final SerializationException exception) {
                     exception.printStackTrace();
                 }
-
-
             });
 
             //final GuildMessage root = action.getGuildMessage();

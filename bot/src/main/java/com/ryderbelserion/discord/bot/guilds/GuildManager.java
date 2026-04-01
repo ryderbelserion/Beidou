@@ -1,10 +1,9 @@
 package com.ryderbelserion.discord.bot.guilds;
 
+import com.ryderbelserion.discord.bot.Beidou;
 import com.ryderbelserion.discord.bot.api.objects.BeidouGuild;
-import com.ryderbelserion.fusion.files.FileManager;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,24 +14,26 @@ public class GuildManager {
 
     private final Map<String, BeidouGuild> guilds = new HashMap<>();
 
-    private final FileManager fileManager;
-    private final Logger logger;
+    private final Beidou instance;
 
-    public GuildManager(@NotNull final FileManager fileManager, @NotNull final Logger logger) {
-        this.fileManager = fileManager;
-        this.logger = logger;
+    public GuildManager(@NotNull final Beidou instance) {
+        this.instance = instance;
     }
 
     public void addGuild(@NotNull final Guild guild, @NotNull final Path directory) {
         final String id = guild.getId();
 
         if (this.guilds.containsKey(id)) {
-            this.guilds.get(id).init(this.fileManager, this.logger, directory, guild);
+            this.guilds.get(id).init();
 
             return;
         }
 
-        this.guilds.putIfAbsent(id, new BeidouGuild(this.fileManager, this.logger, directory, guild));
+        final BeidouGuild beidou = new BeidouGuild(this.instance, directory, guild);
+
+        beidou.init();
+
+        this.guilds.putIfAbsent(id, beidou);
     }
 
     public void removeGuild(@NotNull final String id) {
