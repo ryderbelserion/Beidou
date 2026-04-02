@@ -1,7 +1,10 @@
 package com.ryderbelserion.discord.bot;
 
 import com.ryderbelserion.discord.api.DiscordPlugin;
+import com.ryderbelserion.discord.api.commands.CommandContext;
 import com.ryderbelserion.discord.api.commands.CommandHandler;
+import com.ryderbelserion.discord.api.embeds.Embed;
+import com.ryderbelserion.discord.api.embeds.EmbedColor;
 import com.ryderbelserion.discord.api.options.OptionsManager;
 import com.ryderbelserion.discord.api.options.types.EnvOption;
 import com.ryderbelserion.discord.bot.api.managers.EmbedManager;
@@ -34,6 +37,7 @@ public class Beidou extends DiscordPlugin {
 
     private final CommandHandler commandHandler;
     private final EmbedManager embedManager;
+    private final Timer timer;
 
     private Environment environment;
 
@@ -69,10 +73,12 @@ public class Beidou extends DiscordPlugin {
 
         this.commandHandler = new CommandHandler();
         this.embedManager = new EmbedManager();
+        this.timer = new Timer();
     }
 
     private ConfigManager configManager;
     private GuildManager guildManager;
+    private JDA jda;
 
     @Override
     public void onGuildReady(@NotNull final Guild guild) {
@@ -178,19 +184,32 @@ public class Beidou extends DiscordPlugin {
 
     @Override
     public void onReady(@NotNull final JDA jda) {
-        this.commandHandler.setJda(jda);
+        this.commandHandler.setJda(this.jda = jda);
 
         final BotConfig config = this.configManager.getConfig();
 
         if (config.isCustomStatusEnabled()) {
-            final Activity customStatus = Activity.customStatus(replacePlaceholder(config.getCustomStatus(), Map.of(
-                    "{count}", String.valueOf(jda.getGuilds()
-                            .stream()
-                            .mapToInt(Guild::getMemberCount)
-                            .sum())
-            )));
+            this.timer.scheduleAtFixedRate(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            if (!config.isCustomStatusEnabled()) {
+                                cancel();
+                            }
 
-            jda.getPresence().setPresence(customStatus, false);
+                            final Activity customStatus = Activity.customStatus(replacePlaceholder(config.getCustomStatus(), Map.of(
+                                    "{count}", String.valueOf(jda.getGuilds()
+                                            .stream()
+                                            .mapToInt(Guild::getMemberCount)
+                                            .sum())
+                            )));
+
+                            jda.getPresence().setPresence(customStatus, false);
+                        }
+                    },
+                    0,
+                    60000
+            );
         }
 
         List.of(
