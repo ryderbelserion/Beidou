@@ -23,6 +23,7 @@ import com.ryderbelserion.fusion.files.enums.FileType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
@@ -217,7 +218,7 @@ public class Beidou extends DiscordPlugin {
                 new ReloadCommand(this),
 
                 // generic bot information
-                new AboutCommand()
+                new AboutCommand(this)
         ).forEach(command -> {
             this.commandHandler.addCommand(command);
 
@@ -257,7 +258,7 @@ public class Beidou extends DiscordPlugin {
                 .description("We're setting sail! Men, to your posts! A new adventure is about to begin!")
                 .author(context.getAuthor())
                 .timestamp()
-                .footer("Guild: %s".formatted(id), guild.getIconUrl() == null ? "" : guild.getIconUrl())
+                .footer("Guild: %s".formatted(id), getIconUrl(guild))
                 .color(EmbedColor.SUCCESS).build(), true);
     }
 
@@ -305,6 +306,18 @@ public class Beidou extends DiscordPlugin {
         this.logger.info("{} ({}) tried adding me to {} ({}) while they are not whitelisted.", username, userId, guildName, guildId);
 
         guild.leave().queue(_ -> this.logger.info("Successfully left the server {} ({}) owned by {} ({}) due to not being whitelisted", guildName, guildId, username, userId));
+    }
+
+    public String getIconUrl(@NotNull final SelfUser user) {
+        final String url = user.getAvatarUrl();
+
+        return url == null ? "" : url;
+    }
+
+    public String getIconUrl(@NotNull final Guild guild) {
+        final String url = guild.getIconUrl();
+
+        return url == null ? "" : url;
     }
 
     public @NotNull final CommandHandler getCommandHandler() {

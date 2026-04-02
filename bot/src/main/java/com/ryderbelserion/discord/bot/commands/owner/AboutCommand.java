@@ -4,6 +4,7 @@ import com.ryderbelserion.discord.api.commands.CommandContext;
 import com.ryderbelserion.discord.api.commands.CommandEngine;
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.embeds.EmbedColor;
+import com.ryderbelserion.discord.bot.Beidou;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.SelfUser;
@@ -14,8 +15,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class AboutCommand extends CommandEngine {
 
-    public AboutCommand() {
+    private final Beidou instance;
+
+    public AboutCommand(@NotNull final Beidou instance) {
         super("about", "Shows information about the Discord Bot.");
+
+        this.instance = instance;
     }
 
     @Override
@@ -56,9 +61,9 @@ public class AboutCommand extends CommandEngine {
         final Guild guild = context.getGuild();
 
         if (guild != null) {
-            embed.thumbnail(bot, guild).author(author, guild).footer("Average Ping: %s".formatted(jda.getGatewayPing()), guild.getIconUrl() == null ? "" : guild.getIconUrl());
+            embed.thumbnail(bot, guild).author(author, guild).footer("Average Ping: %s".formatted(jda.getGatewayPing()), this.instance.getIconUrl(guild));
         } else {
-            embed.thumbnail(bot).author(author).footer("Average Ping: %s".formatted(jda.getGatewayPing()), bot.getAvatarUrl() == null ? "" : bot.getAvatarUrl());
+            embed.thumbnail(bot).author(author).footer("Average Ping: %s".formatted(jda.getGatewayPing()), this.instance.getIconUrl(bot));
         }
 
         context.reply(embed.build(), true);

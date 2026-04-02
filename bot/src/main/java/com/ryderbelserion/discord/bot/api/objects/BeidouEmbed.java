@@ -108,6 +108,8 @@ public class BeidouEmbed {
                     consumer.timestamp(this.timezone);
                 }
             }
+
+            consumer.author(user.getName(), getIconUrl(user));
         });
 
         if (message == null) {
@@ -132,6 +134,8 @@ public class BeidouEmbed {
                             consumer.timestamp(embed.getTimezone());
                         }
                     }
+
+                    consumer.author(user.getName(), getIconUrl(user));
                 });
 
                 if (key == null) continue;
@@ -181,6 +185,8 @@ public class BeidouEmbed {
                     consumer.timestamp(this.timezone);
                 }
             }
+
+            consumer.author(user.getName(), getIconUrl(user));
         });
 
         if (message == null) {
@@ -205,6 +211,8 @@ public class BeidouEmbed {
                             consumer.timestamp(embed.getTimezone());
                         }
                     }
+
+                    consumer.author(user.getName(), getIconUrl(user));
                 });
 
                 if (key == null) continue;
@@ -226,6 +234,12 @@ public class BeidouEmbed {
 
     public void sendEmbed(@NotNull final MessageChannelUnion channel, @NotNull final User user) {
         sendEmbed(channel, user, Map.of(), List.of());
+    }
+
+    public String getIconUrl(@NotNull final User user) {
+        final String url = user.getAvatarUrl();
+
+        return url == null ? "" : url;
     }
 
     public final boolean isUserFallBackEnabled() {
