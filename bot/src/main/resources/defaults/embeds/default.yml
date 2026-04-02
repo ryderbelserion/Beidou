@@ -4,18 +4,18 @@ embed:
   enabled: true
   # Should the response be silent?
   silent: true
-  # The embed title
+  # The embed title.
   title: "Example"
   # Author settings, If text is blank. do nothing.
   author:
-    # The text i.e. author name
+    # The text i.e. author name.
     text: ""
     # The icon.
     url: ""
-  # The embed description
+  # The embed description.
   description:
     - "The embed description"
-  # The embed fields
+  # The embed fields.
   fields:
     "1":
       # The title of the field.
@@ -33,13 +33,13 @@ embed:
         - "This is another example."
       # Should the field be inline?
       inline: false
-  # The embed footer
+  # The embed footer.
   footer:
     # Should the footer be enabled?
     enabled: true
     # Should we fall back on the user who ran the command, if no values below are found?
     user-fallback: true
-    # The timezone
+    # The timezone.
     timezone: "America/New_York"
     # Should a timestamp be added?
     timestamp: false

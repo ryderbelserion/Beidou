@@ -1,8 +1,8 @@
-# Traffic related settings
+# Traffic related settings.
 traffic:
   # The name of the module.
   join-module:
-    # Role settings
+    # Role settings.
     role-settings:
       # Should we give a role(s) on join?
       enabled: false
@@ -15,11 +15,11 @@ traffic:
     embed:
       # Should the embed send on player join?
       toggle: false
-      # The embed title
+      # The embed title.
       title: "Welcome to {server} {player}"
-      # The embed description
+      # The embed description.
       description: []
-      # The embed fields
+      # The embed fields.
       fields: {}
-      # The embed footer
+      # The embed footer.
       footer: ""

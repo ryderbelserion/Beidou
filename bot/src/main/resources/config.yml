@@ -1,6 +1,6 @@
-# Github: https://github.com/ryderbelserion
+# Github: https://github.com/ryderbelserion/Beidou
 root:
-  # Bot Presence Settings
+  # Bot Presence Settings.
   presence:
     # Should this be enabled?
     toggle: true

@@ -1,22 +1,22 @@
-# General Settings
+# General Settings.
 settings:
-  # Thread related settings
+  # Thread related settings.
   threads:
-    # Thread creation for announcements
+    # Thread creation for announcements.
     creation:
       # Should we create threads on these channels?
       enabled: false
       # A list of channels to automatically create threads for on every message.
       channels: []
-  # Channel related settings to logs
+  # Channel related settings to logs.
   channels:
-    # Settings related to msg logs
+    # Settings related to msg logs.
     message-logs:
       # Should logging be enabled?
       is-logging: false
-      # The default channel for logging messages
+      # The default channel for logging messages.
       default: ""
-      # The individual types to log
+      # The individual types to log.
       types:
         # A list of channels to log deletions to.
         deletion: []
@@ -38,9 +38,9 @@ settings:
     title: "This is text with {user} variable."
     # The description of the embed.
     description: []
-    # The footer settings
+    # The footer settings.
     footer:
       # Should the footer be enabled?
       enabled: false
-      # Timestamp Timezone
+      # Timestamp Timezone.
       timezone: "America/New_York"
