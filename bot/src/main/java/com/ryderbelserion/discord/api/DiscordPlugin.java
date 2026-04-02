@@ -1,5 +1,6 @@
 package com.ryderbelserion.discord.api;
 
+import com.ryderbelserion.discord.api.commands.CommandContext;
 import com.ryderbelserion.discord.api.listeners.StatusListener;
 import com.ryderbelserion.fusion.files.FileManager;
 import net.dv8tion.jda.api.JDA;
@@ -42,6 +43,8 @@ public abstract class DiscordPlugin {
     protected FileManager fileManager;
 
     public abstract void onGuildReady(@NotNull final Guild guild);
+
+    public abstract void onReload(@NotNull final String id, final @NotNull CommandContext user);
 
     public abstract void onReload(@NotNull final JDA jda);
 

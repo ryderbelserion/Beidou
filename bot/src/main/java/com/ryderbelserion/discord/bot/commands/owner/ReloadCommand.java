@@ -5,7 +5,10 @@ import com.ryderbelserion.discord.api.commands.CommandEngine;
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.embeds.EmbedColor;
 import com.ryderbelserion.discord.bot.Beidou;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +25,7 @@ public class ReloadCommand extends CommandEngine {
 
     @Override
     protected @NotNull final CommandData getCommandData() {
-        return Commands.slash(getName(), getDescription());
+        return Commands.slash(getName(), getDescription()).addOption(OptionType.STRING, "guild_id", "The guild id");
     }
 
     @Override
@@ -30,7 +33,19 @@ public class ReloadCommand extends CommandEngine {
         final User user = context.getAuthor();
 
         if (context.isCreator(user.getId())) {
-            this.beidou.onReload(context.getJDA());
+            final OptionMapping arg1 = context.getOption("guild_id");
+
+            final JDA jda = context.getJDA();
+
+            if (arg1 != null) {
+                final String id = arg1.getAsString();
+
+                this.beidou.onReload(id, context);
+
+                return;
+            }
+
+            this.beidou.onReload(jda);
 
             final Embed embed = new Embed()
                     .description("We're setting sail! Men, to your posts! A new adventure is about to begin!")

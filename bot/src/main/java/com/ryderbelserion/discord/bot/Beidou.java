@@ -246,21 +246,24 @@ public class Beidou extends DiscordPlugin {
     }
 
     @Override
+    public void onReload(@NotNull final String id, @NotNull final CommandContext context) {
+        final Guild guild = this.jda.getGuildById(id);
+
+        if (guild == null) return;
+
+        onGuildReady(guild);
+
+        context.reply(new Embed()
+                .description("We're setting sail! Men, to your posts! A new adventure is about to begin!")
+                .author(context.getAuthor())
+                .timestamp()
+                .footer("Guild: %s".formatted(id), guild.getIconUrl() == null ? "" : guild.getIconUrl())
+                .color(EmbedColor.SUCCESS).build(), true);
+    }
+
+    @Override
     public void onReload(@NotNull final JDA jda) {
         this.configManager.reload();
-
-        final BotConfig config = this.configManager.getConfig();
-
-        if (config.isCustomStatusEnabled()) {
-            final Activity customStatus = Activity.customStatus(replacePlaceholder(config.getCustomStatus(), Map.of(
-                    "{count}", String.valueOf(jda.getGuilds()
-                            .stream()
-                            .mapToInt(Guild::getMemberCount)
-                            .sum())
-            )));
-
-            jda.getPresence().setPresence(customStatus, false);
-        }
 
         final List<Guild> guilds = jda.getGuilds();
 
