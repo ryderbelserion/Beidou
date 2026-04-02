@@ -267,6 +267,8 @@ public class Beidou extends DiscordPlugin {
     public void onReload(@NotNull final JDA jda) {
         this.configManager.reload();
 
+        this.fileManager.setDepth(getRecursionDepth());
+
         final List<Guild> guilds = jda.getGuilds();
 
         for (final Guild guild : guilds) {
@@ -290,6 +292,8 @@ public class Beidou extends DiscordPlugin {
 
         this.configManager = new ConfigManager(this.fileManager, directory);
         this.configManager.init();
+
+        this.fileManager.setDepth(getRecursionDepth());
 
         this.guildManager = new GuildManager(this);
     }
