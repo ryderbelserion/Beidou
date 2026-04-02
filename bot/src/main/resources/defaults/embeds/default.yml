@@ -6,6 +6,12 @@ embed:
   silent: true
   # The embed title
   title: "Example"
+  # Author settings, If text is blank. do nothing.
+  author:
+    # The text i.e. author name
+    text: ""
+    # The icon.
+    url: ""
   # The embed description
   description:
     - "The embed description"

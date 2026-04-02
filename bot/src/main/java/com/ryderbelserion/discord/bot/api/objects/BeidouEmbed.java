@@ -33,6 +33,9 @@ public class BeidouEmbed {
     private final String timezone;
     private final String color;
 
+    private final String authorText;
+    private final String authorUrl;
+
     private final boolean hasTimeStamp;
 
     public BeidouEmbed(@NotNull final CommentedConfigurationNode configuration) {
@@ -40,6 +43,9 @@ public class BeidouEmbed {
         this.title = configuration.node("title").getString("");
         this.isEnabled = configuration.node("enabled").getBoolean(false);
         this.isSilent = configuration.node("silent").getBoolean(false);
+
+        this.authorText = configuration.node("author", "text").getString("");
+        this.authorUrl = configuration.node("author", "url").getString("");
 
         for (final CommentedConfigurationNode node : configuration.node("fields").childrenMap().values()) {
             this.fields.add(new BeidouField(node));
@@ -109,7 +115,11 @@ public class BeidouEmbed {
                 }
             }
 
-            consumer.author(user.getName(), getIconUrl(user));
+            final String username = this.authorText;
+
+            if (!username.isBlank()) {
+                consumer.author(username, this.authorUrl);
+            }
         });
 
         if (message == null) {
@@ -135,7 +145,11 @@ public class BeidouEmbed {
                         }
                     }
 
-                    consumer.author(user.getName(), getIconUrl(user));
+                    final String username = embed.getAuthorText();
+
+                    if (!username.isBlank()) {
+                        consumer.author(username, embed.getAuthorUrl());
+                    }
                 });
 
                 if (key == null) continue;
@@ -186,7 +200,11 @@ public class BeidouEmbed {
                 }
             }
 
-            consumer.author(user.getName(), getIconUrl(user));
+            final String username = this.authorText;
+
+            if (!username.isBlank()) {
+                consumer.author(username, this.authorUrl);
+            }
         });
 
         if (message == null) {
@@ -212,7 +230,11 @@ public class BeidouEmbed {
                         }
                     }
 
-                    consumer.author(user.getName(), getIconUrl(user));
+                    final String username = embed.getAuthorText();
+
+                    if (!username.isBlank()) {
+                        consumer.author(username, embed.getAuthorUrl());
+                    }
                 });
 
                 if (key == null) continue;
@@ -258,11 +280,19 @@ public class BeidouEmbed {
         return this.icon;
     }
 
-    public final boolean hasFooter() {
-        return this.hasFooter;
+    public @NotNull final String getAuthorText() {
+        return this.authorText;
+    }
+
+    public @NotNull final String getAuthorUrl() {
+        return this.authorUrl;
     }
 
     public final boolean hasTimeStamp() {
         return this.hasTimeStamp;
+    }
+
+    public final boolean hasFooter() {
+        return this.hasFooter;
     }
 }
