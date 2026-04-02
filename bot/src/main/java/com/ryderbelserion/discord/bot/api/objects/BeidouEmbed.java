@@ -38,6 +38,9 @@ public class BeidouEmbed {
 
     private final boolean hasTimeStamp;
 
+    private final String thumbnail;
+    private final String image;
+
     public BeidouEmbed(@NotNull final CommentedConfigurationNode configuration) {
         this.description = StringUtils.toString(ConfigUtils.getStringList(configuration.node("description")));
         this.title = configuration.node("title").getString("");
@@ -58,6 +61,9 @@ public class BeidouEmbed {
 
         this.timezone = configuration.node("footer", "timezone").getString("America/New_York");
         this.hasTimeStamp = configuration.node("footer", "timestamp").getBoolean(false);
+
+        this.thumbnail = configuration.node("thumbnail").getString("");
+        this.image = configuration.node("image").getString("");
 
         this.color = configuration.node("color").getString("#e91e63");
     }
@@ -102,25 +108,7 @@ public class BeidouEmbed {
 
         placeholders.put("{usermention}", user.getAsMention());
 
-        final MessageEmbed message = buildEmbed(placeholders, consumer -> {
-            if (this.hasFooter) {
-                if (this.footer.isBlank() && this.isUserFallBackEnabled) {
-                    consumer.footer(user);
-                } else {
-                    consumer.footer(this.footer, this.icon);
-                }
-
-                if (this.hasTimeStamp) {
-                    consumer.timestamp(this.timezone);
-                }
-            }
-
-            final String username = this.authorText;
-
-            if (!username.isBlank()) {
-                consumer.author(username, this.authorUrl);
-            }
-        });
+        final MessageEmbed message = buildEmbed(placeholders, consumer -> populate(this, consumer, user));
 
         if (message == null) {
             return;
@@ -130,27 +118,7 @@ public class BeidouEmbed {
 
         if (!embeds.isEmpty()) {
             for (final BeidouEmbed embed : embeds) {
-                final MessageEmbed key = embed.buildEmbed(placeholders, consumer -> {
-                    if (embed.hasFooter()) {
-                        final String footer = embed.getFooter();
-
-                        if (footer.isBlank() && embed.isUserFallBackEnabled()) {
-                            consumer.footer(user);
-                        } else {
-                            consumer.footer(footer, embed.getIcon());
-                        }
-
-                        if (embed.hasTimeStamp()) {
-                            consumer.timestamp(embed.getTimezone());
-                        }
-                    }
-
-                    final String username = embed.getAuthorText();
-
-                    if (!username.isBlank()) {
-                        consumer.author(username, embed.getAuthorUrl());
-                    }
-                });
+                final MessageEmbed key = embed.buildEmbed(placeholders, consumer -> populate(embed, consumer, user));
 
                 if (key == null) continue;
 
@@ -187,25 +155,7 @@ public class BeidouEmbed {
 
         placeholders.put("{usermention}", user.getAsMention());
 
-        final MessageEmbed message = buildEmbed(placeholders, consumer -> {
-            if (this.hasFooter) {
-                if (this.footer.isBlank() && this.isUserFallBackEnabled) {
-                    consumer.footer(user);
-                } else {
-                    consumer.footer(this.footer, this.icon);
-                }
-
-                if (this.hasTimeStamp) {
-                    consumer.timestamp(this.timezone);
-                }
-            }
-
-            final String username = this.authorText;
-
-            if (!username.isBlank()) {
-                consumer.author(username, this.authorUrl);
-            }
-        });
+        final MessageEmbed message = buildEmbed(placeholders, consumer -> populate(this, consumer, user));
 
         if (message == null) {
             return;
@@ -215,27 +165,7 @@ public class BeidouEmbed {
 
         if (!embeds.isEmpty()) {
             for (final BeidouEmbed embed : embeds) {
-                final MessageEmbed key = embed.buildEmbed(placeholders, consumer -> {
-                    if (embed.hasFooter()) {
-                        final String footer = embed.getFooter();
-
-                        if (footer.isBlank() && embed.isUserFallBackEnabled()) {
-                            consumer.footer(user);
-                        } else {
-                            consumer.footer(footer, embed.getIcon());
-                        }
-
-                        if (embed.hasTimeStamp()) {
-                            consumer.timestamp(embed.getTimezone());
-                        }
-                    }
-
-                    final String username = embed.getAuthorText();
-
-                    if (!username.isBlank()) {
-                        consumer.author(username, embed.getAuthorUrl());
-                    }
-                });
+                final MessageEmbed key = embed.buildEmbed(placeholders, consumer -> populate(embed, consumer, user));
 
                 if (key == null) continue;
 
@@ -268,18 +198,6 @@ public class BeidouEmbed {
         return this.isUserFallBackEnabled;
     }
 
-    public @NotNull final String getTimezone() {
-        return this.timezone;
-    }
-
-    public @NotNull final String getFooter() {
-        return this.footer;
-    }
-
-    public @NotNull final String getIcon() {
-        return this.icon;
-    }
-
     public @NotNull final String getAuthorText() {
         return this.authorText;
     }
@@ -288,11 +206,69 @@ public class BeidouEmbed {
         return this.authorUrl;
     }
 
+    public @NotNull final String getThumbnail() {
+        return this.thumbnail;
+    }
+
+    public @NotNull final String getTimezone() {
+        return this.timezone;
+    }
+
+    public @NotNull final String getFooter() {
+        return this.footer;
+    }
+
+    public @NotNull final String getImage() {
+        return this.image;
+    }
+
+    public @NotNull final String getIcon() {
+        return this.icon;
+    }
+
     public final boolean hasTimeStamp() {
         return this.hasTimeStamp;
     }
 
     public final boolean hasFooter() {
         return this.hasFooter;
+    }
+
+    private void populate(
+            @NotNull final BeidouEmbed embed,
+            @NotNull final Embed action,
+            @NotNull final User user
+    ) {
+        if (embed.hasFooter()) {
+            final String footer = embed.getFooter();
+
+            if (footer.isBlank() && embed.isUserFallBackEnabled()) {
+                action.footer(user);
+            } else {
+                action.footer(footer, embed.getIcon());
+            }
+
+            if (embed.hasTimeStamp()) {
+                action.timestamp(embed.getTimezone());
+            }
+        }
+
+        final String username = embed.getAuthorText();
+
+        if (!username.isBlank()) {
+            action.author(username, embed.getAuthorUrl());
+        }
+
+        final String thumbnail = embed.getThumbnail();
+
+        if (!thumbnail.isBlank()) {
+            action.thumbnail(thumbnail);
+        }
+
+        final String image = embed.getImage();
+
+        if (!image.isBlank()) {
+            action.image(image);
+        }
     }
 }
