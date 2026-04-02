@@ -1,12 +1,20 @@
 package com.ryderbelserion.discord.api.commands;
 
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.AutoCompleteQuery;
+import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.jetbrains.annotations.NotNull;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class CommandEngine extends ListenerAdapter {
+
+    private final Map<String, List<String>> values = new HashMap<>();
 
     private final String name;
     private final String description;
@@ -34,11 +42,38 @@ public abstract class CommandEngine extends ListenerAdapter {
         perform(context);
     }
 
-    public @NotNull final String getName() {
-        return this.name;
+    @Override
+    public void onCommandAutoCompleteInteraction(@NotNull CommandAutoCompleteInteractionEvent event) {
+        final String name = event.getName();
+
+        if (!name.equalsIgnoreCase(this.name)) return;
+
+        final AutoCompleteQuery option = event.getFocusedOption();
+
+        final String optionName = option.getName();
+
+        if (!this.values.containsKey(optionName)) return;
+
+        final List<String> values = this.values.get(optionName);
+
+        final List<Command.Choice> choices = values.stream().filter(word -> word.startsWith(option.getValue())).map(word -> new Command.Choice(word, word)).toList();
+
+        event.replyChoices(choices).queue();
+    }
+
+    public void addChoice(@NotNull final String option, @NotNull final List<String> values) {
+        this.values.put(option, values);
+    }
+
+    public void removeChoice(@NotNull final String option) {
+        this.values.remove(option);
     }
 
     public @NotNull final String getDescription() {
         return this.description;
+    }
+
+    public @NotNull final String getName() {
+        return this.name;
     }
 }

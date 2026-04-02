@@ -5,6 +5,7 @@ import com.ryderbelserion.discord.api.commands.CommandEngine;
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.embeds.EmbedColor;
 import com.ryderbelserion.discord.bot.Beidou;
+import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -21,11 +22,15 @@ public class ReloadCommand extends CommandEngine {
         super("reload", "Reloads the Discord Bot.");
 
         this.beidou = beidou;
+
+        final GuildManager guildManager = this.beidou.getGuildManager();
+
+        this.addChoice("guild_id", guildManager.getGuilds().keySet().stream().toList());
     }
 
     @Override
     protected @NotNull final CommandData getCommandData() {
-        return Commands.slash(getName(), getDescription()).addOption(OptionType.STRING, "guild_id", "The guild id");
+        return Commands.slash(getName(), getDescription()).addOption(OptionType.STRING, "guild_id", "The guild id", false, true);
     }
 
     @Override
