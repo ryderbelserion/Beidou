@@ -12,6 +12,10 @@ embed:
     text: ""
     # The icon.
     url: ""
+  # The thumbnail, which shows up on the right side of the embed.
+  thumbnail: ""
+  # The image, which shows up at the bottom of the embed.
+  image: ""
   # The embed description.
   description:
     - "The embed description"
