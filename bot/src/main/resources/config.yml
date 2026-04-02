@@ -7,6 +7,11 @@ root:
     # Available Placeholders: {count}
     status: "Watching {count} members"
 
+  # File related settings.
+  file:
+    # Set how deep we should recurse in the project structure.
+    recursion_depth: 1
+
   # Configuration options related to the plugin database!
   storage:
     # The type of database which we store data in!

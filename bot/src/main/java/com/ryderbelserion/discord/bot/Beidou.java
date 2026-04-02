@@ -13,6 +13,7 @@ import com.ryderbelserion.discord.bot.commands.owner.ReloadCommand;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
 import com.ryderbelserion.discord.bot.api.environment.enums.Environment;
 import com.ryderbelserion.discord.bot.configs.types.BotConfig;
+import com.ryderbelserion.discord.bot.configs.types.FileConfig;
 import com.ryderbelserion.discord.bot.guilds.GuildListener;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.GuildMessageListener;
@@ -320,8 +321,20 @@ public class Beidou extends DiscordPlugin {
         return url == null ? "" : url;
     }
 
+    public int getRecursionDepth() {
+        final BotConfig config = this.configManager.getConfig();
+
+        final FileConfig fileConfig = config.getFileConfig();
+
+        return fileConfig.getRecursionDepth();
+    }
+
     public @NotNull final CommandHandler getCommandHandler() {
         return this.commandHandler;
+    }
+
+    public @NotNull final ConfigManager getConfigManager() {
+        return this.configManager;
     }
 
     public @NotNull final GuildManager getGuildManager() {

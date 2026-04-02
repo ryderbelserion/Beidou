@@ -25,6 +25,8 @@ public class CommandManager {
     private final String id;
     private final Guild guild;
 
+    private final BeidouGuild instance;
+
     public CommandManager(@NotNull final BeidouGuild guild) {
         this.fileManager = guild.getFileManager();
         this.embedManager = guild.getEmbedManager();
@@ -32,6 +34,8 @@ public class CommandManager {
         this.path = guild.getDirectory();
         this.guild = guild.getGuild();
         this.id = guild.getId();
+
+        this.instance = guild;
     }
 
     public void init() {
@@ -39,7 +43,9 @@ public class CommandManager {
 
         this.commands.clear();
 
-        for (final Path path : this.fileManager.getFilesByPath(this.path.resolve("commands"), ".yml", 1)) {
+        final int depth = this.instance.getConfigManager().getConfig().getFileConfig().getRecursionDepth();
+
+        for (final Path path : this.fileManager.getFilesByPath(this.path.resolve("commands"), ".yml", depth)) {
             final Optional<YamlCustomFile> optional = this.fileManager.getYamlFile(path);
 
             if (optional.isEmpty()) continue;

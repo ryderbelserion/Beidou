@@ -24,7 +24,9 @@ public class EmbedManager {
         final FileManager fileManager = instance.getFileManager();
         final Path directory = instance.getDirectory();
 
-        for (final Path path : fileManager.getFilesByPath(directory.resolve("embeds"), ".yml", 1)) {
+        final int depth = instance.getConfigManager().getConfig().getFileConfig().getRecursionDepth();
+
+        for (final Path path : fileManager.getFilesByPath(directory.resolve("embeds"), ".yml", depth)) {
             final Optional<YamlCustomFile> optional = fileManager.getYamlFile(path);
 
             if (optional.isEmpty()) continue;

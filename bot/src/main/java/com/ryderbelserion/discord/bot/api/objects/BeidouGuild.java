@@ -4,6 +4,7 @@ import com.ryderbelserion.discord.api.commands.CommandHandler;
 import com.ryderbelserion.discord.bot.Beidou;
 import com.ryderbelserion.discord.bot.api.managers.CommandManager;
 import com.ryderbelserion.discord.bot.api.managers.EmbedManager;
+import com.ryderbelserion.discord.bot.configs.ConfigManager;
 import com.ryderbelserion.discord.bot.guilds.GuildConfig;
 import com.ryderbelserion.fusion.addons.AddonManager;
 import com.ryderbelserion.fusion.files.FileManager;
@@ -22,6 +23,7 @@ public class BeidouGuild {
     private final Path directory;
     private final String id;
 
+    private final ConfigManager configManager;
     private final AddonManager addonManager;
     private final EmbedManager embedManager;
     private final FileManager fileManager;
@@ -34,9 +36,10 @@ public class BeidouGuild {
 
         this.id = guild.getId();
 
+        this.configManager = instance.getConfigManager();
+        this.embedManager = instance.getEmbedManager();
         this.fileManager = instance.getFileManager();
         this.handler = instance.getCommandHandler();
-        this.embedManager = instance.getEmbedManager();
         this.logger = instance.getLogger();
 
         this.guild = guild;
@@ -82,6 +85,10 @@ public class BeidouGuild {
 
     public @NotNull final CommandManager getCommandManager() {
         return this.commandManager;
+    }
+
+    public @NotNull final ConfigManager getConfigManager() {
+        return this.configManager;
     }
 
     public @NotNull final EmbedManager getEmbedManager() {
