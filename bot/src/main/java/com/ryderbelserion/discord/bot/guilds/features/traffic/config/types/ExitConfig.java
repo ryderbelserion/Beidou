@@ -23,8 +23,6 @@ public class ExitConfig implements ITrafficConfig {
     ) {
         this.embedManager = embedManager;
 
-        final CommentedConfigurationNode settings = config.node("role-settings");
-
         this.channels = ConfigUtils.getStringList(config.node("channels"));
         this.embed = config.node("embed").getString("");
     }
