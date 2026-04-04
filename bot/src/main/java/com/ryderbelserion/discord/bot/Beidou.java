@@ -17,6 +17,7 @@ import com.ryderbelserion.discord.bot.configs.types.FileConfig;
 import com.ryderbelserion.discord.bot.guilds.GuildListener;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.GuildMessageListener;
+import com.ryderbelserion.discord.bot.guilds.features.traffic.TrafficListener;
 import com.ryderbelserion.discord.bot.guilds.listeners.GuildSlashListener;
 import com.ryderbelserion.discord.bot.guilds.features.threads.ThreadListener;
 import com.ryderbelserion.fusion.files.enums.FileAction;
@@ -231,12 +232,16 @@ public class Beidou extends DiscordPlugin {
                     new GuildListener(this),
                     new ThreadListener(this),
 
+                    new TrafficListener(this),
+
                     new GuildSlashListener(this)
             );
 
             case DEVELOPMENT -> this.addEventListener(
                     new GuildListener(this),
                     new ThreadListener(this),
+
+                    new TrafficListener(this),
 
                     new GuildSlashListener(this),
 

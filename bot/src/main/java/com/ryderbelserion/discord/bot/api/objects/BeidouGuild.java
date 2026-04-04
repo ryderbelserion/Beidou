@@ -19,6 +19,7 @@ import java.nio.file.Path;
 public class BeidouGuild {
 
     private CommentedConfigurationNode config;
+    private CommentedConfigurationNode traffic;
     private GuildConfig guildConfig;
     private final Path directory;
     private final String id;
@@ -50,6 +51,8 @@ public class BeidouGuild {
     public void init() {
         this.fileManager.getYamlFile(this.directory.resolve("config.yml")).ifPresent(customFile -> this.config = customFile.getConfiguration());
 
+        this.fileManager.getYamlFile(this.directory.resolve("traffic.yml")).ifPresent(customFile -> this.traffic = customFile.getConfiguration());
+
         this.fileManager.getJsonFile(this.directory.resolve("cache.json")).ifPresent(customFile -> {
             final BasicConfigurationNode cache = customFile.getConfiguration();
 
@@ -63,7 +66,7 @@ public class BeidouGuild {
         });
 
         if (this.config != null) {
-            this.guildConfig = new GuildConfig(this.config, this.embedManager, this.logger);
+            this.guildConfig = new GuildConfig(this.config, this.traffic, this.embedManager, this.logger);
         }
 
         this.embedManager.init(this);

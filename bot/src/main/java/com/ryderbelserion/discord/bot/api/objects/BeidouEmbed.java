@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -139,7 +140,7 @@ public class BeidouEmbed {
     }
 
     public void sendEmbed(
-            @NotNull final MessageChannelUnion channel,
+            @NotNull final MessageChannel channel,
             @NotNull final User user,
             @NotNull final Map<String, String> values,
             @NotNull final List<BeidouEmbed> embeds
@@ -162,14 +163,14 @@ public class BeidouEmbed {
     }
 
     public void sendEmbed(
-            @NotNull final MessageChannelUnion channel,
+            @NotNull final MessageChannel channel,
             @NotNull final Map<String, String> values,
             @NotNull final User user
     ) {
         sendEmbed(channel, user, values, List.of());
     }
 
-    public void sendEmbed(@NotNull final MessageChannelUnion channel, @NotNull final User user) {
+    public void sendEmbed(@NotNull final MessageChannel channel, @NotNull final User user) {
         sendEmbed(channel, user, Map.of(), List.of());
     }
 

@@ -1,14 +1,24 @@
 # Traffic related settings.
 traffic:
   # The name of the module.
-  join-module:
+  entry-module:
     # Role settings.
     role-settings:
       # Should we give a role(s) on join?
       enabled: false
       # A list of role ids to give.
       roles: []
+      # Should we persist a user's role(s)?
+      persist: false
+      # A list of role ids that'll stick to the user.
+      sticky-roles: []
     # List of channels to send the message to.
-    join-channel: []
+    channels: []
+    # The name of the embed i.e. from the `embeds` folder!
+    embed: ""
+  # The name of the module.
+  exit-module:
+    # List of channels to send the message to.
+    channels: []
     # The name of the embed i.e. from the `embeds` folder!
     embed: ""
