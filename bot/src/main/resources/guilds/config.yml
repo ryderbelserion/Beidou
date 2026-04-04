@@ -10,12 +10,20 @@ settings:
       channels: []
   # Channel related settings to logs.
   channels:
-    # Settings related to msg logs.
-    message-logs:
-      # Should logging be enabled?
-      is-logging: false
+    # Settings related to message logs.
+    track-messages:
+      # Should we log message deletions/edits?
+      enabled: false
       # The default channel for logging messages.
       default: ""
+      # Embed settings.
+      embeds:
+        # All embeds, unless specified otherwise are created in the embed's folder.
+        # The embed sent, when a message is deleted.
+        delete: ""
+        # All embeds, unless specified otherwise are created in the embed's folder.
+        # The embed sent, when a message is edited.
+        edit: ""
       # The individual types to log.
       types:
         # A list of channels to log deletions to.
@@ -31,16 +39,3 @@ settings:
       # A list of users to be ignored when logging.
       # You must use the user id.
       users: []
-  embed:
-    # Should the embed be enabled?
-    enabled: false
-    # The title of the embed.
-    title: "This is text with {user} variable."
-    # The description of the embed.
-    description: []
-    # The footer settings.
-    footer:
-      # Should the footer be enabled?
-      enabled: false
-      # Timestamp Timezone.
-      timezone: "America/New_York"

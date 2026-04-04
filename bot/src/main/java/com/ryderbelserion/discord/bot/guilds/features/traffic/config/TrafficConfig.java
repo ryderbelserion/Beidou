@@ -7,23 +7,23 @@ import java.util.List;
 
 public class TrafficConfig {
 
-    private boolean giveRoleOnJoin;
-    private List<String> joinRoles;
+    private boolean isRoleJoinEnabled;
+    private List<String> roles;
 
     public TrafficConfig(@NotNull final CommentedConfigurationNode config) {
         init(config);
     }
 
     public void init(@NotNull final CommentedConfigurationNode config) {
-        this.giveRoleOnJoin = config.node("join-role", "enabled").getBoolean(false);
-        this.joinRoles = ConfigUtils.getStringList(config.node("join-role", "roles"));
+        this.isRoleJoinEnabled = config.node("join-role", "enabled").getBoolean(false);
+        this.roles = ConfigUtils.getStringList(config.node("join-role", "roles"));
     }
 
-    public @NotNull final List<String> getJoinRoles() {
-        return this.joinRoles;
+    public @NotNull final List<String> getRoles() {
+        return this.roles;
     }
 
-    public final boolean isGiveRoleOnJoin() {
-        return this.giveRoleOnJoin;
+    public final boolean isRoleJoinEnabled() {
+        return this.isRoleJoinEnabled;
     }
 }

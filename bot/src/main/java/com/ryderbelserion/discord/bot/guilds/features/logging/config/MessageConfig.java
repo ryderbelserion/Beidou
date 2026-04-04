@@ -2,6 +2,7 @@ package com.ryderbelserion.discord.bot.guilds.features.logging.config;
 
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.utils.ConfigUtils;
+import com.ryderbelserion.discord.bot.api.managers.EmbedManager;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -23,16 +24,18 @@ public class MessageConfig {
     private final List<String> ignoredRoles;
     private final List<String> ignoredUsers;
 
+    private final String deleteEmbed;
+    private final String editEmbed;
+
     private final String defaultChannel;
 
     private final boolean isLogging;
 
+    private final EmbedManager embedManager;
     private final Logger logger;
 
-    public MessageConfig(@NotNull final CommentedConfigurationNode config, @NotNull final Logger logger) {
+    public MessageConfig(@NotNull final CommentedConfigurationNode config, @NotNull final EmbedManager embedManager, @NotNull final Logger logger) {
         this.defaultChannel = config.node("default").getString("");
-
-        this.isLogging = config.node("is-logging").getBoolean(false);
 
         this.channels.put("delete", ConfigUtils.getStringList(config.node("types", "deletion")));
         this.channels.put("edit", ConfigUtils.getStringList(config.node("types", "edits")));
@@ -41,6 +44,12 @@ public class MessageConfig {
         this.ignoredRoles = ConfigUtils.getStringList(config.node("roles"));
         this.ignoredUsers = ConfigUtils.getStringList(config.node("users"));
 
+        this.isLogging = config.node("enabled").getBoolean(false);
+
+        this.deleteEmbed = config.node("embeds", "delete").getString("");
+        this.editEmbed = config.node("embeds", "edit").getString("");
+
+        this.embedManager = embedManager;
         this.logger = logger;
     }
 

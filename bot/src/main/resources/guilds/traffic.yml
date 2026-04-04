@@ -9,17 +9,6 @@ traffic:
       # A list of role ids to give.
       roles: []
     # List of channels to send the message to.
-    join-channel:
-      - ""
-    # The embed to send.
-    embed:
-      # Should the embed send on player join?
-      toggle: false
-      # The embed title.
-      title: "Welcome to {server} {player}"
-      # The embed description.
-      description: []
-      # The embed fields.
-      fields: {}
-      # The embed footer.
-      footer: ""
+    join-channel: []
+    # The name of the embed i.e. from the `embeds` folder!
+    embed: ""

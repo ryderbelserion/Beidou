@@ -63,7 +63,7 @@ public class BeidouGuild {
         });
 
         if (this.config != null) {
-            this.guildConfig = new GuildConfig(this.config, this.logger);
+            this.guildConfig = new GuildConfig(this.config, this.embedManager, this.logger);
         }
 
         this.embedManager.init(this);
