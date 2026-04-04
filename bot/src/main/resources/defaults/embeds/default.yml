@@ -37,6 +37,25 @@ embed:
         - "This is another example."
       # Should the field be inline?
       inline: false
+  # The buttons, for embeds
+  buttons:
+    # The name of the button.
+    "1":
+      # The text to display on the button.
+      label: "Danger!"
+      # The button style i.e. decides what color it is.
+      style: "danger"
+      # The id of the button, i.e. so that we can identify it through the event.
+      id: "generic_id"
+      # The action when clicked.
+      action:
+        # Available Types:
+        #  -> link (sends a link when clicked)
+        type: "link"
+        # The value, that is needed when a button is clicked.
+        value: ""
+        # The emoji to use for the button.
+        emoji: ""
   # The embed footer.
   footer:
     # Should the footer be enabled?

@@ -10,7 +10,7 @@ jopt-simple = "5.0.4" # https://github.com/jopt-simple/jopt-simple
 
 hikari = "4.0.3" # https://github.com/brettwooldridge/HikariCP
 
-jda = "6.1.0" # https://github.com/discord-jda/JDA
+jda = "6.4.0" # https://github.com/discord-jda/JDA
 
 [plugins]
 # https://github.com/GradleUp/shadow

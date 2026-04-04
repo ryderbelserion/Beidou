@@ -3,9 +3,13 @@ package com.ryderbelserion.discord.bot.api.objects;
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.utils.ConfigUtils;
 import com.ryderbelserion.discord.api.utils.StringUtils;
+import net.dv8tion.jda.api.components.MessageTopLevelComponent;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,6 +22,7 @@ import java.util.function.Consumer;
 
 public class BeidouEmbed {
 
+    private final List<BeidouButton> buttons = new ArrayList<>();
     private final List<BeidouField> fields = new ArrayList<>();
 
     private final String description;
@@ -52,6 +57,10 @@ public class BeidouEmbed {
 
         for (final CommentedConfigurationNode node : configuration.node("fields").childrenMap().values()) {
             this.fields.add(new BeidouField(node));
+        }
+
+        for (final CommentedConfigurationNode node : configuration.node("buttons").childrenMap().values()) {
+            this.buttons.add(new BeidouButton(node));
         }
 
         this.isUserFallBackEnabled = configuration.node("footer", "user-fallback").getBoolean(true);
@@ -114,19 +123,7 @@ public class BeidouEmbed {
             return;
         }
 
-        final List<MessageEmbed> keys = new ArrayList<>();
-
-        if (!embeds.isEmpty()) {
-            for (final BeidouEmbed embed : embeds) {
-                final MessageEmbed key = embed.buildEmbed(placeholders, consumer -> populate(embed, consumer, user));
-
-                if (key == null) continue;
-
-                keys.add(key);
-            }
-        }
-
-        event.replyEmbeds(message).addEmbeds(keys).setEphemeral(this.isSilent).queue();
+        event.replyEmbeds(message).addEmbeds(getEmbeds(embeds, user, values)).addComponents(getComponents()).setEphemeral(this.isSilent).queue();
     }
 
     public void sendEmbed(
@@ -161,19 +158,7 @@ public class BeidouEmbed {
             return;
         }
 
-        final List<MessageEmbed> keys = new ArrayList<>();
-
-        if (!embeds.isEmpty()) {
-            for (final BeidouEmbed embed : embeds) {
-                final MessageEmbed key = embed.buildEmbed(placeholders, consumer -> populate(embed, consumer, user));
-
-                if (key == null) continue;
-
-                keys.add(key);
-            }
-        }
-
-        channel.sendMessageEmbeds(message).addEmbeds(keys).queue();
+        channel.sendMessageEmbeds(message).addEmbeds(getEmbeds(embeds, user, values)).addComponents(getComponents()).queue();
     }
 
     public void sendEmbed(
@@ -270,5 +255,50 @@ public class BeidouEmbed {
         if (!image.isBlank()) {
             action.image(image);
         }
+    }
+
+    private List<MessageTopLevelComponent> getComponents() {
+        final List<MessageTopLevelComponent> components = new ArrayList<>();
+
+        for (final BeidouButton button : this.buttons) {
+            final String type = button.getType();
+
+            final String label = button.getLabel();
+
+            switch (type) {
+                case "link" -> {
+                    final Button instance = Button.link(button.getValue(), label);
+
+                    final String emoji = button.getEmoji();
+
+
+                    components.add(ActionRow.of(emoji.isBlank() ? instance : instance.withEmoji(Emoji.fromFormatted(emoji))));
+                }
+
+                //default -> action.addComponents(ActionRow.of(Button.of(style, id, label)));
+            }
+        }
+
+        return components;
+    }
+
+    private List<MessageEmbed> getEmbeds(
+            @NotNull final List<BeidouEmbed> embeds,
+            @NotNull final User user,
+            @NotNull final Map<String, String> values
+    ) {
+        final List<MessageEmbed> keys = new ArrayList<>();
+
+        if (!embeds.isEmpty()) {
+            for (final BeidouEmbed embed : embeds) {
+                final MessageEmbed key = embed.buildEmbed(values, consumer -> populate(embed, consumer, user));
+
+                if (key == null) continue;
+
+                keys.add(key);
+            }
+        }
+
+        return keys;
     }
 }
