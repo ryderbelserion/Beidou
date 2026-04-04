@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.bot.guilds.features.logging.listeners;
+package com.ryderbelserion.discord.bot.guilds.listeners;
 
 import com.ryderbelserion.discord.bot.Beidou;
 import com.ryderbelserion.discord.bot.api.managers.CommandManager;

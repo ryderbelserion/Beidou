@@ -17,7 +17,7 @@ import com.ryderbelserion.discord.bot.configs.types.FileConfig;
 import com.ryderbelserion.discord.bot.guilds.GuildListener;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.GuildMessageListener;
-import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.GuildSlashListener;
+import com.ryderbelserion.discord.bot.guilds.listeners.GuildSlashListener;
 import com.ryderbelserion.discord.bot.guilds.features.threads.ThreadListener;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
