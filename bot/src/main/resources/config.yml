@@ -19,13 +19,16 @@ root:
     # Available Types:
     #   ⤷ POSTGRESQL (OPTIONAL)
     #   ⤷ SQLITE (DEFAULT)
-    type: "SQLITE"
+    #   ⤷ NONE (If this option is used, certain features will not work, they will all be disabled.)
+    type: "NONE"
     # Define the address and port for the database.
     # - The standard DB engine port is used by default
     #   (MySQL: 3306, PostgreSQL: 5432)
     connection:
+      # The address used to connect to your database type!
       url: "your_ip"
-      port: "" # Defaults to default port for database type if empty/removed.
+      # Defaults to default port for database type if empty/removed.
+      port: ""
     # The name of the database, which must be created by you.
     database: "your_database"
     # The username for the database.

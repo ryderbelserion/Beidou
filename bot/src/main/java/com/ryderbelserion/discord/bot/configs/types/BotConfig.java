@@ -23,7 +23,7 @@ public class BotConfig {
         this.isCustomStatusEnabled = config.node("root", "presence", "toggle").getBoolean(true);
         this.customStatus = config.node("root", "presence", "status").getString("Watching {count} members");
 
-        this.storageConfig.init(config.node("storage"));
+        this.storageConfig.init(config.node("root", "storage"));
         this.fileConfig.init(config);
     }
 

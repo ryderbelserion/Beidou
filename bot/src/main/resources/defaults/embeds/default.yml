@@ -37,7 +37,7 @@ embed:
         - "This is another example."
       # Should the field be inline?
       inline: false
-  # The buttons, for embeds
+  # The buttons, for embeds.
   buttons:
     # The name of the button.
     "1":

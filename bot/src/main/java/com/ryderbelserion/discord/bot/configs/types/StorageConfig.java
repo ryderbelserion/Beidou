@@ -12,7 +12,7 @@ public class StorageConfig {
     private String type;
 
     public void init(@NotNull final CommentedConfigurationNode config) {
-        final String type = config.node("type").getString("SQLITE");
+        final String type = config.node("type").getString("NONE");
 
         final int port = config.node("connection", "port").getInt(switch (type) {
             case "POSTGRESQL" -> 5432;

@@ -14,6 +14,7 @@ import com.ryderbelserion.discord.bot.configs.ConfigManager;
 import com.ryderbelserion.discord.bot.api.environment.enums.Environment;
 import com.ryderbelserion.discord.bot.configs.types.BotConfig;
 import com.ryderbelserion.discord.bot.configs.types.FileConfig;
+import com.ryderbelserion.discord.bot.configs.types.StorageConfig;
 import com.ryderbelserion.discord.bot.storage.StorageManager;
 import com.ryderbelserion.discord.bot.storage.impl.objects.StorageHolder;
 import com.ryderbelserion.discord.bot.guilds.GuildListener;
@@ -305,10 +306,16 @@ public class Beidou extends DiscordPlugin {
 
         this.guildManager = new GuildManager(this);
 
-        try {
-            this.storageHolder = new StorageManager(this).init();
-        } catch (final Exception exception) {
-            this.logger.error("Failed to initialize storage impl", exception);
+        final BotConfig bot = this.configManager.getConfig();
+
+        final StorageConfig config = bot.getStorageConfig();
+
+        if (!config.getType().equalsIgnoreCase("none")) {
+            try {
+                this.storageHolder = new StorageManager(this).init();
+            } catch (final Exception exception) {
+                this.logger.error("Failed to initialize storage impl", exception);
+            }
         }
     }
 
