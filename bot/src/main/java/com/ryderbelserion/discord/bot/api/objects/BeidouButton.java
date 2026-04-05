@@ -7,7 +7,7 @@ import org.spongepowered.configurate.serialize.SerializationException;
 
 public class BeidouButton {
 
-    private ButtonStyle style = ButtonStyle.PRIMARY;
+    private final ButtonStyle style;
     private final String value;
     private final String label;
     private final String emoji;
@@ -15,10 +15,15 @@ public class BeidouButton {
     private final String id;
 
     public BeidouButton(@NotNull final CommentedConfigurationNode configuration) {
-        try {
-            this.style = configuration.node("style").get(ButtonStyle.class, ButtonStyle.PRIMARY);
-        } catch (final SerializationException exception) {
-            exception.printStackTrace();
+        final String style = configuration.node("style").getString("primary");
+
+        switch (style) {
+            case "secondary" -> this.style = ButtonStyle.SECONDARY;
+            case "success" -> this.style = ButtonStyle.SUCCESS;
+            case "danger" -> this.style = ButtonStyle.DANGER;
+            case "link" -> this.style = ButtonStyle.LINK;
+            case "premium" -> this.style = ButtonStyle.PREMIUM;
+            default -> this.style = ButtonStyle.PRIMARY;
         }
 
         this.emoji = configuration.node("action", "emoji").getString("");
