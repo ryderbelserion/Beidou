@@ -8,6 +8,7 @@ import com.ryderbelserion.discord.bot.Beidou;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -34,7 +35,10 @@ public class ReloadCommand extends CommandEngine {
     }
 
     @Override
-    protected void perform(@NotNull final CommandContext context) {
+    protected void perform(
+            @NotNull final SlashCommandInteractionEvent event,
+            @NotNull final CommandContext context
+    ) {
         final User user = context.getAuthor();
 
         if (context.isCreator(user.getId())) {

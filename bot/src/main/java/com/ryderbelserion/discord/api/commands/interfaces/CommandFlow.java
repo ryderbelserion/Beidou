@@ -2,24 +2,19 @@ package com.ryderbelserion.discord.api.commands.interfaces;
 
 import com.ryderbelserion.discord.api.commands.CommandEngine;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public interface CommandFlow {
 
-    void addCommands(@NotNull final CommandEngine... engines);
+    void addCommands(@NotNull final List<CommandEngine> commands);
 
-    void addCommand(@NotNull final CommandEngine engine);
+    void addStaticGuildCommands(@NotNull final Guild guild, @NotNull final List<CommandEngine> commands);
 
-    void addGuildCommand(@NotNull final Guild guild, @NotNull final CommandEngine engine);
-
-    void addGuildCommand(@NotNull final Guild guild, @NotNull final String command, @NotNull final String description);
-
-    void addGuildCommands(@NotNull final Guild guild, @NotNull final CommandEngine... engines);
+    void addGuildCommands(@NotNull final Guild guild, @NotNull final List<CommandData> commands);
 
     void purgeGuildCommands(@NotNull final Guild guild);
 
-    void purgeGlobalCommands();
+    void purgeCommands();
 }

@@ -3,9 +3,16 @@ package com.ryderbelserion.discord.api.commands;
 import com.ryderbelserion.discord.api.commands.interfaces.CommandFlow;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.jetbrains.annotations.NotNull;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CommandHandler implements CommandFlow {
+
+    private final Map<String, CommandEngine> commands = new HashMap<>();
 
     private JDA jda;
 
@@ -14,42 +21,28 @@ public class CommandHandler implements CommandFlow {
     }
 
     @Override
-    public void addCommand(@NotNull final CommandEngine engine) {
-        this.jda.upsertCommand(engine.getCommandData()).queue();
-    }
+    public void addCommands(@NotNull final List<CommandEngine> commands) {
+        this.jda.updateCommands().addCommands(commands.stream()
+                .map(CommandEngine::getCommandData)
+                .collect(Collectors.toSet())).queue();
 
-    @Override
-    public void addCommands(@NotNull final CommandEngine... engines) {
-        for (final CommandEngine engine : engines) {
-            addCommand(engine);
+        for (final CommandEngine engine : commands) { // add to cache
+            this.commands.put(engine.getName(), engine);
         }
     }
 
     @Override
-    public void addGuildCommand(
-            @NotNull final Guild guild,
-            @NotNull final CommandEngine engine
-    ) {
-        guild.upsertCommand(engine.getCommandData()).queue();
-    }
+    public void addStaticGuildCommands(@NotNull final Guild guild, @NotNull final List<CommandEngine> commands) { // statically generated guild commands, i.e. on startup only, hard coded.
+        addGuildCommands(guild, commands.stream().map(CommandEngine::getCommandData).toList());
 
-    @Override
-    public void addGuildCommand(
-            @NotNull final Guild guild,
-            @NotNull final String command,
-            @NotNull final String description
-    ) {
-        guild.upsertCommand(command, description).queue();
-    }
-
-    @Override
-    public void addGuildCommands(
-            @NotNull final Guild guild,
-            @NotNull final CommandEngine... engines
-    ) {
-        for (final CommandEngine engine : engines) {
-            addGuildCommand(guild, engine);
+        for (final CommandEngine engine : commands) { // add to cache
+            this.commands.put(engine.getName(), engine);
         }
+    }
+
+    @Override
+    public void addGuildCommands(@NotNull final Guild guild, @NotNull final List<CommandData> commands) { // dynamically generated guild commands, i.e. yml files
+        guild.updateCommands().addCommands(commands).queue();
     }
 
     @Override
@@ -58,7 +51,15 @@ public class CommandHandler implements CommandFlow {
     }
 
     @Override
-    public void purgeGlobalCommands() {
+    public void purgeCommands() {
         this.jda.updateCommands().queue();
+    }
+
+    public @NotNull final CommandEngine getCommand(@NotNull final String name) {
+        return this.commands.get(name);
+    }
+
+    public final boolean hasCommand(@NotNull final String name) {
+        return this.commands.containsKey(name);
     }
 }

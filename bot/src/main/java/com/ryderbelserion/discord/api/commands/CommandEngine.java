@@ -3,7 +3,6 @@ package com.ryderbelserion.discord.api.commands;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.AutoCompleteQuery;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -12,25 +11,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class CommandEngine extends ListenerAdapter {
+public abstract class CommandEngine {
 
     private final Map<String, List<String>> values = new HashMap<>();
 
-    private final String name;
-    private final String description;
+    protected final String description;
+    protected final String name;
 
-    public CommandEngine(@NotNull final String name,
-                         @NotNull final String description) {
+    public CommandEngine(
+            @NotNull final String name,
+            @NotNull final String description
+    ) {
         this.name = name;
         this.description = description;
     }
 
     protected abstract CommandData getCommandData();
 
-    protected abstract void perform(@NotNull final CommandContext context);
+    protected abstract void perform(@NotNull final SlashCommandInteractionEvent event, @NotNull final CommandContext context);
 
-    @Override
-    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
+    public void interact(@NotNull final SlashCommandInteractionEvent event) {
         final CommandContext context = new CommandContext(event);
 
         if (!event.getName().equalsIgnoreCase(this.name)) return;
@@ -39,11 +39,10 @@ public abstract class CommandEngine extends ListenerAdapter {
 
         if (user.isBot()) return; // don't let bots interact with the command
 
-        perform(context);
+        perform(event, context);
     }
 
-    @Override
-    public void onCommandAutoCompleteInteraction(@NotNull CommandAutoCompleteInteractionEvent event) {
+    public void complete(@NotNull final CommandAutoCompleteInteractionEvent event) {
         final String name = event.getName();
 
         if (!name.equalsIgnoreCase(this.name)) return;

@@ -86,6 +86,10 @@ public class BeidouGuild {
         }
     }
 
+    public @NotNull final CommandHandler getCommandHandler() {
+        return this.handler;
+    }
+
     public @NotNull final CommandManager getCommandManager() {
         return this.commandManager;
     }
@@ -104,10 +108,6 @@ public class BeidouGuild {
 
     public @NotNull final FileManager getFileManager() {
         return this.fileManager;
-    }
-
-    public @NotNull final CommandHandler getHandler() {
-        return this.handler;
     }
 
     public @NotNull final GuildConfig getConfig() {

@@ -219,17 +219,13 @@ public class Beidou extends DiscordPlugin {
             );
         }
 
-        List.of(
+        this.commandHandler.addCommands(List.of(
                 // bot creator commands
                 new ReloadCommand(this),
 
                 // generic bot information
                 new AboutCommand(this)
-        ).forEach(command -> {
-            this.commandHandler.addCommand(command);
-
-            addEventListener(command);
-        });
+        ));
 
         switch (this.environment) {
             case RELEASE -> this.addEventListener(
