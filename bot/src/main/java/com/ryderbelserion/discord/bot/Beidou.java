@@ -14,6 +14,8 @@ import com.ryderbelserion.discord.bot.configs.ConfigManager;
 import com.ryderbelserion.discord.bot.api.environment.enums.Environment;
 import com.ryderbelserion.discord.bot.configs.types.BotConfig;
 import com.ryderbelserion.discord.bot.configs.types.FileConfig;
+import com.ryderbelserion.discord.bot.storage.StorageManager;
+import com.ryderbelserion.discord.bot.storage.impl.objects.StorageHolder;
 import com.ryderbelserion.discord.bot.guilds.GuildListener;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.GuildMessageListener;
@@ -79,6 +81,7 @@ public class Beidou extends DiscordPlugin {
         this.timer = new Timer();
     }
 
+    private StorageHolder storageHolder;
     private ConfigManager configManager;
     private GuildManager guildManager;
     private JDA jda;
@@ -301,6 +304,12 @@ public class Beidou extends DiscordPlugin {
         this.fileManager.setDepth(getRecursionDepth());
 
         this.guildManager = new GuildManager(this);
+
+        try {
+            this.storageHolder = new StorageManager(this).init();
+        } catch (final Exception exception) {
+            this.logger.error("Failed to initialize storage impl", exception);
+        }
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -340,6 +349,10 @@ public class Beidou extends DiscordPlugin {
 
     public @NotNull final CommandHandler getCommandHandler() {
         return this.commandHandler;
+    }
+
+    public @NotNull final StorageHolder getStorageHolder() {
+        return this.storageHolder;
     }
 
     public @NotNull final ConfigManager getConfigManager() {

@@ -1,26 +1,25 @@
-# Github: https://github.com/ryderbelserion/Beidou
+# Github: https://github.com/ryderbelserion
 root:
   # Bot Presence Settings.
   presence:
     # Should this be enabled?
     toggle: true
     # Available Placeholders: {count}
-    status: "Watching {count} members"
+    status: "Watching {count} pirates"
 
   # File related settings.
   file:
     # Set how deep we should recurse in the project structure.
-    recursion_depth: 1
+    recursion_depth: 2
 
   # Configuration options related to the plugin database!
   storage:
     # The type of database which we store data in!
     #
     # Available Types:
-    #   ⤷ POSTGRESQL (DEFAULT)
-    #   ⤷ SQLITE (UNAVAILABLE)
-    #   ⤷ JSON (UNAVAILABLE)
-    type: "POSTGRESQL"
+    #   ⤷ POSTGRESQL (OPTIONAL)
+    #   ⤷ SQLITE (DEFAULT)
+    type: "SQLITE"
     # Define the address and port for the database.
     # - The standard DB engine port is used by default
     #   (MySQL: 3306, PostgreSQL: 5432)
