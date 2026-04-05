@@ -128,7 +128,11 @@ public class BeidouEmbed {
 
         final ReplyCallbackAction action = event.replyEmbeds(message).addEmbeds(getEmbeds(embeds, user, values));
 
-        action.addComponents(ActionRow.of(getComponents()));
+        final List<Button> components = getComponents();
+
+        if (!components.isEmpty()) {
+            action.addComponents(ActionRow.of(components));
+        }
 
         action.setEphemeral(this.isSilent).queue();
     }
@@ -167,7 +171,11 @@ public class BeidouEmbed {
 
         final MessageCreateAction action = channel.sendMessageEmbeds(message).addEmbeds(getEmbeds(embeds, user, values));
 
-        action.addComponents(ActionRow.of(getComponents()));
+        final List<Button> components = getComponents();
+
+        if (!components.isEmpty()) {
+            action.addComponents(ActionRow.of(components));
+        }
 
         action.queue();
     }
