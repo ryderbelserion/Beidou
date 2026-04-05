@@ -6,12 +6,14 @@ import com.ryderbelserion.discord.api.utils.StringUtils;
 import net.dv8tion.jda.api.components.MessageTopLevelComponent;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
-import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.requests.restaction.MessageCreateAction;
+import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -124,7 +126,11 @@ public class BeidouEmbed {
             return;
         }
 
-        event.replyEmbeds(message).addEmbeds(getEmbeds(embeds, user, values)).addComponents(getComponents()).setEphemeral(this.isSilent).queue();
+        final ReplyCallbackAction action = event.replyEmbeds(message).addEmbeds(getEmbeds(embeds, user, values));
+
+        action.addComponents(ActionRow.of(getComponents()));
+
+        action.setEphemeral(this.isSilent).queue();
     }
 
     public void sendEmbed(
@@ -159,7 +165,11 @@ public class BeidouEmbed {
             return;
         }
 
-        channel.sendMessageEmbeds(message).addEmbeds(getEmbeds(embeds, user, values)).addComponents(getComponents()).queue();
+        final MessageCreateAction action = channel.sendMessageEmbeds(message).addEmbeds(getEmbeds(embeds, user, values));
+
+        action.addComponents(ActionRow.of(getComponents()));
+
+        action.queue();
     }
 
     public void sendEmbed(
@@ -258,13 +268,16 @@ public class BeidouEmbed {
         }
     }
 
-    private List<MessageTopLevelComponent> getComponents() {
-        final List<MessageTopLevelComponent> components = new ArrayList<>();
+    private List<Button> getComponents() {
+        final List<Button> buttons = new ArrayList<>();
 
         for (final BeidouButton button : this.buttons) {
             final String type = button.getType();
 
             final String label = button.getLabel();
+
+            final ButtonStyle style = button.getStyle();
+            final String id = button.getId();
 
             switch (type) {
                 case "link" -> {
@@ -272,15 +285,14 @@ public class BeidouEmbed {
 
                     final String emoji = button.getEmoji();
 
-
-                    components.add(ActionRow.of(emoji.isBlank() ? instance : instance.withEmoji(Emoji.fromFormatted(emoji))));
+                    buttons.add(emoji.isBlank() ? instance : instance.withEmoji(Emoji.fromFormatted(emoji)));
                 }
 
-                //default -> action.addComponents(ActionRow.of(Button.of(style, id, label)));
+                default -> buttons.add(Button.of(style, id, label));
             }
         }
 
-        return components;
+        return buttons;
     }
 
     private List<MessageEmbed> getEmbeds(
