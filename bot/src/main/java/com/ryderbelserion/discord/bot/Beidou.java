@@ -8,6 +8,7 @@ import com.ryderbelserion.discord.api.embeds.EmbedColor;
 import com.ryderbelserion.discord.api.options.OptionsManager;
 import com.ryderbelserion.discord.api.options.types.EnvOption;
 import com.ryderbelserion.discord.bot.api.managers.EmbedManager;
+import com.ryderbelserion.discord.bot.commands.misc.FrierenCommand;
 import com.ryderbelserion.discord.bot.commands.owner.AboutCommand;
 import com.ryderbelserion.discord.bot.commands.owner.ReloadCommand;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
@@ -222,6 +223,9 @@ public class Beidou extends DiscordPlugin {
         this.commandHandler.addCommands(List.of(
                 // bot creator commands
                 new ReloadCommand(this),
+
+                // misc commands
+                new FrierenCommand(),
 
                 // generic bot information
                 new AboutCommand(this)
