@@ -5,20 +5,31 @@
         </encoder>
     </appender>
 
-    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>beidou/logs/latest.log</file>
+    <appender name="file" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <key>logName</key>
+            <defaultValue>test</defaultValue>
+        </discriminator>
 
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
+        <sift>
+            <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>beidou/logs/latest.log</file>
 
-            <!-- keep 30 days' worth of history capped at 3GB total size -->
-            <maxHistory>30</maxHistory>
-            <totalSizeCap>3GB</totalSizeCap>
-        </rollingPolicy>
+                <append>false</append>
 
-        <encoder>
-            <pattern>[%d{HH:mm:ss} %level]: [%logger] %msg%n%xEx{full}</pattern>
-        </encoder>
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <fileNamePattern>%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
+
+                    <!-- keep 30 days' worth of history capped at 3GB total size -->
+                    <maxHistory>30</maxHistory>
+                    <totalSizeCap>1GB</totalSizeCap>
+                </rollingPolicy>
+
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <pattern>[%d{HH:mm:ss} %level]: [%logger] %msg%n%xEx{full}</pattern>
+                </layout>
+            </appender>
+        </sift>
     </appender>
 
     <root level="info">
