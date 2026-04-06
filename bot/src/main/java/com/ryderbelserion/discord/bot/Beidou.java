@@ -130,9 +130,15 @@ public class Beidou extends DiscordPlugin {
 
             final Path path = directory.resolve(file);
 
+            final List<FileAction> actions = new ArrayList<>();
+
+            if (this.fileManager.hasFile(path)) {
+                actions.add(FileAction.RELOAD_FILE);
+            }
+
             this.fileManager.extractFile("guilds/%s".formatted(file), path);
 
-            this.fileManager.addFile(path, fileType, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
+            this.fileManager.addFile(path, fileType, consumer -> actions.forEach(consumer::addAction));
         });
 
         final Path commandFolder = directory.resolve("commands");
