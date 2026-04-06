@@ -288,6 +288,12 @@ public class Beidou extends DiscordPlugin {
     @Override
     public void onStop(@NotNull final JDA jda) {
         this.logger.info("{} is offline!", jda.getSelfUser().getName());
+
+        final Path directory = getDirectory();
+
+        final Path folder = directory.resolve("logs");
+
+        this.fileManager.compressFile(folder.resolve("latest.log"), folder);
     }
 
     @Override
