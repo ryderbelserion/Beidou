@@ -289,7 +289,11 @@ public class BeidouEmbed {
 
             switch (type) {
                 case "link" -> {
-                    final Button instance = Button.link(button.getValue(), label);
+                    final String value = button.getValue();
+
+                    if (value.isBlank()) continue;
+
+                    final Button instance = Button.link(value, label);
 
                     final String emoji = button.getEmoji();
 
