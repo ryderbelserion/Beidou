@@ -51,7 +51,7 @@ embed:
       action:
         # Available Types:
         #  -> link (sends a link when clicked)
-        type: "link"
+        type: ""
         # The value, that is needed when a button is clicked.
         value: ""
         # The emoji to use for the button.
