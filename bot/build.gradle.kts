@@ -11,7 +11,6 @@ rootProject.description = "a discord bot"
 rootProject.version = "1.1.0"
 
 repositories {
-    maven("https://repo.crazycrew.us/snapshots/")
     maven("https://repo.crazycrew.us/releases/")
 
     mavenCentral()

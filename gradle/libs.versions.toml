@@ -2,7 +2,7 @@
 ## Gradle Plugins
 shadow = "9.3.1" # https://github.com/GradleUp/shadow
 
-fusion-files = "4.0.0-SNAPSHOT" # https://github.com/ryderbelserion/Fusion
+fusion-files = "4.0.0" # https://github.com/ryderbelserion/Fusion
 fusion-addons = "0.3.0" # https://github.com/ryderbelserion/Fusion
 
 logback-classic = "1.5.20" # https://github.com/qos-ch/logback
