@@ -1,16 +1,16 @@
 [versions]
 ## Gradle Plugins
-shadow = "9.3.1" # https://github.com/GradleUp/shadow
+shadow = "9.4.1" # https://github.com/GradleUp/shadow
 
-fusion-files = "4.0.0" # https://github.com/ryderbelserion/Fusion
+fusion-files = "4.4.0" # https://github.com/ryderbelserion/Fusion
 fusion-addons = "0.3.0" # https://github.com/ryderbelserion/Fusion
 
-logback-classic = "1.5.20" # https://github.com/qos-ch/logback
+logback-classic = "1.5.32" # https://github.com/qos-ch/logback
 jopt-simple = "5.0.4" # https://github.com/jopt-simple/jopt-simple
 
-hikari = "4.0.3" # https://github.com/brettwooldridge/HikariCP
+hikari = "7.0.2" # https://github.com/brettwooldridge/HikariCP
 
-jda = "6.4.0" # https://github.com/discord-jda/JDA
+jda = "6.4.1" # https://github.com/discord-jda/JDA
 
 [plugins]
 # https://github.com/GradleUp/shadow
