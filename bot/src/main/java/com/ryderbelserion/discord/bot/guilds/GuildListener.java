@@ -19,7 +19,7 @@ public class GuildListener extends ListenerAdapter {
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
         final Guild guild = event.getGuild();
 
-        this.beidou.onGuildReady(guild);
+        this.beidou.onGuildReady(guild, false);
     }
 
     @Override

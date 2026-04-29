@@ -42,7 +42,7 @@ public abstract class DiscordPlugin {
     protected boolean isActive = false;
     protected FileManager fileManager;
 
-    public abstract void onGuildReady(@NotNull final Guild guild);
+    public abstract void onGuildReady(@NotNull final Guild guild, final boolean isReload);
 
     public abstract void onReload(@NotNull final String id, final @NotNull CommandContext user);
 

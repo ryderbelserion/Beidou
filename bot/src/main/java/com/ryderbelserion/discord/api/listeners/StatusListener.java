@@ -17,7 +17,7 @@ public class StatusListener extends ListenerAdapter {
 
     @Override
     public void onGuildReady(GuildReadyEvent event) {
-        this.plugin.onGuildReady(event.getGuild());
+        this.plugin.onGuildReady(event.getGuild(), false);
     }
 
     @Override

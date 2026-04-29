@@ -89,7 +89,7 @@ public class Beidou extends DiscordPlugin {
     private JDA jda;
 
     @Override
-    public void onGuildReady(@NotNull final Guild guild) {
+    public void onGuildReady(@NotNull final Guild guild, final boolean isReload) {
         final String name = Objects.requireNonNull(guild.getOwner()).getEffectiveName();
         final String id = guild.getOwnerId();
 
@@ -180,8 +180,21 @@ public class Beidou extends DiscordPlugin {
             exception.printStackTrace();
         }
 
-        this.fileManager.addFolder(directory.resolve("commands"), FileType.YAML, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
-        this.fileManager.addFolder(directory.resolve("embeds"), FileType.YAML, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED));
+        this.fileManager.addFolder(directory.resolve("commands"), FileType.YAML, consumer -> {
+            consumer.addAction(FileAction.ALREADY_EXTRACTED);
+
+            if (isReload) {
+                consumer.addAction(FileAction.RELOAD_FILE);
+            }
+        });
+
+        this.fileManager.addFolder(directory.resolve("embeds"), FileType.YAML, consumer -> {
+            consumer.addAction(FileAction.ALREADY_EXTRACTED);
+
+            if (isReload) {
+                consumer.addAction(FileAction.RELOAD_FILE);
+            }
+        });
 
         final Path addons = directory.resolve("addons");
 
@@ -268,7 +281,7 @@ public class Beidou extends DiscordPlugin {
 
         if (guild == null) return;
 
-        onGuildReady(guild);
+        onGuildReady(guild, true);
 
         context.reply(new Embed()
                 .description("We're setting sail! Men, to your posts! A new adventure is about to begin!")
@@ -287,7 +300,7 @@ public class Beidou extends DiscordPlugin {
         final List<Guild> guilds = jda.getGuilds();
 
         for (final Guild guild : guilds) {
-            this.onGuildReady(guild);
+            this.onGuildReady(guild, true);
         }
     }
 
