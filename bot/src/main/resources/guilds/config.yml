@@ -1,5 +1,8 @@
 # General Settings.
 settings:
+  # The fallback avatar, globally if the user does not have an avatar.
+  default-avatar: "https://raw.githubusercontent.com/ryderbelserion/Beidou/refs/heads/main/pout.jpg"
+
   # Thread related settings.
   threads:
     # Thread creation for announcements.

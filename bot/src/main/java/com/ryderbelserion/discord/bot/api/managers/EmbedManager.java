@@ -26,6 +26,8 @@ public class EmbedManager {
 
         final int depth = instance.getConfigManager().getConfig().getFileConfig().getRecursionDepth();
 
+        final String defaultAvatar = instance.getConfig().getDefaultAvatar();
+
         for (final Path path : fileManager.getFilesByPath(directory.resolve("embeds"), ".yml", depth)) {
             final Optional<YamlCustomFile> optional = fileManager.getYamlFile(path);
 
@@ -35,7 +37,7 @@ public class EmbedManager {
 
             final String fileName = path.getFileName().toString();
 
-            this.embeds.computeIfAbsent(id, _ -> new HashMap<>()).putIfAbsent(fileName, new BeidouEmbed(
+            this.embeds.computeIfAbsent(id, _ -> new HashMap<>()).putIfAbsent(fileName, new BeidouEmbed(defaultAvatar,
                     configuration.node("embed")
             ));
         }

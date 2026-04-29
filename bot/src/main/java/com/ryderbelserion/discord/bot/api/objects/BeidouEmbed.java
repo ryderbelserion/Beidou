@@ -3,7 +3,6 @@ package com.ryderbelserion.discord.bot.api.objects;
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.utils.ConfigUtils;
 import com.ryderbelserion.discord.api.utils.StringUtils;
-import net.dv8tion.jda.api.components.MessageTopLevelComponent;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.components.buttons.ButtonStyle;
@@ -49,14 +48,14 @@ public class BeidouEmbed {
     private final String thumbnail;
     private final String image;
 
-    public BeidouEmbed(@NotNull final CommentedConfigurationNode configuration) {
+    public BeidouEmbed(@NotNull final String defaultAvatar, @NotNull final CommentedConfigurationNode configuration) {
         this.description = StringUtils.toString(ConfigUtils.getStringList(configuration.node("description")));
         this.title = configuration.node("title").getString("");
         this.isEnabled = configuration.node("enabled").getBoolean(false);
         this.isSilent = configuration.node("silent").getBoolean(false);
 
         this.authorText = configuration.node("author", "text").getString("");
-        this.authorUrl = configuration.node("author", "url").getString("");
+        this.authorUrl = configuration.node("author", "url").getString(defaultAvatar);
 
         for (final CommentedConfigurationNode node : configuration.node("fields").childrenMap().values()) {
             this.fields.add(new BeidouField(node));
@@ -118,6 +117,10 @@ public class BeidouEmbed {
         placeholders.put("{username}", user.getName());
         placeholders.put("{userid}", user.getId());
 
+        final String url = user.getAvatarUrl();
+
+        placeholders.put("{avatar}", url == null ? this.authorUrl : url);
+
         placeholders.put("{usermention}", user.getAsMention());
 
         final MessageEmbed message = buildEmbed(placeholders, consumer -> populate(this, consumer, user));
@@ -160,6 +163,10 @@ public class BeidouEmbed {
         placeholders.put("{usertag}", user.getAsTag());
         placeholders.put("{username}", user.getName());
         placeholders.put("{userid}", user.getId());
+
+        final String url = user.getAvatarUrl();
+
+        placeholders.put("{avatar}", url == null ? this.authorUrl : url);
 
         placeholders.put("{usermention}", user.getAsMention());
 

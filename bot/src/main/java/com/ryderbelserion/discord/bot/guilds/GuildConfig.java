@@ -14,6 +14,8 @@ public class GuildConfig {
     private final TrafficConfig trafficConfig;
     private final ThreadConfig threadConfig;
 
+    private final String defaultAvatar;
+
     public GuildConfig(
             @NotNull final CommentedConfigurationNode config,
             @NotNull final CommentedConfigurationNode traffic,
@@ -25,6 +27,8 @@ public class GuildConfig {
         this.trafficConfig = new TrafficConfig(traffic.node("traffic"), embedManager);
 
         this.threadConfig = new ThreadConfig(config.node("settings", "threads", "creation"));
+
+        this.defaultAvatar = config.node("settings", "default-avatar").getString("https://raw.githubusercontent.com/ryderbelserion/Beidou/refs/heads/main/pout.jpg");
     }
 
     public @NotNull final MessageConfig getMessageConfig() {
@@ -37,5 +41,9 @@ public class GuildConfig {
 
     public @NotNull final ThreadConfig getThreadConfig() {
         return this.threadConfig;
+    }
+
+    public @NotNull final String getDefaultAvatar() {
+        return this.defaultAvatar;
     }
 }
