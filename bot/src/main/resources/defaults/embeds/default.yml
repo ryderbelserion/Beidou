@@ -1,4 +1,9 @@
-# The embed to send.
+# Available Placeholders:
+# - {usermention}
+# - {username}
+# - {usertag}
+# - {userid}
+# - {avatar}
 embed:
   # Should the embed be enabled?
   enabled: true
@@ -11,7 +16,7 @@ embed:
     # The text i.e. author name.
     text: ""
     # The icon.
-    url: ""
+    url: "{avatar}"
   # The thumbnail, which shows up on the right side of the embed.
   thumbnail: ""
   # The image, which shows up at the bottom of the embed.
