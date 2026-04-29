@@ -123,7 +123,7 @@ public class BeidouEmbed {
 
         placeholders.put("{usermention}", user.getAsMention());
 
-        final MessageEmbed message = buildEmbed(placeholders, consumer -> populate(this, consumer, user));
+        final MessageEmbed message = buildEmbed(placeholders, consumer -> populate(this, consumer, user, placeholders));
 
         if (message == null) {
             return;
@@ -170,7 +170,7 @@ public class BeidouEmbed {
 
         placeholders.put("{usermention}", user.getAsMention());
 
-        final MessageEmbed message = buildEmbed(placeholders, consumer -> populate(this, consumer, user));
+        final MessageEmbed message = buildEmbed(placeholders, consumer -> populate(this, consumer, user, placeholders));
 
         if (message == null) {
             return;
@@ -248,7 +248,9 @@ public class BeidouEmbed {
     private void populate(
             @NotNull final BeidouEmbed embed,
             @NotNull final Embed action,
-            @NotNull final User user
+            @NotNull final User user,
+
+            @NotNull final Map<String, String> placeholders
     ) {
         if (embed.hasFooter()) {
             final String footer = embed.getFooter();
@@ -267,19 +269,19 @@ public class BeidouEmbed {
         final String username = embed.getAuthorText();
 
         if (!username.isBlank()) {
-            action.author(username, embed.getAuthorUrl());
+            action.author(StringUtils.replacePlaceholders(username, placeholders), StringUtils.replacePlaceholders(embed.getAuthorUrl(), placeholders));
         }
 
         final String thumbnail = embed.getThumbnail();
 
         if (!thumbnail.isBlank()) {
-            action.thumbnail(thumbnail);
+            action.thumbnail(StringUtils.replacePlaceholders(thumbnail, placeholders));
         }
 
         final String image = embed.getImage();
 
         if (!image.isBlank()) {
-            action.image(image);
+            action.image(StringUtils.replacePlaceholders(image, placeholders));
         }
     }
 
@@ -323,7 +325,7 @@ public class BeidouEmbed {
 
         if (!embeds.isEmpty()) {
             for (final BeidouEmbed embed : embeds) {
-                final MessageEmbed key = embed.buildEmbed(values, consumer -> populate(embed, consumer, user));
+                final MessageEmbed key = embed.buildEmbed(values, consumer -> populate(embed, consumer, user, values));
 
                 if (key == null) continue;
 
