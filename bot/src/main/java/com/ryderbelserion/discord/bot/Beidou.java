@@ -274,7 +274,7 @@ public class Beidou extends DiscordPlugin {
                 .description("We're setting sail! Men, to your posts! A new adventure is about to begin!")
                 .author(context.getAuthor())
                 .timestamp()
-                .footer("Guild: %s".formatted(id), getIconUrl(guild))
+                .footer("Guild: %s".formatted(guild.getName()), getIconUrl(guild))
                 .color(EmbedColor.SUCCESS).build(), true);
     }
 
