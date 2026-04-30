@@ -1,5 +1,8 @@
 package com.ryderbelserion.discord.bot;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.ryderbelserion.discord.Main;
 import com.ryderbelserion.discord.api.DiscordPlugin;
 import com.ryderbelserion.discord.api.commands.CommandContext;
 import com.ryderbelserion.discord.api.commands.CommandHandler;
@@ -35,10 +38,15 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class Beidou extends DiscordPlugin {
 
@@ -47,6 +55,7 @@ public class Beidou extends DiscordPlugin {
     private final Timer timer;
 
     private Environment environment;
+    private String version = "";
 
     public Beidou(@NotNull final String token, @NotNull final Logger logger, @NotNull final OptionsManager manager) {
         super(List.of(
@@ -319,6 +328,26 @@ public class Beidou extends DiscordPlugin {
     public void init() {
         super.init();
 
+        try (final JarFile jar = new JarFile(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath())) {
+            final JarEntry origin = jar.getJarEntry("version.json");
+
+            if (origin == null) {
+                return;
+            }
+
+            final InputStream entry = jar.getInputStream(origin);
+
+            if (entry == null) {
+                return;
+            }
+
+            final JsonObject json = new JsonParser().parse(new InputStreamReader(entry, StandardCharsets.UTF_8)).getAsJsonObject();
+
+            this.version = json.get("version").getAsString();
+        } catch (final Exception exception) {
+            this.logger.warn("Failed to get version.json", exception);
+        }
+
         final Path directory = getDirectory();
 
         this.fileManager.addFile(directory.resolve("guilds.json"), FileType.JSON)
@@ -401,5 +430,9 @@ public class Beidou extends DiscordPlugin {
 
     public @NotNull final Environment getEnvironment() {
         return environment;
+    }
+
+    public @NotNull final String getVersion() {
+        return this.version;
     }
 }

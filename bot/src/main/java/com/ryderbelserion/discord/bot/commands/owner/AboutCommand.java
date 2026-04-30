@@ -49,7 +49,7 @@ public class AboutCommand extends CommandEngine {
                 .color(EmbedColor.EDIT)
                 .fields(consumer -> {
                     consumer.field(
-                            "",
+                            "Statistics",
                             """
                                   <:nice:1431419218351624362> Total Servers: %s
                                   <:worried:1431419202291634258> Total Members: %s
@@ -59,6 +59,8 @@ public class AboutCommand extends CommandEngine {
                                     .sum()),
                             true
                     );
+
+                    consumer.field("Version", "%s".formatted(this.instance.getVersion()));
                 });
 
         final User author = context.getAuthor();

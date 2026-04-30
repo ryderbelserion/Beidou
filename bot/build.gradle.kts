@@ -38,6 +38,23 @@ tasks {
         options.release.set(25)
     }
 
+    processResources {
+        filteringCharset = Charsets.UTF_8.name()
+
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+        inputs.properties(
+            "version" to rootProject.version,
+        )
+
+        with(copySpec {
+            include("*version.json")
+            from("src/main/resources") {
+                expand(inputs.properties)
+            }
+        })
+    }
+
     shadowJar {
         manifest {
             attributes["Main-Class"] = "com.ryderbelserion.discord.Main"
