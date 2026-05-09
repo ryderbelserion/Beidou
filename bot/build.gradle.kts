@@ -8,7 +8,7 @@ plugins {
 
 rootProject.group = "com.ryderbelserion.beidou"
 rootProject.description = "a discord bot"
-rootProject.version = "1.3.0"
+rootProject.version = "1.3.1"
 
 repositories {
     maven("https://repo.crazycrew.us/releases/")
