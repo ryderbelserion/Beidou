@@ -45,14 +45,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class Beidou extends DiscordPlugin {
 
+    private final ScheduledExecutorService executorService;
     private final CommandHandler commandHandler;
     private final EmbedManager embedManager;
-    private final Timer timer;
 
     private Environment environment;
     private String version = "";
@@ -89,7 +92,8 @@ public class Beidou extends DiscordPlugin {
 
         this.commandHandler = new CommandHandler();
         this.embedManager = new EmbedManager();
-        this.timer = new Timer();
+
+        this.executorService = Executors.newSingleThreadScheduledExecutor();
     }
 
     private StorageHolder storageHolder;
@@ -225,27 +229,24 @@ public class Beidou extends DiscordPlugin {
         final BotConfig config = this.configManager.getConfig();
 
         if (config.isCustomStatusEnabled()) {
-            this.timer.scheduleAtFixedRate(
-                    new TimerTask() {
-                        @Override
-                        public void run() {
-                            if (!config.isCustomStatusEnabled()) {
-                                cancel();
-                            }
+            this.executorService.scheduleAtFixedRate(() -> {
+                try {
+                    if (!config.isCustomStatusEnabled()) {
+                        this.executorService.shutdown();
+                    }
 
-                            final Activity customStatus = Activity.customStatus(replacePlaceholder(config.getCustomStatus(), Map.of(
-                                    "{count}", String.valueOf(jda.getGuilds()
-                                            .stream()
-                                            .mapToInt(Guild::getMemberCount)
-                                            .sum())
-                            )));
+                    final Activity customStatus = Activity.customStatus(replacePlaceholder(config.getCustomStatus(), Map.of(
+                            "{count}", String.valueOf(jda.getGuilds()
+                                    .stream()
+                                    .mapToInt(Guild::getMemberCount)
+                                    .sum())
+                    )));
 
-                            jda.getPresence().setPresence(customStatus, false);
-                        }
-                    },
-                    0,
-                    60000
-            );
+                    jda.getPresence().setPresence(customStatus, false);
+                } catch (final Exception exception) {
+                    this.logger.warn("Failed to complete execution for updating status!", exception);
+                }
+            }, 0, 2, TimeUnit.MINUTES);
         }
 
         this.commandHandler.addCommands(List.of(
