@@ -78,7 +78,9 @@ public class Beidou extends DiscordPlugin {
                 GatewayIntent.GUILD_EXPRESSIONS,
                 GatewayIntent.GUILD_PRESENCES,
                 GatewayIntent.GUILD_MESSAGES,
-                GatewayIntent.GUILD_WEBHOOKS
+                GatewayIntent.GUILD_WEBHOOKS,
+
+                GatewayIntent.GUILD_MEMBERS
         ), List.of(
                 CacheFlag.VOICE_STATE,
                 CacheFlag.EMOJI
@@ -235,18 +237,17 @@ public class Beidou extends DiscordPlugin {
                         this.executorService.shutdown();
                     }
 
+                    final int size = jda.getGuilds().stream().mapToInt(Guild::getMemberCount).sum();
+
                     final Activity customStatus = Activity.customStatus(replacePlaceholder(config.getCustomStatus(), Map.of(
-                            "{count}", String.valueOf(jda.getGuilds()
-                                    .stream()
-                                    .mapToInt(Guild::getMemberCount)
-                                    .sum())
+                            "{count}", String.valueOf(size)
                     )));
 
                     jda.getPresence().setPresence(customStatus, false);
                 } catch (final Exception exception) {
                     this.logger.warn("Failed to complete execution for updating status!", exception);
                 }
-            }, 0, 2, TimeUnit.MINUTES);
+            }, 0, 1, TimeUnit.MINUTES);
         }
 
         this.commandHandler.addCommands(List.of(
