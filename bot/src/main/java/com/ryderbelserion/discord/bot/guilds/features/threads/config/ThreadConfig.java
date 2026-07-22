@@ -7,14 +7,11 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.unions.GuildMessageChannelUnion;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-
-import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 public class ThreadConfig {
 
@@ -25,10 +22,7 @@ public class ThreadConfig {
 
     public ThreadConfig(@NonNull final CommentedConfigurationNode configuration) {
         this.isEnabled = configuration.node("enabled").getBoolean(false);
-        this.title = StringUtils.replacePlaceholders(configuration.node("title").getString("{date}"), Map.of(
-                "{date}",
-                ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a"))
-        ));
+        this.title = configuration.node("title").getString("{date}");
 
         final CommentedConfigurationNode keys = configuration.node("channels");
 
@@ -48,7 +42,10 @@ public class ThreadConfig {
 
         final String display = message.getContentDisplay();
 
-        message.createThreadChannel(display.isBlank() ? this.title : display.substring(0, Math.min(100, display.length()))).queue(action -> {
+        message.createThreadChannel(display.isBlank() ? StringUtils.replacePlaceholders(this.title, Map.of(
+                "{date}",
+                ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a"))
+        )) : display.substring(0, Math.min(100, display.length()))).queue(action -> {
             if (!message.isWebhookMessage()) {
                 action.addThreadMember(user).queue();
             }
