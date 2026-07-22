@@ -2,7 +2,7 @@ package com.ryderbelserion.discord.bot.api.data.interfaces;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.sql.Connection;
 
@@ -20,11 +20,11 @@ public abstract class HikariConnectionFactory implements IConnector {
 
     protected abstract boolean isRunning();
 
-    protected abstract boolean isTableValid(@NotNull final Connection connection, @NotNull final String table);
+    protected abstract boolean isTableValid(@NonNull final Connection connection, @NonNull final String table);
 
     protected abstract String url();
 
-    public void properties(@NotNull final HikariConfig hikari, @NotNull final CommentedConfigurationNode config) {
+    public void properties(@NonNull final HikariConfig hikari, @NonNull final CommentedConfigurationNode config) {
         hikari.setPoolName("chatmanager-hikari");
 
         hikari.setMaximumPoolSize(config.node("root", "storage", "pool-settings", "maximum-pool-size").getInt(10));
@@ -36,7 +36,7 @@ public abstract class HikariConnectionFactory implements IConnector {
         hikari.setConnectionTimeout(config.node("root", "storage", "pool-settings", "connection-timeout").getLong(5000));
     }
 
-    public void init(@NotNull final CommentedConfigurationNode config) {
+    public void init(@NonNull final CommentedConfigurationNode config) {
         final HikariConfig hikari = new HikariConfig();
 
         properties(hikari, config);

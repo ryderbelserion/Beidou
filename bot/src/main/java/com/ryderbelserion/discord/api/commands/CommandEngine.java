@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.AutoCompleteQuery;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +19,8 @@ public abstract class CommandEngine {
     protected final String name;
 
     public CommandEngine(
-            @NotNull final String name,
-            @NotNull final String description
+            @NonNull final String name,
+            @NonNull final String description
     ) {
         this.name = name;
         this.description = description;
@@ -28,9 +28,9 @@ public abstract class CommandEngine {
 
     protected abstract CommandData getCommandData();
 
-    protected abstract void perform(@NotNull final SlashCommandInteractionEvent event, @NotNull final CommandContext context);
+    protected abstract void perform(@NonNull final SlashCommandInteractionEvent event, @NonNull final CommandContext context);
 
-    public void interact(@NotNull final SlashCommandInteractionEvent event) {
+    public void interact(@NonNull final SlashCommandInteractionEvent event) {
         final CommandContext context = new CommandContext(event);
 
         if (!event.getName().equalsIgnoreCase(this.name)) return;
@@ -42,7 +42,7 @@ public abstract class CommandEngine {
         perform(event, context);
     }
 
-    public void complete(@NotNull final CommandAutoCompleteInteractionEvent event) {
+    public void complete(@NonNull final CommandAutoCompleteInteractionEvent event) {
         final String name = event.getName();
 
         if (!name.equalsIgnoreCase(this.name)) return;
@@ -60,19 +60,19 @@ public abstract class CommandEngine {
         event.replyChoices(choices).queue();
     }
 
-    public void addChoice(@NotNull final String option, @NotNull final List<String> values) {
+    public void addChoice(@NonNull final String option, @NonNull final List<String> values) {
         this.values.put(option, values);
     }
 
-    public void removeChoice(@NotNull final String option) {
+    public void removeChoice(@NonNull final String option) {
         this.values.remove(option);
     }
 
-    public @NotNull final String getDescription() {
+    public @NonNull final String getDescription() {
         return this.description;
     }
 
-    public @NotNull final String getName() {
+    public @NonNull final String getName() {
         return this.name;
     }
 }

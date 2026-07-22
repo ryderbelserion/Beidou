@@ -1,7 +1,7 @@
 package com.ryderbelserion.discord.api.embeds;
 
 import com.ryderbelserion.discord.api.utils.ColorUtils;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.awt.*;
 
 public enum EmbedColor {
@@ -14,11 +14,11 @@ public enum EmbedColor {
 
     private final Color color;
 
-    EmbedColor(@NotNull final String code) {
+    EmbedColor(@NonNull final String code) {
         this.color = ColorUtils.toColor(code);
     }
 
-    public @NotNull final Color getColor() {
+    public @NonNull final Color getColor() {
         return this.color;
     }
 }

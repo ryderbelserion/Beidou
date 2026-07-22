@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.requests.restaction.MessageCreateAction;
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class BeidouEmbed {
     private final String thumbnail;
     private final String image;
 
-    public BeidouEmbed(@NotNull final String defaultAvatar, @NotNull final CommentedConfigurationNode configuration) {
+    public BeidouEmbed(@NonNull final String defaultAvatar, @NonNull final CommentedConfigurationNode configuration) {
         this.description = StringUtils.toString(ConfigUtils.getStringList(configuration.node("description")));
         this.title = configuration.node("title").getString("");
         this.isEnabled = configuration.node("enabled").getBoolean(false);
@@ -79,7 +79,7 @@ public class BeidouEmbed {
         this.color = configuration.node("color").getString("#e91e63");
     }
 
-    public @Nullable final MessageEmbed buildEmbed(@NotNull final Map<String, String> placeholders, @NotNull final Consumer<Embed> consumer) {
+    public @Nullable final MessageEmbed buildEmbed(@NonNull final Map<String, String> placeholders, @NonNull final Consumer<Embed> consumer) {
         if (!this.isEnabled) return null;
 
         final Embed embed = new Embed();
@@ -106,10 +106,10 @@ public class BeidouEmbed {
     }
 
     public void sendEmbed(
-            @NotNull final SlashCommandInteractionEvent event,
-            @NotNull final User user,
-            @NotNull final Map<String, String> values,
-            @NotNull final List<BeidouEmbed> embeds
+            @NonNull final SlashCommandInteractionEvent event,
+            @NonNull final User user,
+            @NonNull final Map<String, String> values,
+            @NonNull final List<BeidouEmbed> embeds
     ) { // slash interactions
         final Map<String, String> placeholders = new HashMap<>(values);
 
@@ -141,22 +141,22 @@ public class BeidouEmbed {
     }
 
     public void sendEmbed(
-            @NotNull final SlashCommandInteractionEvent event,
-            @NotNull final Map<String, String> values,
-            @NotNull final User user
+            @NonNull final SlashCommandInteractionEvent event,
+            @NonNull final Map<String, String> values,
+            @NonNull final User user
     ) {
         sendEmbed(event, user, values, List.of());
     }
 
-    public void sendEmbed(@NotNull final SlashCommandInteractionEvent event, @NotNull final User user) {
+    public void sendEmbed(@NonNull final SlashCommandInteractionEvent event, @NonNull final User user) {
         sendEmbed(event, user, Map.of(), List.of());
     }
 
     public void sendEmbed(
-            @NotNull final MessageChannel channel,
-            @NotNull final User user,
-            @NotNull final Map<String, String> values,
-            @NotNull final List<BeidouEmbed> embeds
+            @NonNull final MessageChannel channel,
+            @NonNull final User user,
+            @NonNull final Map<String, String> values,
+            @NonNull final List<BeidouEmbed> embeds
     ) { // channel replies
         final Map<String, String> placeholders = new HashMap<>(values);
 
@@ -188,18 +188,18 @@ public class BeidouEmbed {
     }
 
     public void sendEmbed(
-            @NotNull final MessageChannel channel,
-            @NotNull final Map<String, String> values,
-            @NotNull final User user
+            @NonNull final MessageChannel channel,
+            @NonNull final Map<String, String> values,
+            @NonNull final User user
     ) {
         sendEmbed(channel, user, values, List.of());
     }
 
-    public void sendEmbed(@NotNull final MessageChannel channel, @NotNull final User user) {
+    public void sendEmbed(@NonNull final MessageChannel channel, @NonNull final User user) {
         sendEmbed(channel, user, Map.of(), List.of());
     }
 
-    public String getIconUrl(@NotNull final User user) {
+    public String getIconUrl(@NonNull final User user) {
         final String url = user.getAvatarUrl();
 
         return url == null ? "" : url;
@@ -209,31 +209,31 @@ public class BeidouEmbed {
         return this.isUserFallBackEnabled;
     }
 
-    public @NotNull final String getAuthorText() {
+    public @NonNull final String getAuthorText() {
         return this.authorText;
     }
 
-    public @NotNull final String getAuthorUrl() {
+    public @NonNull final String getAuthorUrl() {
         return this.authorUrl;
     }
 
-    public @NotNull final String getThumbnail() {
+    public @NonNull final String getThumbnail() {
         return this.thumbnail;
     }
 
-    public @NotNull final String getTimezone() {
+    public @NonNull final String getTimezone() {
         return this.timezone;
     }
 
-    public @NotNull final String getFooter() {
+    public @NonNull final String getFooter() {
         return this.footer;
     }
 
-    public @NotNull final String getImage() {
+    public @NonNull final String getImage() {
         return this.image;
     }
 
-    public @NotNull final String getIcon() {
+    public @NonNull final String getIcon() {
         return this.icon;
     }
 
@@ -246,11 +246,11 @@ public class BeidouEmbed {
     }
 
     private void populate(
-            @NotNull final BeidouEmbed embed,
-            @NotNull final Embed action,
-            @NotNull final User user,
+            @NonNull final BeidouEmbed embed,
+            @NonNull final Embed action,
+            @NonNull final User user,
 
-            @NotNull final Map<String, String> placeholders
+            @NonNull final Map<String, String> placeholders
     ) {
         if (embed.hasFooter()) {
             final String footer = embed.getFooter();
@@ -317,9 +317,9 @@ public class BeidouEmbed {
     }
 
     private List<MessageEmbed> getEmbeds(
-            @NotNull final List<BeidouEmbed> embeds,
-            @NotNull final User user,
-            @NotNull final Map<String, String> values
+            @NonNull final List<BeidouEmbed> embeds,
+            @NonNull final User user,
+            @NonNull final Map<String, String> values
     ) {
         final List<MessageEmbed> keys = new ArrayList<>();
 

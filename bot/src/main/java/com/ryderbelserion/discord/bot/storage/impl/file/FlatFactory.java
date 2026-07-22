@@ -2,9 +2,7 @@ package com.ryderbelserion.discord.bot.storage.impl.file;
 
 import com.ryderbelserion.discord.bot.storage.impl.ConnectionFactory;
 import com.zaxxer.hikari.HikariDataSource;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,22 +10,33 @@ import java.util.concurrent.CompletableFuture;
 
 public abstract class FlatFactory extends ConnectionFactory {
 
-    protected HikariDataSource source;
-    protected final Path path;
+    protected final String impl;
 
-    public FlatFactory(@NotNull final Path path) {
-        this.path = path;
+    public FlatFactory(final String impl) {
+        this.impl = impl;
     }
 
     protected abstract String url();
 
+    protected HikariDataSource source;
+
     @Override
     public @Nullable Connection getConnection() throws SQLException {
+        if (this.source == null) {
+            throw new IllegalStateException("Failed to get connection from pool. (Source returned null)");
+        }
+
         if (this.source.isClosed()) {
             throw new IllegalStateException("Failed to get connection from pool. (Source returned closed)");
         }
 
-        return this.source.getConnection();
+        final Connection connection = this.source.getConnection();
+
+        if (connection == null) {
+            throw new IllegalStateException("Failed to get connection from pool. (getConnection returned null)");
+        }
+
+        return connection;
     }
 
     @Override
@@ -49,14 +58,8 @@ public abstract class FlatFactory extends ConnectionFactory {
 
     @Override
     public void stop() {
-        try {
-            final Connection connection = getConnection();
-
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+        if (this.source != null) {
+            this.source.close();
         }
     }
 
@@ -65,7 +68,8 @@ public abstract class FlatFactory extends ConnectionFactory {
         return this.source != null && this.source.isRunning();
     }
 
-    public @NotNull final Path getPath() {
-        return this.path;
+    @Override
+    public String getImpl() {
+        return this.impl;
     }
 }

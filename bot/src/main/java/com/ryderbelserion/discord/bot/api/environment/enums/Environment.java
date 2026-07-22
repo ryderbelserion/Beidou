@@ -1,6 +1,6 @@
 package com.ryderbelserion.discord.bot.api.environment.enums;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public enum Environment {
 
@@ -10,11 +10,11 @@ public enum Environment {
 
     private final String identifier;
 
-    Environment(@NotNull final String identifier) {
+    Environment(@NonNull final String identifier) {
         this.identifier = identifier;
     }
 
-    public static @NotNull Environment get(@NotNull final String identifier) {
+    public static @NonNull Environment get(@NonNull final String identifier) {
         Environment environment = Environment.NONE;
 
         for (final Environment value : Environment.values()) {
@@ -30,7 +30,7 @@ public enum Environment {
         return environment;
     }
 
-    public @NotNull final String getIdentifier() {
+    public @NonNull final String getIdentifier() {
         return this.identifier;
     }
 }

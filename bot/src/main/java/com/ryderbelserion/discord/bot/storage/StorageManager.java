@@ -5,20 +5,19 @@ import com.ryderbelserion.discord.bot.configs.ConfigManager;
 import com.ryderbelserion.discord.bot.configs.types.StorageConfig;
 import com.ryderbelserion.discord.bot.storage.impl.file.SqliteFactory;
 import com.ryderbelserion.discord.bot.storage.impl.hikari.PostgresFactory;
-import com.ryderbelserion.discord.bot.storage.impl.objects.StorageHolder;
-import org.jetbrains.annotations.NotNull;
+import com.ryderbelserion.discord.bot.storage.holder.StorageHolder;
+import org.jspecify.annotations.NullMarked;
 import java.nio.file.Path;
 
+@NullMarked
 public class StorageManager {
 
     private final ConfigManager configManager;
-    private final Beidou instance;
     private final Path path;
 
-    public StorageManager(@NotNull final Beidou instance) {
+    public StorageManager(final Beidou instance) {
         this.configManager = instance.getConfigManager();
         this.path = instance.getDirectory();
-        this.instance = instance;
     }
 
     public StorageHolder init() throws Exception {

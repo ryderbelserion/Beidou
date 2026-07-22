@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class MessageConfig {
     private final EmbedManager embedManager;
     private final Logger logger;
 
-    public MessageConfig(@NotNull final CommentedConfigurationNode config, @NotNull final EmbedManager embedManager, @NotNull final Logger logger) {
+    public MessageConfig(@NonNull final CommentedConfigurationNode config, @NonNull final EmbedManager embedManager, @NonNull final Logger logger) {
         this.defaultChannel = config.node("default").getString("");
 
         this.channels.put("delete", ConfigUtils.getStringList(config.node("types", "deletion")));
@@ -53,7 +53,7 @@ public class MessageConfig {
         this.logger = logger;
     }
 
-    public void log(@NotNull final String messageId, @NotNull final String type, @NotNull final MessageChannelUnion channel, @NotNull final Guild guild, @NotNull final User user) {
+    public void log(@NonNull final String messageId, @NonNull final String type, @NonNull final MessageChannelUnion channel, @NonNull final Guild guild, @NonNull final User user) {
         if (this.isLogging) {
             this.logger.warn("The logging module for message logging is disabled!");
 

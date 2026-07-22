@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,11 +24,11 @@ public abstract class DiscordPlugin {
     private final JDA jda;
 
     public DiscordPlugin(
-            @NotNull final List<GatewayIntent> intents,
-            @NotNull final List<CacheFlag> flags,
-            @NotNull final String username,
-            @NotNull final Logger logger,
-            @NotNull final String token
+            @NonNull final List<GatewayIntent> intents,
+            @NonNull final List<CacheFlag> flags,
+            @NonNull final String username,
+            @NonNull final Logger logger,
+            @NonNull final String token
             ) {
         this.username = username;
         this.logger = logger;
@@ -42,53 +42,53 @@ public abstract class DiscordPlugin {
     protected boolean isActive = false;
     protected FileManager fileManager;
 
-    public abstract void onGuildReady(@NotNull final Guild guild, final boolean isReload);
+    public abstract void onGuildReady(@NonNull final Guild guild, final boolean isReload);
 
-    public abstract void onReload(@NotNull final String id, final @NotNull CommandContext user);
+    public abstract void onReload(@NonNull final String id, @NonNull final CommandContext user);
 
-    public abstract void onReload(@NotNull final JDA jda);
+    public abstract void onReload(@NonNull final JDA jda);
 
-    public abstract void onReady(@NotNull final JDA jda);
+    public abstract void onReady(@NonNull final JDA jda);
 
-    public abstract void onStop(@NotNull final JDA jda);
+    public abstract void onStop(@NonNull final JDA jda);
 
-    public @NotNull final Path getGuildDirectory(@NotNull final String id) {
+    public @NonNull final Path getGuildDirectory(@NonNull final String id) {
         return getGuildDirectory().resolve(id);
     }
 
-    public @NotNull final FileManager getFileManager() {
+    public @NonNull final FileManager getFileManager() {
         return this.fileManager;
     }
 
-    public @NotNull final Path getGuildDirectory() {
+    public @NonNull final Path getGuildDirectory() {
         return getDirectory().resolve("guilds");
     }
 
-    public @NotNull final Path getAddonDirectory() {
+    public @NonNull final Path getAddonDirectory() {
         return getDirectory().resolve("addons");
     }
 
-    public @NotNull final Path getCacheDirectory() {
+    public @NonNull final Path getCacheDirectory() {
         return getDirectory().resolve("cache");
     }
 
-    public @NotNull final Path getCommandsDirectory(@NotNull final String id) {
+    public @NonNull final Path getCommandsDirectory(@NonNull final String id) {
         return getGuildDirectory(id).resolve("commands");
     }
 
-    public @NotNull final Path getEmbedsDirectory(@NotNull final String id) {
+    public @NonNull final Path getEmbedsDirectory(@NonNull final String id) {
         return getGuildDirectory(id).resolve("embeds");
     }
 
-    public @NotNull final String getUsername() {
+    public @NonNull final String getUsername() {
         return this.username;
     }
 
-    public @NotNull final Path getDirectory() {
+    public @NonNull final Path getDirectory() {
         return Path.of("./%s".formatted(this.username));
     }
 
-    public String replacePlaceholder(@NotNull final String message, @NotNull final Map<String, String> placeholders) {
+    public String replacePlaceholder(@NonNull final String message, @NonNull final Map<String, String> placeholders) {
         String safeMessage = message;
 
         if (!placeholders.isEmpty()) {
@@ -107,11 +107,11 @@ public abstract class DiscordPlugin {
         return safeMessage;
     }
 
-    public void addEventListener(@NotNull final Object... listeners) {
+    public void addEventListener(@NonNull final Object... listeners) {
         this.jda.addEventListener(listeners);
     }
 
-    public @NotNull final Logger getLogger() {
+    public @NonNull final Logger getLogger() {
         return this.logger;
     }
 

@@ -8,18 +8,18 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.unions.GuildMessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class ThreadListener extends ListenerAdapter {
 
     private final GuildManager guildManager;
 
-    public ThreadListener(@NotNull final Beidou beidou) {
+    public ThreadListener(@NonNull final Beidou beidou) {
         this.guildManager = beidou.getGuildManager();
     }
 
     @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+    public void onMessageReceived(@NonNull MessageReceivedEvent event) {
         if (!event.isFromGuild()) return;
 
         final User user = event.getAuthor();

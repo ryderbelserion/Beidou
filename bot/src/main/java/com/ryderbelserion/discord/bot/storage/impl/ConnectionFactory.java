@@ -12,9 +12,9 @@ public abstract class ConnectionFactory {
 
     public abstract Connection getConnection() throws SQLException;
 
-    public abstract String getImplementation();
-
     public abstract boolean isRunning();
+
+    public abstract String getImpl();
 
     public abstract void init();
 

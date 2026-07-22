@@ -5,7 +5,7 @@ import com.ryderbelserion.discord.api.options.types.EnvOption;
 import com.ryderbelserion.discord.api.options.types.TokenOption;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.*;
 
 public class OptionsManager {
@@ -20,19 +20,19 @@ public class OptionsManager {
 
     private OptionSet options;
 
-    public @NotNull final Optional<IOption<?>> getOptionByName(@NotNull final String name) {
+    public @NonNull final Optional<IOption<?>> getOptionByName(@NonNull final String name) {
         return Optional.ofNullable(this.cache.getOrDefault(name, null));
     }
 
-    public @NotNull final Map<String, IOption<?>> getCache() {
+    public @NonNull final Map<String, IOption<?>> getCache() {
         return Collections.unmodifiableMap(this.cache);
     }
 
-    public @NotNull final Optional<OptionSet> getOption() {
+    public @NonNull final Optional<OptionSet> getOption() {
         return Optional.of(this.options);
     }
 
-    public void init(@NotNull final String[] args) {
+    public void init(@NonNull final String[] args) {
         List.of(
                 new TokenOption(this.parser),
                 new EnvOption(this.parser)

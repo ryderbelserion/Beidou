@@ -5,7 +5,7 @@ import com.ryderbelserion.discord.bot.api.objects.BeidouGuild;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import net.dv8tion.jda.api.entities.Guild;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.nio.file.Path;
 import java.util.*;
@@ -14,7 +14,7 @@ public class EmbedManager {
 
     private final Map<String, Map<String, BeidouEmbed>> embeds = new HashMap<>();
 
-    public void init(@NotNull final BeidouGuild instance) {
+    public void init(@NonNull final BeidouGuild instance) {
         final Guild guild = instance.getGuild();
 
         final String id = guild.getId();
@@ -43,11 +43,11 @@ public class EmbedManager {
         }
     }
 
-    public @NotNull final Optional<BeidouEmbed> getEmbed(@NotNull final String id, @NotNull final String key) {
+    public @NonNull final Optional<BeidouEmbed> getEmbed(@NonNull final String id, @NonNull final String key) {
         return Optional.ofNullable(this.embeds.getOrDefault(id, Map.of()).getOrDefault(key, null));
     }
 
-    public @NotNull final Map<String, BeidouEmbed> getEmbeds(@NotNull final String id) {
+    public @NonNull final Map<String, BeidouEmbed> getEmbeds(@NonNull final String id) {
         return Collections.unmodifiableMap(this.embeds.getOrDefault(id, Map.of()));
     }
 }

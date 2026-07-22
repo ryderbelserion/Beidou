@@ -13,13 +13,13 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class ReloadCommand extends CommandEngine {
 
     private final Beidou beidou;
 
-    public ReloadCommand(@NotNull final Beidou beidou) {
+    public ReloadCommand(@NonNull final Beidou beidou) {
         super("reload", "Reloads the Discord Bot.");
 
         this.beidou = beidou;
@@ -30,14 +30,14 @@ public class ReloadCommand extends CommandEngine {
     }
 
     @Override
-    protected @NotNull final CommandData getCommandData() {
+    protected @NonNull final CommandData getCommandData() {
         return Commands.slash(getName(), getDescription()).addOption(OptionType.STRING, "guild_id", "The guild id", false, true);
     }
 
     @Override
     protected void perform(
-            @NotNull final SlashCommandInteractionEvent event,
-            @NotNull final CommandContext context
+            @NonNull final SlashCommandInteractionEvent event,
+            @NonNull final CommandContext context
     ) {
         final User user = context.getAuthor();
 

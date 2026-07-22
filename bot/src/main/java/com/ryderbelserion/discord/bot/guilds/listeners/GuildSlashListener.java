@@ -9,20 +9,20 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class GuildSlashListener extends ListenerAdapter {
 
     private final CommandHandler commandHandler;
     private final GuildManager guildManager;
 
-    public GuildSlashListener(@NotNull final Beidou instance) {
+    public GuildSlashListener(@NonNull final Beidou instance) {
         this.commandHandler = instance.getCommandHandler();
         this.guildManager = instance.getGuildManager();
     }
 
     @Override
-    public void onSlashCommandInteraction(@NotNull final SlashCommandInteractionEvent event) {
+    public void onSlashCommandInteraction(@NonNull final SlashCommandInteractionEvent event) {
         final String name = event.getName();
 
         if (this.commandHandler.hasCommand(name)) { // command is a global/guild command that is static.
@@ -47,7 +47,7 @@ public class GuildSlashListener extends ListenerAdapter {
     }
 
     @Override
-    public void onCommandAutoCompleteInteraction(@NotNull final CommandAutoCompleteInteractionEvent event) {
+    public void onCommandAutoCompleteInteraction(@NonNull final CommandAutoCompleteInteractionEvent event) {
         final String name = event.getName();
 
         if (this.commandHandler.hasCommand(name)) { // command is a global/guild command that is static.

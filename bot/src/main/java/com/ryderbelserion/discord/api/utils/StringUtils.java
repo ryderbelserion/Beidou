@@ -1,6 +1,6 @@
 package com.ryderbelserion.discord.api.utils;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ public class StringUtils {
     private static final char LF = '\n';
     private static final char CR = '\r';
 
-    public static String replacePlaceholders(@NotNull final String message, @NotNull final Map<String, String> placeholders) {
+    public static String replacePlaceholders(@NonNull final String message, @NonNull final Map<String, String> placeholders) {
         String safeMessage = message;
 
         for (final Map.Entry<String, String> entry : placeholders.entrySet()) {
@@ -23,7 +23,7 @@ public class StringUtils {
         return safeMessage;
     }
 
-    public static @NotNull String toString(@NotNull final List<String> list) {
+    public static @NonNull String toString(@NonNull final List<String> list) {
         if (list.isEmpty()) return "";
 
         final StringBuilder message = new StringBuilder(list.size());

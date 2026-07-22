@@ -4,7 +4,7 @@ import com.ryderbelserion.discord.api.commands.interfaces.CommandFlow;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +16,12 @@ public class CommandHandler implements CommandFlow {
 
     private JDA jda;
 
-    public void setJda(@NotNull final JDA jda) {
+    public void setJda(@NonNull final JDA jda) {
         this.jda = jda;
     }
 
     @Override
-    public void addCommands(@NotNull final List<CommandEngine> commands) {
+    public void addCommands(@NonNull final List<CommandEngine> commands) {
         this.jda.updateCommands().addCommands(commands.stream()
                 .map(CommandEngine::getCommandData)
                 .collect(Collectors.toSet())).queue();
@@ -32,7 +32,7 @@ public class CommandHandler implements CommandFlow {
     }
 
     @Override
-    public void addStaticGuildCommands(@NotNull final Guild guild, @NotNull final List<CommandEngine> commands) { // statically generated guild commands, i.e. on startup only, hard coded.
+    public void addStaticGuildCommands(@NonNull final Guild guild, @NonNull final List<CommandEngine> commands) { // statically generated guild commands, i.e. on startup only, hard coded.
         addGuildCommands(guild, commands.stream().map(CommandEngine::getCommandData).toList());
 
         for (final CommandEngine engine : commands) { // add to cache
@@ -41,12 +41,12 @@ public class CommandHandler implements CommandFlow {
     }
 
     @Override
-    public void addGuildCommands(@NotNull final Guild guild, @NotNull final List<CommandData> commands) { // dynamically generated guild commands, i.e. yml files
+    public void addGuildCommands(@NonNull final Guild guild, @NonNull final List<CommandData> commands) { // dynamically generated guild commands, i.e. yml files
         guild.updateCommands().addCommands(commands).queue();
     }
 
     @Override
-    public void purgeGuildCommands(@NotNull final Guild guild) {
+    public void purgeGuildCommands(@NonNull final Guild guild) {
         guild.updateCommands().queue();
     }
 
@@ -55,11 +55,11 @@ public class CommandHandler implements CommandFlow {
         this.jda.updateCommands().queue();
     }
 
-    public @NotNull final CommandEngine getCommand(@NotNull final String name) {
+    public @NonNull final CommandEngine getCommand(@NonNull final String name) {
         return this.commands.get(name);
     }
 
-    public final boolean hasCommand(@NotNull final String name) {
+    public final boolean hasCommand(@NonNull final String name) {
         return this.commands.containsKey(name);
     }
 }

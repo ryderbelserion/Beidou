@@ -5,25 +5,25 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class GuildListener extends ListenerAdapter {
 
     private final Beidou beidou;
 
-    public GuildListener(@NotNull final Beidou beidou) {
+    public GuildListener(@NonNull final Beidou beidou) {
         this.beidou = beidou;
     }
 
     @Override
-    public void onGuildJoin(@NotNull GuildJoinEvent event) {
+    public void onGuildJoin(@NonNull GuildJoinEvent event) {
         final Guild guild = event.getGuild();
 
         this.beidou.onGuildReady(guild, false);
     }
 
     @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+    public void onMessageReceived(@NonNull MessageReceivedEvent event) {
         /*final Guild guild = event.getGuild();
         final String id = guild.getId();
 

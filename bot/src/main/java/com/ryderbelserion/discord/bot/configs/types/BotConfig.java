@@ -1,6 +1,6 @@
 package com.ryderbelserion.discord.bot.configs.types;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 
 public class BotConfig {
@@ -19,7 +19,7 @@ public class BotConfig {
         this.fileConfig = new FileConfig();
     }
 
-    public void init(@NotNull final CommentedConfigurationNode config) {
+    public void init(@NonNull final CommentedConfigurationNode config) {
         this.isCustomStatusEnabled = config.node("root", "presence", "toggle").getBoolean(true);
         this.customStatus = config.node("root", "presence", "status").getString("Watching {count} members");
 
@@ -31,15 +31,15 @@ public class BotConfig {
         return this.isCustomStatusEnabled;
     }
 
-    public @NotNull final String getCustomStatus() {
+    public @NonNull final String getCustomStatus() {
         return this.customStatus;
     }
 
-    public @NotNull final StorageConfig getStorageConfig() {
+    public @NonNull final StorageConfig getStorageConfig() {
         return this.storageConfig;
     }
 
-    public @NotNull final FileConfig getFileConfig() {
+    public @NonNull final FileConfig getFileConfig() {
         return this.fileConfig;
     }
 }

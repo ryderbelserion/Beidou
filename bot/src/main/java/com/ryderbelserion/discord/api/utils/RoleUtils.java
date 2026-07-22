@@ -2,13 +2,13 @@ package com.ryderbelserion.discord.api.utils;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.List;
 import java.util.Optional;
 
 public class RoleUtils {
 
-    public static @NotNull Optional<Role> getHighestRoleByColor(@NotNull final Member member) {
+    public static @NonNull Optional<Role> getHighestRoleByColor(@NonNull final Member member) {
         Role foundRole = null;
 
         for (final Role role : member.getRoles()) {
@@ -24,13 +24,13 @@ public class RoleUtils {
         return Optional.ofNullable(foundRole);
     }
 
-    public static @NotNull Optional<Role> getHighestRole(@NotNull final Member member) {
+    public static @NonNull Optional<Role> getHighestRole(@NonNull final Member member) {
         final List<Role> roles = member.getRoles();
 
         return roles.isEmpty() ? Optional.empty() : Optional.of(roles.getFirst());
     }
 
-    public static @NotNull String getRoleName(@NotNull final Role role) {
+    public static @NonNull String getRoleName(@NonNull final Role role) {
         return role.getName();
     }
 }

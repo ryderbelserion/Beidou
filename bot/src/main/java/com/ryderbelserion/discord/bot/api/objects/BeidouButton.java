@@ -1,7 +1,7 @@
 package com.ryderbelserion.discord.bot.api.objects;
 
 import net.dv8tion.jda.api.components.buttons.ButtonStyle;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 
@@ -14,7 +14,7 @@ public class BeidouButton {
     private final String type;
     private final String id;
 
-    public BeidouButton(@NotNull final CommentedConfigurationNode configuration) {
+    public BeidouButton(@NonNull final CommentedConfigurationNode configuration) {
         final String style = configuration.node("style").getString("primary");
 
         switch (style) {
@@ -33,27 +33,27 @@ public class BeidouButton {
         this.id = configuration.node("id").getString("");
     }
 
-    public @NotNull final ButtonStyle getStyle() {
+    public @NonNull final ButtonStyle getStyle() {
         return this.style;
     }
 
-    public @NotNull final String getValue() {
+    public @NonNull final String getValue() {
         return this.value;
     }
 
-    public @NotNull final String getEmoji() {
+    public @NonNull final String getEmoji() {
         return this.emoji;
     }
 
-    public @NotNull final String getLabel() {
+    public @NonNull final String getLabel() {
         return this.label;
     }
 
-    public @NotNull final String getType() {
+    public @NonNull final String getType() {
         return this.type;
     }
 
-    public @NotNull final String getId() {
+    public @NonNull final String getId() {
         return this.id;
     }
 }

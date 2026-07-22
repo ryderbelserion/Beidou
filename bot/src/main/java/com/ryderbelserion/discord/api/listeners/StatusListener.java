@@ -5,13 +5,13 @@ import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.events.session.ShutdownEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class StatusListener extends ListenerAdapter {
 
     private final DiscordPlugin plugin;
 
-    public StatusListener(@NotNull final DiscordPlugin plugin) {
+    public StatusListener(@NonNull final DiscordPlugin plugin) {
         this.plugin = plugin;
     }
 

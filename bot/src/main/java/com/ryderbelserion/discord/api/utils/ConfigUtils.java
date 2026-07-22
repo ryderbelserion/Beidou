@@ -1,7 +1,7 @@
 package com.ryderbelserion.discord.api.utils;
 
 import com.ryderbelserion.fusion.files.FileException;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ConfigUtils {
 
-    public static List<String> getStringList(@NotNull final BasicConfigurationNode node, @NotNull final List<String> defaultValue) {
+    public static List<String> getStringList(@NonNull final BasicConfigurationNode node, @NonNull final List<String> defaultValue) {
         try {
             final List<String> list = node.getList(String.class);
 
@@ -23,11 +23,11 @@ public class ConfigUtils {
         }
     }
 
-    public static List<String> getStringList(@NotNull final BasicConfigurationNode node) {
+    public static List<String> getStringList(@NonNull final BasicConfigurationNode node) {
         return getStringList(node, List.of());
     }
 
-    public static List<String> getStringList(@NotNull final CommentedConfigurationNode node, @NotNull final List<String> defaultValue) {
+    public static List<String> getStringList(@NonNull final CommentedConfigurationNode node, @NonNull final List<String> defaultValue) {
         try {
             final List<String> list = node.getList(String.class);
 
@@ -41,7 +41,7 @@ public class ConfigUtils {
         }
     }
 
-    public static List<String> getStringList(@NotNull final CommentedConfigurationNode node) {
+    public static List<String> getStringList(@NonNull final CommentedConfigurationNode node) {
         return getStringList(node, List.of());
     }
 }

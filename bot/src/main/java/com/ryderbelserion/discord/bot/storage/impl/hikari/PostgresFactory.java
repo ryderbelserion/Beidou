@@ -1,31 +1,32 @@
 package com.ryderbelserion.discord.bot.storage.impl.hikari;
 
 import com.ryderbelserion.discord.bot.storage.StorageCredentials;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
-public class PostgresFactory extends HikariFactory {
+@NullMarked
+public final class PostgresFactory extends HikariFactory {
 
-    public PostgresFactory(@NotNull final StorageCredentials credentials) {
-        super(credentials);
+    public PostgresFactory(final StorageCredentials credentials) {
+        super(credentials, "PostgresSQL");
     }
 
     @Override
-    protected @NotNull final String getDriverIdentifier() {
+    public String getDriverIdentifier() {
         return "org.postgresql.Driver";
     }
 
     @Override
-    protected @NotNull final String getJDBCIdentifier() {
+    public String getJDBCIdentifier() {
         return "postgresql";
     }
 
     @Override
-    public @NotNull final String getImplementation() {
-        return "PostgresSQL";
+    public int getDefaultPort() {
+        return 5432;
     }
 
     @Override
-    protected int getDefaultPort() {
-        return 5432;
+    public String url() {
+        return "";
     }
 }

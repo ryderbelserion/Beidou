@@ -20,7 +20,7 @@ import com.ryderbelserion.discord.bot.configs.types.BotConfig;
 import com.ryderbelserion.discord.bot.configs.types.FileConfig;
 import com.ryderbelserion.discord.bot.configs.types.StorageConfig;
 import com.ryderbelserion.discord.bot.storage.StorageManager;
-import com.ryderbelserion.discord.bot.storage.impl.objects.StorageHolder;
+import com.ryderbelserion.discord.bot.storage.holder.StorageHolder;
 import com.ryderbelserion.discord.bot.guilds.GuildListener;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.GuildMessageListener;
@@ -35,7 +35,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,7 +60,7 @@ public class Beidou extends DiscordPlugin {
     private Environment environment;
     private String version = "";
 
-    public Beidou(@NotNull final String token, @NotNull final Logger logger, @NotNull final OptionsManager manager) {
+    public Beidou(@NonNull final String token, @NonNull final Logger logger, @NonNull final OptionsManager manager) {
         super(List.of(
                 // direct messages
                 GatewayIntent.DIRECT_MESSAGE_REACTIONS,
@@ -104,7 +104,7 @@ public class Beidou extends DiscordPlugin {
     private JDA jda;
 
     @Override
-    public void onGuildReady(@NotNull final Guild guild, final boolean isReload) {
+    public void onGuildReady(@NonNull final Guild guild, final boolean isReload) {
         final String name = Objects.requireNonNull(guild.getOwner()).getEffectiveName();
         final String id = guild.getOwnerId();
 
@@ -225,7 +225,7 @@ public class Beidou extends DiscordPlugin {
     }
 
     @Override
-    public void onReady(@NotNull final JDA jda) {
+    public void onReady(@NonNull final JDA jda) {
         this.commandHandler.setJda(this.jda = jda);
 
         final BotConfig config = this.configManager.getConfig();
@@ -287,7 +287,7 @@ public class Beidou extends DiscordPlugin {
     }
 
     @Override
-    public void onReload(@NotNull final String id, @NotNull final CommandContext context) {
+    public void onReload(@NonNull final String id, @NonNull final CommandContext context) {
         final Guild guild = this.jda.getGuildById(id);
 
         if (guild == null) return;
@@ -303,7 +303,7 @@ public class Beidou extends DiscordPlugin {
     }
 
     @Override
-    public void onReload(@NotNull final JDA jda) {
+    public void onReload(@NonNull final JDA jda) {
         this.configManager.reload();
 
         this.fileManager.setDepth(getRecursionDepth());
@@ -316,7 +316,7 @@ public class Beidou extends DiscordPlugin {
     }
 
     @Override
-    public void onStop(@NotNull final JDA jda) {
+    public void onStop(@NonNull final JDA jda) {
         this.logger.info("{} is offline!", jda.getSelfUser().getName());
 
         final Path directory = getDirectory();
@@ -376,13 +376,13 @@ public class Beidou extends DiscordPlugin {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean isWhitelisted(@NotNull final String guildId) {
+    public boolean isWhitelisted(@NonNull final String guildId) {
         final List<String> cache = this.configManager.getGuildCache().getGuilds();
 
         return cache.contains(guildId);
     }
 
-    public void leaveGuild(@NotNull final Guild guild, final String guildId, final String username, final String userId) {
+    public void leaveGuild(@NonNull final Guild guild, final String guildId, final String username, final String userId) {
         final String guildName = guild.getName();
 
         this.logger.info("{} ({}) tried adding me to {} ({}) while they are not whitelisted.", username, userId, guildName, guildId);
@@ -390,13 +390,13 @@ public class Beidou extends DiscordPlugin {
         guild.leave().queue(_ -> this.logger.info("Successfully left the server {} ({}) owned by {} ({}) due to not being whitelisted", guildName, guildId, username, userId));
     }
 
-    public String getIconUrl(@NotNull final SelfUser user) {
+    public String getIconUrl(@NonNull final SelfUser user) {
         final String url = user.getAvatarUrl();
 
         return url == null ? "" : url;
     }
 
-    public String getIconUrl(@NotNull final Guild guild) {
+    public String getIconUrl(@NonNull final Guild guild) {
         final String url = guild.getIconUrl();
 
         return url == null ? "" : url;
@@ -410,31 +410,31 @@ public class Beidou extends DiscordPlugin {
         return fileConfig.getRecursionDepth();
     }
 
-    public @NotNull final CommandHandler getCommandHandler() {
+    public @NonNull final CommandHandler getCommandHandler() {
         return this.commandHandler;
     }
 
-    public @NotNull final StorageHolder getStorageHolder() {
+    public @NonNull final StorageHolder getStorageHolder() {
         return this.storageHolder;
     }
 
-    public @NotNull final ConfigManager getConfigManager() {
+    public @NonNull final ConfigManager getConfigManager() {
         return this.configManager;
     }
 
-    public @NotNull final GuildManager getGuildManager() {
+    public @NonNull final GuildManager getGuildManager() {
         return this.guildManager;
     }
 
-    public @NotNull final EmbedManager getEmbedManager() {
+    public @NonNull final EmbedManager getEmbedManager() {
         return this.embedManager;
     }
 
-    public @NotNull final Environment getEnvironment() {
+    public @NonNull final Environment getEnvironment() {
         return environment;
     }
 
-    public @NotNull final String getVersion() {
+    public @NonNull final String getVersion() {
         return this.version;
     }
 }

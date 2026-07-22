@@ -3,7 +3,7 @@ package com.ryderbelserion.discord.bot.guilds;
 import com.ryderbelserion.discord.bot.Beidou;
 import com.ryderbelserion.discord.bot.api.objects.BeidouGuild;
 import net.dv8tion.jda.api.entities.Guild;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,11 +16,11 @@ public class GuildManager {
 
     private final Beidou instance;
 
-    public GuildManager(@NotNull final Beidou instance) {
+    public GuildManager(@NonNull final Beidou instance) {
         this.instance = instance;
     }
 
-    public void addGuild(@NotNull final Guild guild, @NotNull final Path directory) {
+    public void addGuild(@NonNull final Guild guild, @NonNull final Path directory) {
         final String id = guild.getId();
 
         if (this.guilds.containsKey(id)) {
@@ -36,15 +36,15 @@ public class GuildManager {
         this.guilds.putIfAbsent(id, beidou);
     }
 
-    public void removeGuild(@NotNull final String id) {
+    public void removeGuild(@NonNull final String id) {
         this.guilds.remove(id);
     }
 
-    public Optional<BeidouGuild> getGuild(@NotNull final String id) {
+    public Optional<BeidouGuild> getGuild(@NonNull final String id) {
         return Optional.ofNullable(this.guilds.get(id));
     }
 
-    public @NotNull final Map<String, BeidouGuild> getGuilds() {
+    public @NonNull final Map<String, BeidouGuild> getGuilds() {
         return Collections.unmodifiableMap(this.guilds);
     }
 }

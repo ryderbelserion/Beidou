@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class BeidouCommand extends CommandEngine {
     private final boolean isEnabled;
     private final boolean isSlash;
 
-    public BeidouCommand(@NotNull final String id, @NotNull final CommentedConfigurationNode configuration, @NotNull final EmbedManager manager) {
+    public BeidouCommand(@NonNull final String id, @NonNull final CommentedConfigurationNode configuration, @NonNull final EmbedManager manager) {
         super(configuration.node("name").getString(""), configuration.node("description").getString(""));
 
         this.defaultEmbed = manager.getEmbed(id, configuration.node("embed", "default").getString("")).orElse(null);
@@ -44,8 +44,8 @@ public class BeidouCommand extends CommandEngine {
 
     @Override
     protected void perform(
-            @NotNull final SlashCommandInteractionEvent event,
-            @NotNull final CommandContext context
+            @NonNull final SlashCommandInteractionEvent event,
+            @NonNull final CommandContext context
     ) {
         if (!this.isEnabled) return;
 

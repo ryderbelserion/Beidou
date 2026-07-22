@@ -7,7 +7,7 @@ import com.ryderbelserion.discord.bot.guilds.features.traffic.config.types.ExitC
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 
 public class TrafficConfig {
@@ -16,18 +16,18 @@ public class TrafficConfig {
     private final ITrafficConfig exitConfig;
 
     public TrafficConfig(
-            @NotNull final CommentedConfigurationNode config,
-            @NotNull final EmbedManager embedManager
+            @NonNull final CommentedConfigurationNode config,
+            @NonNull final EmbedManager embedManager
     ) {
         this.entryConfig = new EntryConfig(config.node("entry-module"), embedManager);
         this.exitConfig = new ExitConfig(config.node("exit-module"), embedManager);
     }
 
     public void send(
-            @NotNull final String id,
-            @NotNull final String type,
-            @NotNull final User user,
-            @NotNull final Guild guild
+            @NonNull final String id,
+            @NonNull final String type,
+            @NonNull final User user,
+            @NonNull final Guild guild
     ) {
         switch (type) {
             case "entry" -> this.entryConfig.send(id, user, guild);

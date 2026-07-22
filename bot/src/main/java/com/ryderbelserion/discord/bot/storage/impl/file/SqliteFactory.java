@@ -2,15 +2,19 @@ package com.ryderbelserion.discord.bot.storage.impl.file;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class SqliteFactory extends FlatFactory {
+    
+    private final Path path;
 
-    public SqliteFactory(@NotNull final Path path) {
-        super(path);
+    public SqliteFactory(@NonNull final Path path) {
+        super("SQLite");
+        
+        this.path = path;
     }
 
     @Override
@@ -36,11 +40,6 @@ public class SqliteFactory extends FlatFactory {
 
     @Override
     protected String url() {
-        return "jdbc:sqlite:" + getPath().toFile().getAbsolutePath();
-    }
-
-    @Override
-    public String getImplementation() {
-        return "SQLite";
+        return "jdbc:sqlite:" + this.path.toFile().getAbsolutePath();
     }
 }

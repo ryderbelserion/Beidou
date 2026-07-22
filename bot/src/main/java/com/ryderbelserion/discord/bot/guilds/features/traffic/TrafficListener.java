@@ -7,18 +7,18 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class TrafficListener extends ListenerAdapter {
 
     private final GuildManager guildManager;
 
-    public TrafficListener(@NotNull final Beidou beidou) {
+    public TrafficListener(@NonNull final Beidou beidou) {
         this.guildManager = beidou.getGuildManager();
     }
 
     @Override
-    public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
+    public void onGuildMemberJoin(@NonNull GuildMemberJoinEvent event) {
         final Guild guild = event.getGuild();
 
         final String id = guild.getId();
@@ -31,7 +31,7 @@ public class TrafficListener extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildMemberRemove(@NotNull GuildMemberRemoveEvent event) {
+    public void onGuildMemberRemove(@NonNull GuildMemberRemoveEvent event) {
         final Guild guild = event.getGuild();
 
         final String id = guild.getId();

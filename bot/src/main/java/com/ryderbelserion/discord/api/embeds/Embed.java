@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -23,7 +23,7 @@ public class Embed {
      * @param title the text in the title.
      * @return the embed class with updated information.
      */
-    public Embed title(@NotNull final String title) {
+    public Embed title(@NonNull final String title) {
         this.builder.setTitle(title);
 
         return this;
@@ -36,7 +36,7 @@ public class Embed {
      * @param icon the icon in the footer.
      * @return the embed class with updated information.
      */
-    public Embed footer(@NotNull final String text, @NotNull final String icon) {
+    public Embed footer(@NonNull final String text, @NonNull final String icon) {
         if (icon.isBlank()) {
             this.builder.setFooter(text);
 
@@ -54,7 +54,7 @@ public class Embed {
      * @param user the user in the footer.
      * @return the embed class with updated information.
      */
-    public Embed footer(@NotNull final User user) {
+    public Embed footer(@NonNull final User user) {
         return footer("Requested by: %s".formatted(user.getEffectiveName()), user.getEffectiveAvatarUrl());
     }
 
@@ -63,7 +63,7 @@ public class Embed {
      *
      * @param user - The member in question.
      */
-    public Embed footer(@NotNull final User user, @NotNull final Guild guild) {
+    public Embed footer(@NonNull final User user, @NonNull final Guild guild) {
         final Member member = guild.getMemberById(user.getId());
 
         return footer("Requested by: %s".formatted(user.getEffectiveName()), member == null ? user.getEffectiveAvatarUrl() : member.getEffectiveAvatarUrl());
@@ -75,7 +75,7 @@ public class Embed {
      * @param text the text to use.
      * @return the embed class with updated information.
      */
-    public Embed description(@NotNull final String text) {
+    public Embed description(@NonNull final String text) {
         this.builder.setDescription(text);
 
         return this;
@@ -87,7 +87,7 @@ public class Embed {
      * @param user - The member in question.
      * @param guild - Used to fetch the member's guild avatar otherwise fetches global avatar.
      */
-    public Embed thumbnail(@NotNull final User user, @NotNull final Guild guild) {
+    public Embed thumbnail(@NonNull final User user, @NonNull final Guild guild) {
         final Member member = guild.getMemberById(user.getId());
 
         return thumbnail(member == null ? user.getEffectiveAvatarUrl() : member.getEffectiveAvatarUrl());
@@ -99,7 +99,7 @@ public class Embed {
      * @param user the user to use.
      * @return the embed class with updated information.
      */
-    public Embed thumbnail(@NotNull final User user) {
+    public Embed thumbnail(@NonNull final User user) {
         return thumbnail(user.getEffectiveAvatarUrl());
     }
 
@@ -109,7 +109,7 @@ public class Embed {
      * @param url the url to use.
      * @return the embed class with updated information.
      */
-    public Embed thumbnail(@NotNull final String url) {
+    public Embed thumbnail(@NonNull final String url) {
         this.builder.setThumbnail(url);
 
         return this;
@@ -121,7 +121,7 @@ public class Embed {
      * @param user - The member in question.
      * @param guild - Used to fetch the member's guild avatar otherwise fetches global avatar.
      */
-    public Embed image(@NotNull final User user, @NotNull final Guild guild) {
+    public Embed image(@NonNull final User user, @NonNull final Guild guild) {
         final Member member = guild.getMemberById(user.getId());
 
         return image(member == null ? user.getEffectiveAvatarUrl() : member.getEffectiveAvatarUrl());
@@ -133,7 +133,7 @@ public class Embed {
      * @param user the user to use.
      * @return the embed class with updated information.
      */
-    public Embed image(@NotNull final User user) {
+    public Embed image(@NonNull final User user) {
         this.builder.setImage(user.getEffectiveAvatarUrl());
 
         return this;
@@ -145,7 +145,7 @@ public class Embed {
      * @param url the url to use.
      * @return the embed class with updated information.
      */
-    public Embed image(@NotNull final String url) {
+    public Embed image(@NonNull final String url) {
         this.builder.setImage(url);
 
         return this;
@@ -158,7 +158,7 @@ public class Embed {
      * @param url the url to use.
      * @return the embed class with updated information.
      */
-    public Embed author(@NotNull final String name, @NotNull final String url) {
+    public Embed author(@NonNull final String name, @NonNull final String url) {
         this.builder.setAuthor(name, null, url);
 
         return this;
@@ -170,7 +170,7 @@ public class Embed {
      * @param user - The member in question.
      * @param guild - Used to fetch the member's guild avatar otherwise fetches global avatar.
      */
-    public Embed author(@NotNull final User user, @NotNull final Guild guild) {
+    public Embed author(@NonNull final User user, @NonNull final Guild guild) {
         final Member member = guild.getMemberById(user.getId());
 
         final String avatar = member == null ? user.getEffectiveAvatarUrl() : member.getEffectiveAvatarUrl();
@@ -184,7 +184,7 @@ public class Embed {
      * @param user the user to use.
      * @return the embed class with updated information.
      */
-    public Embed author(@NotNull final User user) {
+    public Embed author(@NonNull final User user) {
         return author(user.getEffectiveName(), user.getEffectiveAvatarUrl());
     }
 
@@ -194,7 +194,7 @@ public class Embed {
      * @param color the color to use.
      * @return the embed class with updated information.
      */
-    public Embed color(@NotNull final String color)  {
+    public Embed color(@NonNull final String color)  {
         this.builder.setColor(ColorUtils.toColor(color));
 
         return this;
@@ -205,7 +205,7 @@ public class Embed {
      *
      * @param color - A preset enum of colors.
      */
-    public Embed color(@NotNull final EmbedColor color) {
+    public Embed color(@NonNull final EmbedColor color) {
         this.builder.setColor(color.getColor());
 
         return this;
@@ -217,7 +217,7 @@ public class Embed {
      * @param timezone the timezone to use for embeds.
      * @return the embed class with updated information.
      */
-    public Embed timestamp(@NotNull final String timezone) {
+    public Embed timestamp(@NonNull final String timezone) {
         this.builder.setTimestamp(LocalDateTime.now().atZone(ZoneId.of(timezone)));
 
         return this;
@@ -233,7 +233,7 @@ public class Embed {
      * @param fields the list of fields to add.
      * @return the embed class with updated information.
      */
-    public Embed fields(@NotNull final Consumer<EmbedField> fields) {
+    public Embed fields(@NonNull final Consumer<EmbedField> fields) {
         fields.accept(this.fields);
 
         return this;
@@ -242,7 +242,7 @@ public class Embed {
     /**
      * @return the built embed.
      */
-    public @NotNull final MessageEmbed build() {
+    public @NonNull final MessageEmbed build() {
         return this.builder.build();
     }
 }

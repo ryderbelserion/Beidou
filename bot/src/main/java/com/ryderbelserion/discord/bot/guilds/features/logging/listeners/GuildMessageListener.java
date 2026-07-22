@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 
@@ -20,12 +20,12 @@ public class GuildMessageListener extends ListenerAdapter {
 
     private final GuildManager guildManager;
 
-    public GuildMessageListener(@NotNull final Beidou beidou) {
+    public GuildMessageListener(@NonNull final Beidou beidou) {
         this.guildManager = beidou.getGuildManager();
     }
 
     @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+    public void onMessageReceived(@NonNull MessageReceivedEvent event) {
         if (!event.isFromGuild()) return;
 
         final User user = event.getAuthor();
@@ -65,7 +65,7 @@ public class GuildMessageListener extends ListenerAdapter {
     }
 
     @Override
-    public void onMessageUpdate(@NotNull MessageUpdateEvent event) { //todo() store message
+    public void onMessageUpdate(@NonNull MessageUpdateEvent event) { //todo() store message
         if (!event.isFromGuild()) return;
 
         final User user = event.getAuthor();
@@ -94,7 +94,7 @@ public class GuildMessageListener extends ListenerAdapter {
     }
 
     @Override
-    public void onMessageDelete(@NotNull MessageDeleteEvent event) {
+    public void onMessageDelete(@NonNull MessageDeleteEvent event) {
         final MessageChannelUnion channel = event.getChannel();
         final String channel_id = channel.getId();
 

@@ -1,22 +1,22 @@
 package com.ryderbelserion.discord.bot.storage.impl.hikari;
 
 import com.ryderbelserion.discord.bot.storage.StorageCredentials;
-import com.ryderbelserion.discord.bot.storage.impl.ConnectionFactory;
+import com.ryderbelserion.discord.bot.storage.impl.file.FlatFactory;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.CompletableFuture;
 
-public abstract class HikariFactory extends ConnectionFactory {
+public abstract class HikariFactory extends FlatFactory {
 
     private final StorageCredentials credentials;
 
-    private HikariDataSource source;
-
-    public HikariFactory(@NotNull final StorageCredentials credentials) {
+    public HikariFactory(final StorageCredentials credentials, final String impl) {
+        super(impl);
+        
         this.credentials = credentials;
     }
 
@@ -27,11 +27,11 @@ public abstract class HikariFactory extends ConnectionFactory {
     protected abstract int getDefaultPort();
 
     protected void configure(
-            @NotNull final HikariConfig config,
-            @NotNull final String database,
-            @NotNull final String username,
-            @NotNull final String password,
-            @NotNull final String address,
+            @NonNull final HikariConfig config,
+            @NonNull final String database,
+            @NonNull final String username,
+            @NonNull final String password,
+            @NonNull final String address,
             final int port
     ) {
         config.setDriverClassName(getDriverIdentifier());
@@ -80,32 +80,5 @@ public abstract class HikariFactory extends ConnectionFactory {
                 exception.printStackTrace();
             }
         });
-    }
-
-    @Override
-    public void stop() {
-        if (this.source != null) {
-            this.source.close();
-        }
-    }
-
-    @Override
-    public Connection getConnection() throws SQLException {
-        if (this.source == null) {
-            throw new IllegalStateException("Failed to get connection from pool. (Source returned null)");
-        }
-
-        final Connection connection = this.source.getConnection();
-
-        if (connection == null) {
-            throw new IllegalStateException("Failed to get connection from pool. (getConnection returned null)");
-        }
-
-        return connection;
-    }
-
-    @Override
-    public boolean isRunning() {
-        return this.source != null && this.source.isRunning();
     }
 }

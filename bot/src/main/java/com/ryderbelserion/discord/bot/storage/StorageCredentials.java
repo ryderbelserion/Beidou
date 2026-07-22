@@ -1,6 +1,6 @@
 package com.ryderbelserion.discord.bot.storage;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public record StorageCredentials(
         String database, String username, String password, String address,
@@ -9,10 +9,10 @@ public record StorageCredentials(
 ) {
 
     public StorageCredentials(
-            @NotNull final String database,
-            @NotNull final String username,
-            @NotNull final String password,
-            @NotNull final String address,
+            @NonNull final String database,
+            @NonNull final String username,
+            @NonNull final String password,
+            @NonNull final String address,
 
             final long connectionTimeout,
             final long maxLifetime,

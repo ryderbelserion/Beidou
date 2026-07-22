@@ -5,7 +5,7 @@ import com.ryderbelserion.discord.api.utils.StringUtils;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.unions.GuildMessageChannelUnion;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 
 import java.time.Instant;
@@ -23,7 +23,7 @@ public class ThreadConfig {
     private final boolean isEnabled;
     private final String title;
 
-    public ThreadConfig(@NotNull final CommentedConfigurationNode configuration) {
+    public ThreadConfig(@NonNull final CommentedConfigurationNode configuration) {
         this.isEnabled = configuration.node("enabled").getBoolean(false);
         this.title = StringUtils.replacePlaceholders(configuration.node("title").getString("{date}"), Map.of(
                 "{date}",
@@ -35,7 +35,7 @@ public class ThreadConfig {
         keys.childrenMap().forEach((key, node) -> this.channels.putIfAbsent(key.toString(), ConfigUtils.getStringList(node)));
     }
 
-    public void createThread(@NotNull final GuildMessageChannelUnion channel, @NotNull final User user, @NotNull final Message message) {
+    public void createThread(@NonNull final GuildMessageChannelUnion channel, @NonNull final User user, @NonNull final Message message) {
         if (!this.isEnabled) return;
 
         final String id = channel.getId();

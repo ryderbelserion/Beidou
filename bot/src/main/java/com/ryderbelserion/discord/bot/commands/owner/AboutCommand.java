@@ -12,27 +12,27 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class AboutCommand extends CommandEngine {
 
     private final Beidou instance;
 
-    public AboutCommand(@NotNull final Beidou instance) {
+    public AboutCommand(@NonNull final Beidou instance) {
         super("about", "Shows information about the Discord Bot.");
 
         this.instance = instance;
     }
 
     @Override
-    protected @NotNull final CommandData getCommandData() {
+    protected @NonNull final CommandData getCommandData() {
         return Commands.slash(getName(), getDescription());
     }
 
     @Override
     protected void perform(
-            @NotNull final SlashCommandInteractionEvent event,
-            @NotNull final CommandContext context
+            @NonNull final SlashCommandInteractionEvent event,
+            @NonNull final CommandContext context
     ) {
         final JDA jda = context.getJDA();
 

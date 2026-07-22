@@ -9,7 +9,7 @@ import com.ryderbelserion.discord.bot.guilds.GuildConfig;
 import com.ryderbelserion.fusion.addons.AddonManager;
 import com.ryderbelserion.fusion.files.FileManager;
 import net.dv8tion.jda.api.entities.Guild;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -32,7 +32,7 @@ public class BeidouGuild {
     private final Logger logger;
     private final Guild guild;
 
-    public BeidouGuild(@NotNull final Beidou instance, @NotNull final Path directory, @NotNull final Guild guild) {
+    public BeidouGuild(@NonNull final Beidou instance, @NonNull final Path directory, @NonNull final Guild guild) {
         this.addonManager = new AddonManager(this.directory = directory);
 
         this.id = guild.getId();
@@ -86,43 +86,43 @@ public class BeidouGuild {
         }
     }
 
-    public @NotNull final CommandHandler getCommandHandler() {
+    public @NonNull final CommandHandler getCommandHandler() {
         return this.handler;
     }
 
-    public @NotNull final CommandManager getCommandManager() {
+    public @NonNull final CommandManager getCommandManager() {
         return this.commandManager;
     }
 
-    public @NotNull final ConfigManager getConfigManager() {
+    public @NonNull final ConfigManager getConfigManager() {
         return this.configManager;
     }
 
-    public @NotNull final EmbedManager getEmbedManager() {
+    public @NonNull final EmbedManager getEmbedManager() {
         return this.embedManager;
     }
 
-    public @NotNull final AddonManager getAddonManager() {
+    public @NonNull final AddonManager getAddonManager() {
         return this.addonManager;
     }
 
-    public @NotNull final FileManager getFileManager() {
+    public @NonNull final FileManager getFileManager() {
         return this.fileManager;
     }
 
-    public @NotNull final GuildConfig getConfig() {
+    public @NonNull final GuildConfig getConfig() {
         return this.guildConfig;
     }
 
-    public @NotNull final Path getDirectory() {
+    public @NonNull final Path getDirectory() {
         return this.directory;
     }
 
-    public @NotNull final Guild getGuild() {
+    public @NonNull final Guild getGuild() {
         return this.guild;
     }
 
-    public @NotNull final String getId() {
+    public @NonNull final String getId() {
         return this.id;
     }
 }

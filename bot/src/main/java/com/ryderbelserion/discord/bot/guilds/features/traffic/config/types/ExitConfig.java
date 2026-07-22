@@ -6,7 +6,7 @@ import com.ryderbelserion.discord.bot.guilds.features.traffic.config.interfaces.
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.List;
 
@@ -18,8 +18,8 @@ public class ExitConfig implements ITrafficConfig {
     private final String embed;
 
     public ExitConfig(
-            @NotNull final CommentedConfigurationNode config,
-            @NotNull final EmbedManager embedManager
+            @NonNull final CommentedConfigurationNode config,
+            @NonNull final EmbedManager embedManager
     ) {
         this.embedManager = embedManager;
 
@@ -28,7 +28,7 @@ public class ExitConfig implements ITrafficConfig {
     }
 
     @Override
-    public void send(@NotNull final String id, @NotNull final User user, @NotNull final Guild guild) {
+    public void send(@NonNull final String id, @NonNull final User user, @NonNull final Guild guild) {
         this.embedManager.getEmbed(id, this.embed).ifPresent(embed -> {
             for (final String channel : this.channels) {
                 if (channel.isBlank()) continue;

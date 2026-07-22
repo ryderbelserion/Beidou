@@ -5,7 +5,7 @@ import com.ryderbelserion.discord.bot.api.objects.BeidouGuild;
 import com.ryderbelserion.discord.bot.api.objects.commands.BeidouCommand;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -24,7 +24,7 @@ public class CommandManager {
     private final Path path;
     private final String id;
 
-    public CommandManager(@NotNull final BeidouGuild guild) {
+    public CommandManager(@NonNull final BeidouGuild guild) {
         this.commandHandler = guild.getCommandHandler();
         this.embedManager = guild.getEmbedManager();
         this.fileManager = guild.getFileManager();
@@ -56,11 +56,11 @@ public class CommandManager {
         this.commandHandler.addGuildCommands(this.instance.getGuild(), this.commands.values().stream().map(BeidouCommand::getCommandData).toList());
     }
 
-    public @NotNull final Optional<BeidouCommand> getCommand(@NotNull final String key) {
+    public @NonNull final Optional<BeidouCommand> getCommand(@NonNull final String key) {
         return Optional.ofNullable(this.commands.getOrDefault(key, null));
     }
 
-    public @NotNull final Map<String, BeidouCommand> getCommands() {
+    public @NonNull final Map<String, BeidouCommand> getCommands() {
         return Collections.unmodifiableMap(this.commands);
     }
 }
