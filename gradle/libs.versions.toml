@@ -1,16 +1,16 @@
 [versions]
 ## Gradle Plugins
-shadow = "9.4.1" # https://github.com/GradleUp/shadow
+shadow = "9.6.1" # https://github.com/GradleUp/shadow
 
-fusion-files = "4.16.0" # https://github.com/ryderbelserion/Fusion
+fusion-core = "4.16.0" # https://github.com/ryderbelserion/Fusion
 fusion-addons = "0.3.0" # https://github.com/ryderbelserion/Fusion
 
-logback-classic = "1.5.32" # https://github.com/qos-ch/logback
+logback-classic = "1.6.4" # https://github.com/qos-ch/logback
 jopt-simple = "5.0.4" # https://github.com/jopt-simple/jopt-simple
 
-hikari = "7.0.2" # https://github.com/brettwooldridge/HikariCP
+hikari = "7.1.0" # https://github.com/brettwooldridge/HikariCP
 
-jda = "6.4.1" # https://github.com/discord-jda/JDA
+jda = "6.7.0" # https://github.com/discord-jda/JDA
 
 [plugins]
 # https://github.com/GradleUp/shadow
@@ -19,7 +19,7 @@ shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 [libraries]
 # https://github.com/ryderbelserion/Fusion
 fusion-addons = { module = "com.ryderbelserion.fusion:fusion-addons", version.ref = "fusion-addons" }
-fusion-files = { module = "com.ryderbelserion.fusion:fusion-files", version.ref = "fusion-files" }
+fusion-core = { module = "com.ryderbelserion.fusion:fusion-core", version.ref = "fusion-core" }
 
 # https://github.com/qos-ch/logback
 classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }
@@ -41,5 +41,5 @@ discord = [
 
 fusion = [
     "fusion-addons",
-    "fusion-files"
+    "fusion-core"
 ]

@@ -18,7 +18,7 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(24))
+        languageVersion.set(JavaLanguageVersion.of(25))
         vendor.set(JvmVendorSpec.AMAZON)
     }
 }
@@ -26,6 +26,6 @@ java {
 tasks {
     compileJava {
         options.encoding = Charsets.UTF_8.name()
-        options.release.set(24)
+        options.release.set(25)
     }
 }
