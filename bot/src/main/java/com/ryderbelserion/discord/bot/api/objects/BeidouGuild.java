@@ -45,15 +45,12 @@ public class BeidouGuild {
     }
 
 
-    private CommentedConfigurationNode traffic;
-    private CommentedConfigurationNode config;
     private CommandManager commandManager;
     private GuildConfig guildConfig;
 
     public void init() {
-        this.fileManager.getYamlFile(this.directory.resolve("config.yml")).ifPresent(customFile -> this.config = customFile.getConfiguration());
-
-        this.fileManager.getYamlFile(this.directory.resolve("traffic.yml")).ifPresent(customFile -> this.traffic = customFile.getConfiguration());
+        final CommentedConfigurationNode config = this.fileManager.getYamlFile(this.directory.resolve("config.yml")).orElseThrow().getConfiguration();
+        final CommentedConfigurationNode traffic = this.fileManager.getYamlFile(this.directory.resolve("traffic.yml")).orElseThrow().getConfiguration();
 
         this.fileManager.getJsonFile(this.directory.resolve("cache.json")).ifPresent(customFile -> {
             final BasicConfigurationNode cache = customFile.getConfiguration();
@@ -67,9 +64,7 @@ public class BeidouGuild {
             }
         });
 
-        if (this.config != null) {
-            this.guildConfig = new GuildConfig(this.config, this.traffic, this.embedManager, this.logger);
-        }
+        this.guildConfig = new GuildConfig(config, traffic, this.embedManager, this.logger);
 
         this.embedManager.init(this);
 

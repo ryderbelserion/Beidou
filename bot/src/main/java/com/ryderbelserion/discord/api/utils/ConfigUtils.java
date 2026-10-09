@@ -1,5 +1,6 @@
 package com.ryderbelserion.discord.api.utils;
 
+import com.ryderbelserion.fusion.files.exceptions.FileException;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
