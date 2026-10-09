@@ -2,7 +2,10 @@ package com.ryderbelserion.discord.api.utils;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.RoleColors;
 import org.jspecify.annotations.NonNull;
+
+import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +15,9 @@ public class RoleUtils {
         Role foundRole = null;
 
         for (final Role role : member.getRoles()) {
-            if (role.getColor() == null) {
+            final RoleColors colors = role.getColors();
+
+            if (colors.getPrimary() == null) {
                 continue;
             }
 

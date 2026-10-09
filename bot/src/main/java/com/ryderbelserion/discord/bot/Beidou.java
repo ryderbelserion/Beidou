@@ -160,7 +160,7 @@ public class Beidou extends DiscordPlugin {
         final Path embedFolder = directory.resolve("embeds");
 
         if (!Files.exists(commandFolder) || !Files.exists(embedFolder)) {
-            this.fileManager.extractFolder("defaults", directory);
+            this.fileManager.extractFolder("defaults", FileType.YAML, directory);
         }
 
         final Path folder = directory.resolve("defaults");

@@ -1,8 +1,8 @@
 package com.badbones69.weebs;
 
-import com.ryderbelserion.fusion.addons.interfaces.IAddon;
+import com.ryderbelserion.fusion.addons.api.Extension;
 
-public class WeebsAddon extends IAddon {
+public class WeebsAddon extends Extension {
 
     @Override
     public void onEnable() {

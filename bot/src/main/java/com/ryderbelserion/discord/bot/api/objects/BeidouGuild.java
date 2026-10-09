@@ -6,7 +6,7 @@ import com.ryderbelserion.discord.bot.api.managers.CommandManager;
 import com.ryderbelserion.discord.bot.api.managers.EmbedManager;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
 import com.ryderbelserion.discord.bot.guilds.GuildConfig;
-import com.ryderbelserion.fusion.addons.AddonManager;
+import com.ryderbelserion.fusion.addons.ExtensionManager;
 import com.ryderbelserion.fusion.files.FileManager;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jspecify.annotations.NonNull;
@@ -18,14 +18,12 @@ import java.nio.file.Path;
 
 public class BeidouGuild {
 
-    private CommentedConfigurationNode config;
-    private CommentedConfigurationNode traffic;
-    private GuildConfig guildConfig;
     private final Path directory;
     private final String id;
 
+    private final ExtensionManager extensionManager;
     private final ConfigManager configManager;
-    private final AddonManager addonManager;
+
     private final EmbedManager embedManager;
     private final FileManager fileManager;
     private final CommandHandler handler;
@@ -33,7 +31,7 @@ public class BeidouGuild {
     private final Guild guild;
 
     public BeidouGuild(@NonNull final Beidou instance, @NonNull final Path directory, @NonNull final Guild guild) {
-        this.addonManager = new AddonManager(this.directory = directory);
+        this.extensionManager = new ExtensionManager(this.directory = directory);
 
         this.id = guild.getId();
 
@@ -46,7 +44,11 @@ public class BeidouGuild {
         this.guild = guild;
     }
 
+
+    private CommentedConfigurationNode traffic;
+    private CommentedConfigurationNode config;
     private CommandManager commandManager;
+    private GuildConfig guildConfig;
 
     public void init() {
         this.fileManager.getYamlFile(this.directory.resolve("config.yml")).ifPresent(customFile -> this.config = customFile.getConfiguration());
@@ -77,13 +79,15 @@ public class BeidouGuild {
 
         this.commandManager.init();
 
-        if (this.addonManager != null) {
-            this.addonManager.load(1);
+        if (this.extensionManager != null) {
+            this.extensionManager.init(1);
 
-            this.addonManager.enableAddons();
-
-            this.logger.warn("Successfully loaded {} addons.", this.addonManager.getAddons().size());
+            this.logger.warn("Successfully loaded {} addons.", this.extensionManager.getLoadedExtensionCount());
         }
+    }
+
+    public @NonNull final ExtensionManager getExtensionManager() {
+        return this.extensionManager;
     }
 
     public @NonNull final CommandHandler getCommandHandler() {
@@ -100,10 +104,6 @@ public class BeidouGuild {
 
     public @NonNull final EmbedManager getEmbedManager() {
         return this.embedManager;
-    }
-
-    public @NonNull final AddonManager getAddonManager() {
-        return this.addonManager;
     }
 
     public @NonNull final FileManager getFileManager() {
