@@ -27,6 +27,7 @@ import com.ryderbelserion.discord.bot.guilds.features.logging.listeners.GuildMes
 import com.ryderbelserion.discord.bot.guilds.features.traffic.TrafficListener;
 import com.ryderbelserion.discord.bot.guilds.listeners.GuildSlashListener;
 import com.ryderbelserion.discord.bot.guilds.features.threads.ThreadListener;
+import com.ryderbelserion.fusion.addons.ExtensionManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import net.dv8tion.jda.api.JDA;
@@ -57,6 +58,7 @@ public class Beidou extends DiscordPlugin {
     private final CommandHandler commandHandler;
     private final EmbedManager embedManager;
 
+    private ExtensionManager extensionManager;
     private Environment environment;
     private String version = "";
 
@@ -92,6 +94,7 @@ public class Beidou extends DiscordPlugin {
             envOption.getValue(option).ifPresentOrElse(env -> environment = env, () -> environment = Environment.RELEASE);
         }));
 
+        this.extensionManager = new ExtensionManager(getDirectory().resolve("extensions"));
         this.commandHandler = new CommandHandler();
         this.embedManager = new EmbedManager();
 
@@ -282,6 +285,8 @@ public class Beidou extends DiscordPlugin {
                     new GuildMessageListener(this)
             );
         }
+
+        this.extensionManager.init(getRecursionDepth());
 
         this.logger.info("{} is ready!", jda.getSelfUser().getName());
     }

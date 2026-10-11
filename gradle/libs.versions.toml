@@ -3,7 +3,7 @@
 shadow = "9.6.1" # https://github.com/GradleUp/shadow
 
 fusion-core = "4.54.0" # https://github.com/ryderbelserion/Fusion
-fusion-addons = "1.1.0" # https://github.com/ryderbelserion/Fusion
+fusion-addons = "1.2.0" # https://github.com/ryderbelserion/Fusion
 
 logback-classic = "1.6.5" # https://github.com/qos-ch/logback
 jopt-simple = "5.0.4" # https://github.com/jopt-simple/jopt-simple
