@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -85,7 +87,7 @@ public abstract class DiscordPlugin {
     }
 
     public @NonNull final Path getDirectory() {
-        return Path.of("./%s".formatted(this.username));
+        return Path.of(".%s%s".formatted(File.separator, this.username));
     }
 
     public String replacePlaceholder(@NonNull final String message, @NonNull final Map<String, String> placeholders) {
