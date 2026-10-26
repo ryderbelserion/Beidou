@@ -2,6 +2,8 @@
 traffic:
   # The name of the module.
   entry-module:
+    # Should we wait until the user has agreed to the rules before being given roles etc.?
+    is-pending: false
     # Role settings.
     role-settings:
       # Should we give a role(s) on join?

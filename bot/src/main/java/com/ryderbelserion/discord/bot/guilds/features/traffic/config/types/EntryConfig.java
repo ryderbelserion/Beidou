@@ -25,6 +25,8 @@ public class EntryConfig implements ITrafficConfig {
     private final List<String> channels;
     private final String embed;
 
+    private final boolean isPending;
+
     public EntryConfig(
             @NonNull final CommentedConfigurationNode config,
             @NonNull final EmbedManager embedManager
@@ -41,10 +43,22 @@ public class EntryConfig implements ITrafficConfig {
 
         this.channels = ConfigUtils.getStringList(config.node("channels"));
         this.embed = config.node("embed").getString("");
+
+        this.isPending = config.node("is-pending").getBoolean(false);
     }
 
     @Override
     public void send(@NonNull final String id, @NonNull final User user, @NonNull final Guild guild) {
+        final Member member = guild.getMemberById(user.getId());
+
+        if (member == null) { // null somehow.
+            return;
+        }
+
+        if (this.isPending && member.isPending()) { // return if the member hasn't agreed to the rules yet.
+            return;
+        }
+
         this.embedManager.getEmbed(id, this.embed).ifPresent(embed -> {
             for (final String channel : this.channels) {
                 if (channel.isBlank()) continue;
@@ -70,12 +84,6 @@ public class EntryConfig implements ITrafficConfig {
         }
 
         if (this.isRolePersistEnabled) {
-            final Member member = guild.getMemberById(user.getId());
-
-            if (member == null) {
-                return;
-            }
-
             final List<Role> roles = member.getRoles();
 
             if (roles.isEmpty()) {
