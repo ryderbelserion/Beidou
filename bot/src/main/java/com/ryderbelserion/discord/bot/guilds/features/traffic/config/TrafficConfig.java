@@ -5,7 +5,6 @@ import com.ryderbelserion.discord.bot.guilds.features.traffic.config.interfaces.
 import com.ryderbelserion.discord.bot.guilds.features.traffic.config.types.EntryConfig;
 import com.ryderbelserion.discord.bot.guilds.features.traffic.config.types.ExitConfig;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
