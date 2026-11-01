@@ -73,6 +73,7 @@ public abstract class HikariFactory extends FlatFactory {
 
                 try (final Statement statement = connection.createStatement()) {
                     statement.addBatch(this.create_guilds_table);
+                    statement.addBatch(this.create_users_table);
 
                     statement.executeBatch();
                 }
