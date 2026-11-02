@@ -28,7 +28,7 @@ public class EmbedManager {
 
         final String defaultAvatar = instance.getConfig().getDefaultAvatar();
 
-        for (final Path path : fileManager.getFilesByPath(directory.resolve("embeds"), ".yml", depth)) {
+        for (final Path path : fileManager.getFilesByPath(directory.resolve("embeds"), List.of(".yml"), depth)) {
             final Optional<YamlCustomFile> optional = fileManager.getYamlFile(path);
 
             if (optional.isEmpty()) continue;

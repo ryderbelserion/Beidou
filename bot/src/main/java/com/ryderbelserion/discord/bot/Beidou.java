@@ -58,7 +58,7 @@ public class Beidou extends DiscordPlugin {
     private final CommandHandler commandHandler;
     private final EmbedManager embedManager;
 
-    private ExtensionManager extensionManager;
+    private final ExtensionManager extensionManager;
     private Environment environment;
     private String version = "";
 
@@ -287,6 +287,8 @@ public class Beidou extends DiscordPlugin {
         }
 
         this.extensionManager.init(getRecursionDepth());
+
+        this.logger.warn("Successfully loaded {} global addons.", this.extensionManager.getLoadedExtensionCount());
 
         this.logger.info("{} is ready!", jda.getSelfUser().getName());
     }

@@ -6,6 +6,7 @@ import com.ryderbelserion.discord.bot.api.managers.CommandManager;
 import com.ryderbelserion.discord.bot.api.managers.EmbedManager;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
 import com.ryderbelserion.discord.bot.guilds.GuildConfig;
+import com.ryderbelserion.discord.bot.guilds.commands.RefreshCommand;
 import com.ryderbelserion.fusion.addons.ExtensionManager;
 import com.ryderbelserion.fusion.files.FileManager;
 import net.dv8tion.jda.api.entities.Guild;
@@ -15,6 +16,7 @@ import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import java.nio.file.Path;
+import java.util.List;
 
 public class BeidouGuild {
 
@@ -31,7 +33,9 @@ public class BeidouGuild {
     private final Guild guild;
 
     public BeidouGuild(@NonNull final Beidou instance, @NonNull final Path directory, @NonNull final Guild guild) {
-        this.extensionManager = new ExtensionManager(this.directory = directory);
+        this.directory = directory;
+
+        this.extensionManager = new ExtensionManager(this.directory.resolve("addons"));
 
         this.id = guild.getId();
 
@@ -45,6 +49,7 @@ public class BeidouGuild {
     }
 
 
+    private boolean isExtensionsLoaded = false;
     private CommandManager commandManager;
     private GuildConfig guildConfig;
 
@@ -64,6 +69,10 @@ public class BeidouGuild {
             }
         });
 
+        this.handler.addStaticGuildCommands(this.guild, List.of(
+                new RefreshCommand(this)
+        ));
+
         this.guildConfig = new GuildConfig(config, traffic, this.embedManager, this.logger);
 
         this.embedManager.init(this);
@@ -75,9 +84,19 @@ public class BeidouGuild {
         this.commandManager.init();
 
         if (this.extensionManager != null) {
+            if (this.isExtensionsLoaded) {
+                this.extensionManager.reload();
+
+                this.logger.warn("Successfully reloaded {} guild addons.", this.extensionManager.getLoadedExtensionCount());
+
+                return;
+            }
+
             this.extensionManager.init(1);
 
-            this.logger.warn("Successfully loaded {} addons.", this.extensionManager.getLoadedExtensionCount());
+            this.logger.warn("Successfully loaded {} guild addons.", this.extensionManager.getLoadedExtensionCount());
+
+            this.isExtensionsLoaded = true;
         }
     }
 
@@ -119,5 +138,9 @@ public class BeidouGuild {
 
     public @NonNull final String getId() {
         return this.id;
+    }
+
+    public final boolean isOwner(final String id) {
+        return this.guild.getId().equals(id);
     }
 }

@@ -10,6 +10,7 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -39,7 +40,7 @@ public class CommandManager {
 
         final int depth = this.instance.getConfigManager().getConfig().getFileConfig().getRecursionDepth();
 
-        for (final Path path : this.fileManager.getFilesByPath(this.path.resolve("commands"), ".yml", depth)) {
+        for (final Path path : this.fileManager.getFilesByPath(this.path.resolve("commands"), List.of(".yml"), depth)) {
             final Optional<YamlCustomFile> optional = this.fileManager.getYamlFile(path);
 
             if (optional.isEmpty()) continue;

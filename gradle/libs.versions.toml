@@ -2,10 +2,10 @@
 ## Gradle Plugins
 shadow = "9.6.1" # https://github.com/GradleUp/shadow
 
-fusion-core = "4.54.0" # https://github.com/ryderbelserion/Fusion
-fusion-addons = "1.2.0" # https://github.com/ryderbelserion/Fusion
+fusion-core = "4.61.1" # https://github.com/ryderbelserion/Fusion
+fusion-addons = "1.4.0" # https://github.com/ryderbelserion/Fusion
 
-logback-classic = "1.6.5" # https://github.com/qos-ch/logback
+logback-classic = "1.6.6" # https://github.com/qos-ch/logback
 jopt-simple = "5.0.4" # https://github.com/jopt-simple/jopt-simple
 
 hikari = "7.1.0" # https://github.com/brettwooldridge/HikariCP
@@ -42,6 +42,5 @@ discord = [
 
 fusion = [
     "fusion-addons",
-    "fusion-files",
-    "fusion-core"
+    "fusion-files"
 ]
