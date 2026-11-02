@@ -1,0 +1,4 @@
+# All settings related to the Tebex integration.
+settings:
+  # The private key found in Integrations -> API Keys
+  private-key: ""
