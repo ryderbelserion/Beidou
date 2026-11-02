@@ -30,7 +30,8 @@ public class ReloadCommand extends CommandEngine {
     }
 
     @Override
-    protected @NonNull final CommandData getCommandData() {
+    @NonNull
+    public final CommandData getCommandData() {
         return Commands.slash(getName(), getDescription()).addOption(OptionType.STRING, "guild_id", "The guild id", false, true);
     }
 

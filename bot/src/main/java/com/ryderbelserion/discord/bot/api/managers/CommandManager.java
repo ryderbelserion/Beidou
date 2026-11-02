@@ -1,13 +1,16 @@
 package com.ryderbelserion.discord.bot.api.managers;
 
+import com.ryderbelserion.discord.api.commands.CommandEngine;
 import com.ryderbelserion.discord.api.commands.CommandHandler;
 import com.ryderbelserion.discord.bot.api.objects.BeidouGuild;
 import com.ryderbelserion.discord.bot.api.objects.commands.BeidouCommand;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +38,7 @@ public class CommandManager {
         this.instance = guild;
     }
 
-    public void init() {
+    public void init(final List<CommandEngine> commands) {
         this.commands.clear();
 
         final int depth = this.instance.getConfigManager().getConfig().getFileConfig().getRecursionDepth();
@@ -54,7 +57,11 @@ public class CommandManager {
             this.commands.put(command.getName(), command);
         }
 
-        this.commandHandler.addGuildCommands(this.instance.getGuild(), this.commands.values().stream().map(BeidouCommand::getCommandData).toList());
+        final List<CommandData> data = new ArrayList<>(this.commands.values().stream().map(BeidouCommand::getCommandData).toList());
+
+        data.addAll(commands.stream().map(CommandEngine::getCommandData).toList()); // adds static commands built before this method.
+
+        this.commandHandler.addGuildCommands(this.instance.getGuild(), data);
     }
 
     public @NonNull final Optional<BeidouCommand> getCommand(@NonNull final String key) {

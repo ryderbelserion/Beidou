@@ -26,7 +26,7 @@ public class RefreshCommand extends CommandEngine {
     }
 
     @Override
-    protected CommandData getCommandData() {
+    public CommandData getCommandData() {
         return Commands.slash(getName(), getDescription()).addOption(OptionType.STRING, "extension_id", "The extension id", false, true);
     }
 

@@ -69,10 +69,6 @@ public class BeidouGuild {
             }
         });
 
-        this.handler.addStaticGuildCommands(this.guild, List.of(
-                new RefreshCommand(this)
-        ));
-
         this.guildConfig = new GuildConfig(config, traffic, this.embedManager, this.logger);
 
         this.embedManager.init(this);
@@ -81,7 +77,7 @@ public class BeidouGuild {
             this.commandManager = new CommandManager(this);
         }
 
-        this.commandManager.init();
+        this.commandManager.init(List.of(new RefreshCommand(this)));
 
         if (this.extensionManager != null) {
             if (this.isExtensionsLoaded) {

@@ -26,7 +26,7 @@ public abstract class CommandEngine {
         this.description = description;
     }
 
-    protected abstract CommandData getCommandData();
+    public abstract CommandData getCommandData();
 
     protected abstract void perform(@NonNull final SlashCommandInteractionEvent event, @NonNull final CommandContext context);
 

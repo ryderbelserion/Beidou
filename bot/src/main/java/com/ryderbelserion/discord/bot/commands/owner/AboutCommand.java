@@ -25,7 +25,8 @@ public class AboutCommand extends CommandEngine {
     }
 
     @Override
-    protected @NonNull final CommandData getCommandData() {
+    @NonNull
+    public final CommandData getCommandData() {
         return Commands.slash(getName(), getDescription());
     }
 
