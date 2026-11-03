@@ -3,8 +3,7 @@ package com.ryderbelserion.discord;
 import com.ryderbelserion.discord.api.options.types.TokenOption;
 import com.ryderbelserion.discord.bot.Beidou;
 import com.ryderbelserion.discord.api.options.OptionsManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.tinylog.Logger;
 
 public class Main {
 
@@ -13,13 +12,11 @@ public class Main {
 
         manager.init(args);
 
-        final Logger logger = LoggerFactory.getLogger(Beidou.class);
-
         manager.getOptionByName("token").ifPresent(action -> {
             manager.getOption().ifPresent(option -> {
                 final TokenOption tokenOption = (TokenOption) action;
 
-                tokenOption.getValue(option).ifPresentOrElse(token -> new Beidou(token, logger, manager).init(), () -> logger.warn("Failed to start Discord Bot, Token not found!"));
+                tokenOption.getValue(option).ifPresentOrElse(token -> new Beidou(token, manager).init(), () -> Logger.error("Failed to start Discord Bot, Token not found!"));
             });
         });
     }

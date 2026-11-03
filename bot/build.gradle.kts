@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     api(libs.bundles.discord)
+    api(libs.bundles.tinylog)
     api(libs.bundles.fusion)
     api(libs.hikari)
 }

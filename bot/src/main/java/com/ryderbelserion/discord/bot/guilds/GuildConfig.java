@@ -5,8 +5,8 @@ import com.ryderbelserion.discord.bot.guilds.features.logging.config.MessageConf
 import com.ryderbelserion.discord.bot.guilds.features.threads.config.ThreadConfig;
 import com.ryderbelserion.discord.bot.guilds.features.traffic.config.TrafficConfig;
 import org.jspecify.annotations.NonNull;
-import org.slf4j.Logger;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.tinylog.TaggedLogger;
 
 public class GuildConfig {
 
@@ -20,7 +20,7 @@ public class GuildConfig {
             @NonNull final CommentedConfigurationNode config,
             @NonNull final CommentedConfigurationNode traffic,
             @NonNull final EmbedManager embedManager,
-            @NonNull final Logger logger
+            @NonNull final TaggedLogger logger
     ) {
         this.messageConfig = new MessageConfig(config.node("settings", "channels", "track-messages"), embedManager, logger);
 

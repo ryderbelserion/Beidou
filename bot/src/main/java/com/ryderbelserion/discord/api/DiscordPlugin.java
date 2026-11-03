@@ -9,8 +9,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jspecify.annotations.NonNull;
-import org.slf4j.Logger;
-
+import org.tinylog.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +20,6 @@ import java.util.Map;
 public abstract class DiscordPlugin {
 
     protected final String username;
-    protected final Logger logger;
 
     private final JDA jda;
 
@@ -29,11 +27,9 @@ public abstract class DiscordPlugin {
             @NonNull final List<GatewayIntent> intents,
             @NonNull final List<CacheFlag> flags,
             @NonNull final String username,
-            @NonNull final Logger logger,
             @NonNull final String token
             ) {
         this.username = username;
-        this.logger = logger;
 
         this.jda = JDABuilder.createDefault(token, intents)
                 .enableCache(flags)
@@ -113,10 +109,6 @@ public abstract class DiscordPlugin {
         this.jda.addEventListener(listeners);
     }
 
-    public @NonNull final Logger getLogger() {
-        return this.logger;
-    }
-
     public final boolean isActive() {
         return this.isActive;
     }
@@ -152,7 +144,7 @@ public abstract class DiscordPlugin {
 
         this.fileManager = new FileManager(directory);
 
-        this.logger.info("All ready to go!");
+        Logger.info("All ready to go!");
 
         this.isActive = true;
     }

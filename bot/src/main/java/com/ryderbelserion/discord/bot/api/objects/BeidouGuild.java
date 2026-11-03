@@ -11,10 +11,11 @@ import com.ryderbelserion.fusion.addons.ExtensionManager;
 import com.ryderbelserion.fusion.files.FileManager;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jspecify.annotations.NonNull;
-import org.slf4j.Logger;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class BeidouGuild {
     private final EmbedManager embedManager;
     private final FileManager fileManager;
     private final CommandHandler handler;
-    private final Logger logger;
+    private final TaggedLogger logger;
     private final Guild guild;
 
     public BeidouGuild(@NonNull final Beidou instance, @NonNull final Path directory, @NonNull final Guild guild) {
@@ -43,7 +44,7 @@ public class BeidouGuild {
         this.embedManager = instance.getEmbedManager();
         this.fileManager = instance.getFileManager();
         this.handler = instance.getCommandHandler();
-        this.logger = instance.getLogger();
+        this.logger = Logger.tag("guild");
 
         this.guild = guild;
     }

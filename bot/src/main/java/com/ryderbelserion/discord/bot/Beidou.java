@@ -37,7 +37,7 @@ import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jspecify.annotations.NonNull;
-import org.slf4j.Logger;
+import org.tinylog.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -62,7 +62,7 @@ public class Beidou extends DiscordPlugin {
     private Environment environment;
     private String version = "";
 
-    public Beidou(@NonNull final String token, @NonNull final Logger logger, @NonNull final OptionsManager manager) {
+    public Beidou(@NonNull final String token, @NonNull final OptionsManager manager) {
         super(List.of(
                 // direct messages
                 GatewayIntent.DIRECT_MESSAGE_REACTIONS,
@@ -86,7 +86,7 @@ public class Beidou extends DiscordPlugin {
         ), List.of(
                 CacheFlag.VOICE_STATE,
                 CacheFlag.EMOJI
-        ), "beidou", logger, token);
+        ), "beidou", token);
 
         manager.getOptionByName("environment").ifPresent(action -> manager.getOption().ifPresent(option -> {
             final EnvOption envOption = (EnvOption) action;
@@ -126,7 +126,7 @@ public class Beidou extends DiscordPlugin {
             if (!Files.exists(directory)) {
                 Files.createDirectory(directory);
 
-                this.logger.info("The guild folder for {} ({}) was created.", guildName, guildId);
+                Logger.info("The guild folder for {} ({}) was created.", guildName, guildId);
             }
         } catch (final IOException exception) {
             exception.printStackTrace();
@@ -248,7 +248,7 @@ public class Beidou extends DiscordPlugin {
 
                     jda.getPresence().setPresence(customStatus, false);
                 } catch (final Exception exception) {
-                    this.logger.warn("Failed to complete execution for updating status!", exception);
+                    Logger.warn("Failed to complete execution for updating status!", exception);
                 }
             }, 0, 1, TimeUnit.MINUTES);
         }
@@ -288,9 +288,9 @@ public class Beidou extends DiscordPlugin {
 
         this.extensionManager.init(getRecursionDepth());
 
-        this.logger.warn("Successfully loaded {} global addons.", this.extensionManager.getLoadedExtensionCount());
+        Logger.warn("Successfully loaded {} global addons.", this.extensionManager.getLoadedExtensionCount());
 
-        this.logger.info("{} is ready!", jda.getSelfUser().getName());
+        Logger.info("{} is ready!", jda.getSelfUser().getName());
     }
 
     @Override
@@ -324,7 +324,7 @@ public class Beidou extends DiscordPlugin {
 
     @Override
     public void onStop(@NonNull final JDA jda) {
-        this.logger.info("{} is offline!", jda.getSelfUser().getName());
+        Logger.info("{} is offline!", jda.getSelfUser().getName());
 
         final Path directory = getDirectory();
 
@@ -337,7 +337,7 @@ public class Beidou extends DiscordPlugin {
     public void init() {
         super.init();
 
-        try (final JarFile jar = new JarFile(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath())) {
+        try (final JarFile jar = new JarFile(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath())) { //todo() replace with native json api in j28
             final JarEntry origin = jar.getJarEntry("version.json");
 
             if (origin == null) {
@@ -354,7 +354,7 @@ public class Beidou extends DiscordPlugin {
 
             this.version = json.get("version").getAsString();
         } catch (final Exception exception) {
-            this.logger.warn("Failed to get version.json", exception);
+            Logger.warn("Failed to get version.json", exception);
         }
 
         final Path directory = getDirectory();
@@ -377,7 +377,7 @@ public class Beidou extends DiscordPlugin {
             try {
                 this.storageHolder = new StorageManager(this).init();
             } catch (final Exception exception) {
-                this.logger.error("Failed to initialize storage impl", exception);
+                Logger.error("Failed to initialize storage impl", exception);
             }
         }
     }
@@ -392,9 +392,9 @@ public class Beidou extends DiscordPlugin {
     public void leaveGuild(@NonNull final Guild guild, final String guildId, final String username, final String userId) {
         final String guildName = guild.getName();
 
-        this.logger.info("{} ({}) tried adding me to {} ({}) while they are not whitelisted.", username, userId, guildName, guildId);
+        Logger.info("{} ({}) tried adding me to {} ({}) while they are not whitelisted.", username, userId, guildName, guildId);
 
-        guild.leave().queue(_ -> this.logger.info("Successfully left the server {} ({}) owned by {} ({}) due to not being whitelisted", guildName, guildId, username, userId));
+        guild.leave().queue(_ -> Logger.info("Successfully left the server {} ({}) owned by {} ({}) due to not being whitelisted", guildName, guildId, username, userId));
     }
 
     public String getIconUrl(@NonNull final SelfUser user) {

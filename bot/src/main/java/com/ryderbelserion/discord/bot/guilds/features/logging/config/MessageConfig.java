@@ -10,8 +10,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import org.jspecify.annotations.NonNull;
-import org.slf4j.Logger;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.tinylog.TaggedLogger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,9 +32,9 @@ public class MessageConfig {
     private final boolean isLogging;
 
     private final EmbedManager embedManager;
-    private final Logger logger;
+    private final TaggedLogger logger;
 
-    public MessageConfig(@NonNull final CommentedConfigurationNode config, @NonNull final EmbedManager embedManager, @NonNull final Logger logger) {
+    public MessageConfig(@NonNull final CommentedConfigurationNode config, @NonNull final EmbedManager embedManager, @NonNull final TaggedLogger logger) {
         this.defaultChannel = config.node("default").getString("");
 
         this.channels.put("delete", ConfigUtils.getStringList(config.node("types", "deletion")));
