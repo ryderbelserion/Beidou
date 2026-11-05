@@ -131,28 +131,25 @@ public class Beidou extends DiscordPlugin {
             exception.printStackTrace();
         }
 
+        this.fileManager.extractFolder("guilds", "guilds", FileType.YAML, directory);
+
         List.of(
                 "config.yml",
                 "traffic.yml"
         ).forEach(file -> {
-            final String extension = file.split("\\.")[1];
-
-            final FileType fileType = switch (extension) {
-                case "yml" -> FileType.YAML;
-                default -> throw new IllegalStateException("Unexpected value: " + extension);
-            };
+            final List<FileAction> actions = new ArrayList<>();
 
             final Path path = directory.resolve(file);
 
-            final List<FileAction> actions = new ArrayList<>();
+            if (Files.exists(path)) {
+                actions.add(FileAction.ALREADY_EXTRACTED);
+            }
 
             if (this.fileManager.hasFile(path)) {
                 actions.add(FileAction.RELOAD_FILE);
             }
 
-            this.fileManager.extractFile("guilds/%s".formatted(file), path);
-
-            this.fileManager.addFile(path, fileType, consumer -> actions.forEach(consumer::addAction));
+            this.fileManager.addFile(directory.resolve(file), FileType.YAML, builder -> actions.forEach(builder::addAction));
         });
 
         final Path commandFolder = directory.resolve("commands");
