@@ -13,7 +13,10 @@ repositories {
 }
 
 dependencies {
-    compileOnlyApi(project(":beidou-bot"))
+    compileOnly(project(":beidou-bot"))
+
+    compileOnly(libs.bundles.discord)
+    compileOnly(libs.bundles.fusion)
 }
 
 java {

@@ -11,11 +11,11 @@ import com.ryderbelserion.fusion.addons.ExtensionManager;
 import com.ryderbelserion.fusion.files.FileManager;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jspecify.annotations.NonNull;
-import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-import org.spongepowered.configurate.serialize.SerializationException;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -55,20 +55,24 @@ public class BeidouGuild {
     private GuildConfig guildConfig;
 
     public void init() {
-        final CommentedConfigurationNode config = this.fileManager.getYamlFile(this.directory.resolve("config.yml")).orElseThrow().getConfiguration();
-        final CommentedConfigurationNode traffic = this.fileManager.getYamlFile(this.directory.resolve("traffic.yml")).orElseThrow().getConfiguration();
+        final CommentedConfigurationNode config = this.fileManager.getYamlFile(this.directory.resolve("config.yml")).orElseThrow().getConfig();
+        final CommentedConfigurationNode traffic = this.fileManager.getYamlFile(this.directory.resolve("traffic.yml")).orElseThrow().getConfig();
 
-        this.fileManager.getJsonFile(this.directory.resolve("cache.json")).ifPresent(customFile -> {
-            final BasicConfigurationNode cache = customFile.getConfiguration();
+        final Path cache = this.directory.resolve("cache.txt");
 
+        if (!Files.exists(cache)) {
             try {
-                cache.node("name").set(String.class, this.guild.getName());
-
-                customFile.save();
-            } catch (final SerializationException exception) {
+                Files.createFile(cache);
+            } catch (final IOException exception) {
                 exception.printStackTrace();
             }
-        });
+        }
+
+        try {
+            Files.writeString(cache, this.guild.getName());
+        } catch (final IOException exception) {
+            exception.printStackTrace();
+        }
 
         this.guildConfig = new GuildConfig(config, traffic, this.embedManager, this.logger);
 

@@ -30,7 +30,7 @@ public class StorageManager {
         // table #1 which contains guild ids
         // table #2 with the guild id which contains user data
 
-        return switch (type) {
+        return switch (type.toLowerCase()) {
             case "postgres" -> new StorageHolder(new PostgresFactory(credentials)).initialize();
             case "sqlite" -> new StorageHolder(new SqliteFactory(this.path.resolve("beidou.db"))).initialize();
             default -> throw new IllegalStateException("Unknown Database Type: %s".formatted(type));

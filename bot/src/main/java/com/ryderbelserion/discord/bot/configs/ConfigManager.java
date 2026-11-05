@@ -20,23 +20,16 @@ public class ConfigManager {
     }
 
     public void init() {
-        this.fileManager.getJsonFile(this.path.resolve("guilds.json")).ifPresent(file -> {
-            this.guildCache = new GuildCache();
-            this.guildCache.init(file.getConfiguration());
-        });
-
         this.fileManager.getYamlFile(this.path.resolve("config.yml")).ifPresent(file -> {
             this.config = new BotConfig();
-            this.config.init(file.getConfiguration());
+            this.config.init(file.getConfig());
         });
     }
 
     public void reload() {
         this.fileManager.refresh(false);
 
-        this.fileManager.getJsonFile(this.path.resolve("guilds.json")).ifPresent(file -> this.guildCache.init(file.getConfiguration()));
-
-        this.fileManager.getYamlFile(this.path.resolve("config.yml")).ifPresent(file -> this.config.init(file.getConfiguration()));
+        this.fileManager.getYamlFile(this.path.resolve("config.yml")).ifPresent(file -> this.config.init(file.getConfig()));
     }
 
     public @NonNull final GuildCache getGuildCache() {

@@ -3,9 +3,13 @@ package com.ryderbelserion.discord.bot.storage.impl.file;
 import com.ryderbelserion.discord.bot.storage.impl.ConnectionFactory;
 import com.zaxxer.hikari.HikariDataSource;
 import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
+
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class FlatFactory extends ConnectionFactory {
@@ -16,7 +20,7 @@ public abstract class FlatFactory extends ConnectionFactory {
         this.impl = impl;
     }
 
-    protected abstract String url();
+    public abstract String url();
 
     protected HikariDataSource source;
 
@@ -47,12 +51,29 @@ public abstract class FlatFactory extends ConnectionFactory {
 
                 try (final Statement statement = connection.createStatement()) {
                     statement.addBatch(this.create_guilds_table);
-                    statement.addBatch(this.create_users_table);
+
+                    try (final PreparedStatement index = connection.prepareStatement("insert into guilds(guild_id) values (?) on conflict (guild_id) do nothing")) {
+                        for (final String line : List.of(
+                                "1142362341095251998", // CoreCraft
+                                "1064050561747529868", // MostWanted
+                                "1190524968048529558", // Yuri Academy
+                                "182615261403283459", // Badbones Live Chat
+                                "931330926653358090" // Ryder's Tavern
+                        )) {
+                            index.setString(1, line);
+
+                            index.addBatch();
+                        }
+
+                        index.executeBatch();
+                    }
 
                     statement.executeBatch();
+                } catch (final SQLException exception) {
+                    Logger.error("Failed to initialize database! (Reason: {})", exception.getMessage());
                 }
             } catch (final SQLException exception) {
-                exception.printStackTrace();
+                Logger.error("Failed to fetch connection from pool! (Reason: {})", exception.getMessage());
             }
         });
     }

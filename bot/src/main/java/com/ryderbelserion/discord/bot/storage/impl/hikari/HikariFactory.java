@@ -6,8 +6,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.jspecify.annotations.NonNull;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class HikariFactory extends FlatFactory {
@@ -26,7 +26,7 @@ public abstract class HikariFactory extends FlatFactory {
 
     protected abstract int getDefaultPort();
 
-    protected void configure(
+    public void configure(
             @NonNull final HikariConfig config,
             @NonNull final String database,
             @NonNull final String username,
@@ -67,19 +67,50 @@ public abstract class HikariFactory extends FlatFactory {
 
         this.source = new HikariDataSource(config);
 
+        super.init();
+    }
+
+    @Override
+    public void addGuild(final String id) {
         CompletableFuture.runAsync(() -> {
-            try (final Connection connection = getConnection()) {
-                if (connection == null) return;
+            try (final Connection connection = this.source.getConnection(); final PreparedStatement statement =
+                    connection.prepareStatement("insert into guilds(guild_id) values (?)")) {
+                statement.setString(1, id);
 
-                try (final Statement statement = connection.createStatement()) {
-                    statement.addBatch(this.create_guilds_table);
-                    statement.addBatch(this.create_users_table);
-
-                    statement.executeBatch();
-                }
+                statement.executeUpdate();
             } catch (final SQLException exception) {
                 exception.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void removeGuild(final String id) {
+        CompletableFuture.runAsync(() -> {
+            try (final Connection connection = this.source.getConnection(); final PreparedStatement statement =
+                    connection.prepareStatement("delete from guilds where guild_id=?")) {
+                statement.setString(1, id);
+
+                statement.executeUpdate();
+            } catch (final SQLException exception) {
+                exception.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public boolean hasGuild(final String id) {
+        return CompletableFuture.supplyAsync(() -> {
+            try (final Connection connection = this.source.getConnection(); final PreparedStatement statement =
+                    connection.prepareStatement("select 1 from guilds where guild_id=? limit 1")) {
+                statement.setString(1, id);
+
+                return statement.executeQuery().next();
+            } catch (final SQLException exception) {
+                exception.printStackTrace();
+            }
+
+            return false;
+        }).join();
     }
 }

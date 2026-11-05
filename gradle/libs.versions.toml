@@ -2,14 +2,16 @@
 ## Gradle Plugins
 shadow = "9.6.1" # https://github.com/GradleUp/shadow
 
-fusion-core = "4.62.0" # https://github.com/ryderbelserion/Fusion
-fusion-addons = "1.5.0" # https://github.com/ryderbelserion/Fusion
+fusion-files = "4.64.0" # https://github.com/ryderbelserion/Fusion
+fusion-addons = "1.6.1" # https://github.com/ryderbelserion/Fusion
 
 jopt-simple = "5.0.4" # https://github.com/jopt-simple/jopt-simple
 
 tinylog = "2.8.1" # https://tinylog.org/getting-started/
 
+postgres = "42.7.14"
 hikari = "7.1.0" # https://github.com/brettwooldridge/HikariCP
+sqlite = "3.54.1.0"
 
 jda = "6.7.0" # https://github.com/discord-jda/JDA
 
@@ -20,8 +22,7 @@ shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 [libraries]
 # https://github.com/ryderbelserion/Fusion
 fusion-addons = { module = "com.ryderbelserion.fusion:fusion-addons", version.ref = "fusion-addons" }
-fusion-files = { module = "com.ryderbelserion.fusion:fusion-files", version.ref = "fusion-core" }
-fusion-core = { module = "com.ryderbelserion.fusion:fusion-core", version.ref = "fusion-core" }
+fusion-files = { module = "com.ryderbelserion.fusion:fusion-files", version.ref = "fusion-files" }
 
 # https://github.com/jopt-simple/jopt-simple
 jopt = { module = "net.sf.jopt-simple:jopt-simple", version.ref = "jopt-simple" }
@@ -35,6 +36,9 @@ jda = { module = "net.dv8tion:JDA", version.ref = "jda" }
 tinylog-log4j = { module = "org.tinylog:slf4j-tinylog", version.ref = "tinylog" }
 tinylog-impl = { module = "org.tinylog:tinylog-impl", version.ref = "tinylog" }
 tinylog-api = { module = "org.tinylog:tinylog-api", version.ref = "tinylog" }
+
+postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
+sqlite = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite" }
 
 [bundles]
 discord = [

@@ -5,7 +5,7 @@ import com.ryderbelserion.discord.api.commands.CommandHandler;
 import com.ryderbelserion.discord.bot.api.objects.BeidouGuild;
 import com.ryderbelserion.discord.bot.api.objects.commands.BeidouCommand;
 import com.ryderbelserion.fusion.files.FileManager;
-import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
+import com.ryderbelserion.fusion.files.types.YamlCustomFile;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -48,7 +48,7 @@ public class CommandManager {
 
             if (optional.isEmpty()) continue;
 
-            final CommentedConfigurationNode configuration = optional.get().getConfiguration();
+            final CommentedConfigurationNode configuration = optional.get().getConfig();
 
             final BeidouCommand command = new BeidouCommand(this.id, configuration, this.embedManager);
 

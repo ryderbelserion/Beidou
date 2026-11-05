@@ -37,7 +37,7 @@ public class GuildMessageListener extends ListenerAdapter {
         this.guildManager.getGuild(guild.getId()).ifPresent(action -> {
             final FileManager fileManager = action.getFileManager();
 
-            fileManager.getJsonFile(action.getDirectory().resolve("cache.json")).ifPresent(customFile -> {
+            /*fileManager.getJsonFile(action.getDirectory().resolve("cache.json")).ifPresent(customFile -> {
                 final BasicConfigurationNode cache = customFile.getConfiguration();
 
                 final Message message = event.getMessage();
@@ -51,7 +51,7 @@ public class GuildMessageListener extends ListenerAdapter {
                 } catch (final SerializationException exception) {
                     exception.printStackTrace();
                 }
-            });
+            });*/
 
             //final GuildMessage root = action.getGuildMessage();
 

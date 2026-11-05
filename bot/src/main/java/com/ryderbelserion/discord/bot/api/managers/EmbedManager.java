@@ -3,7 +3,7 @@ package com.ryderbelserion.discord.bot.api.managers;
 import com.ryderbelserion.discord.bot.api.objects.BeidouEmbed;
 import com.ryderbelserion.discord.bot.api.objects.BeidouGuild;
 import com.ryderbelserion.fusion.files.FileManager;
-import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
+import com.ryderbelserion.fusion.files.types.YamlCustomFile;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -33,7 +33,7 @@ public class EmbedManager {
 
             if (optional.isEmpty()) continue;
 
-            final CommentedConfigurationNode configuration = optional.get().getConfiguration();
+            final CommentedConfigurationNode configuration = optional.get().getConfig();
 
             final String fileName = path.getFileName().toString();
 

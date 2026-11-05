@@ -18,6 +18,22 @@ public final class StorageHolder {
         return this;
     }
 
+    public StorageHolder addGuild(final String id) {
+        this.factory.addGuild(id);
+
+        return this;
+    }
+
+    public StorageHolder removeGuild(final String id) {
+        this.factory.removeGuild(id);
+
+        return this;
+    }
+
+    public boolean hasGuild(final String id) {
+        return this.factory.hasGuild(id);
+    }
+
     public void stop() {
         this.factory.stop();
     }

@@ -1,6 +1,6 @@
 package com.ryderbelserion.discord.api.utils;
 
-import com.ryderbelserion.fusion.files.exceptions.FileException;
+import com.ryderbelserion.fusion.files.exceptions.CustomException;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -19,7 +19,7 @@ public class ConfigUtils {
 
             return defaultValue;
         } catch (final SerializationException exception) {
-            throw new FileException(String.format("Failed to serialize %s!", node.path()), exception);
+            throw new CustomException(String.format("Failed to serialize %s!", node.path()), exception);
         }
     }
 
@@ -37,7 +37,7 @@ public class ConfigUtils {
 
             return defaultValue;
         } catch (final SerializationException exception) {
-            throw new FileException(String.format("Failed to serialize %s!", node.path()), exception);
+            throw new CustomException(String.format("Failed to serialize %s!", node.path()), exception);
         }
     }
 

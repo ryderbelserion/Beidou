@@ -5,7 +5,6 @@ import com.ryderbelserion.fusion.config.properties.builders.CommentsBuilder;
 import com.ryderbelserion.fusion.config.properties.interfaces.IPropertyHolder;
 import com.ryderbelserion.fusion.config.properties.objects.interfaces.Property;
 import org.jspecify.annotations.NonNull;
-
 import static com.ryderbelserion.fusion.config.properties.PropertyBuilder.newProperty;
 
 public class ConfigKeys implements IPropertyHolder {

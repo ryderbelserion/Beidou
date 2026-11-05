@@ -20,6 +20,7 @@ import java.util.Map;
 public abstract class DiscordPlugin {
 
     protected final String username;
+    protected final Path path;
 
     private final JDA jda;
 
@@ -30,6 +31,7 @@ public abstract class DiscordPlugin {
             @NonNull final String token
             ) {
         this.username = username;
+        this.path = Path.of(".%s%s".formatted(File.separator, this.username));
 
         this.jda = JDABuilder.createDefault(token, intents)
                 .enableCache(flags)
@@ -83,7 +85,7 @@ public abstract class DiscordPlugin {
     }
 
     public @NonNull final Path getDirectory() {
-        return Path.of(".%s%s".formatted(File.separator, this.username));
+        return this.path;
     }
 
     public String replacePlaceholder(@NonNull final String message, @NonNull final Map<String, String> placeholders) {

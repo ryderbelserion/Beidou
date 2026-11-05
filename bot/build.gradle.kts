@@ -17,10 +17,12 @@ repositories {
 }
 
 dependencies {
-    api(libs.bundles.discord)
-    api(libs.bundles.tinylog)
-    api(libs.bundles.fusion)
-    api(libs.hikari)
+    implementation(libs.bundles.discord)
+    implementation(libs.bundles.fusion)
+
+    implementation(libs.postgres)
+    //implementation(libs.sqlite) only needed for people who want to run sqlite
+    implementation(libs.hikari)
 }
 
 java {
@@ -57,8 +59,14 @@ tasks {
     }
 
     shadowJar {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
         manifest {
-            attributes["Main-Class"] = "com.ryderbelserion.discord.Main"
+            attributes(
+                "Main-Class" to "com.ryderbelserion.discord.Main",
+                "Enable-Native-Access" to "ALL-UNNAMED",
+                "Implementation-Version" to project.version
+            )
         }
 
         archiveBaseName.set("${rootProject.name}-${rootProject.version}")

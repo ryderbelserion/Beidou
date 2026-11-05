@@ -9,7 +9,7 @@ public class TebexAddon extends Extension {
 
     @Override
     public void onEnable() {
-        getLogger().warning("Guten Tag!");
+        getLogger().warn("Guten Tag!");
 
         this.configManager = new ConfigManager(getDataDirectory());
         this.configManager.init();

@@ -1,8 +1,5 @@
 package com.ryderbelserion.discord.bot;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.ryderbelserion.discord.Main;
 import com.ryderbelserion.discord.api.DiscordPlugin;
 import com.ryderbelserion.discord.api.commands.CommandContext;
 import com.ryderbelserion.discord.api.commands.CommandHandler;
@@ -14,11 +11,10 @@ import com.ryderbelserion.discord.bot.api.managers.EmbedManager;
 import com.ryderbelserion.discord.bot.commands.misc.FrierenCommand;
 import com.ryderbelserion.discord.bot.commands.owner.AboutCommand;
 import com.ryderbelserion.discord.bot.commands.owner.ReloadCommand;
+import com.ryderbelserion.discord.bot.commands.owner.WhitelistCommand;
 import com.ryderbelserion.discord.bot.configs.ConfigManager;
 import com.ryderbelserion.discord.bot.api.environment.enums.Environment;
 import com.ryderbelserion.discord.bot.configs.types.BotConfig;
-import com.ryderbelserion.discord.bot.configs.types.FileConfig;
-import com.ryderbelserion.discord.bot.configs.types.StorageConfig;
 import com.ryderbelserion.discord.bot.storage.StorageManager;
 import com.ryderbelserion.discord.bot.storage.holder.StorageHolder;
 import com.ryderbelserion.discord.bot.guilds.GuildListener;
@@ -30,6 +26,8 @@ import com.ryderbelserion.discord.bot.guilds.features.threads.ThreadListener;
 import com.ryderbelserion.fusion.addons.ExtensionManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.impl.FusionConfig;
+import com.ryderbelserion.fusion.impl.keys.RootKeys;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
@@ -39,9 +37,6 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jspecify.annotations.NonNull;
 import org.tinylog.Logger;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -49,18 +44,18 @@ import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 public class Beidou extends DiscordPlugin {
+
+    private final String version = "1.3.4";
 
     private final ScheduledExecutorService executorService;
     private final CommandHandler commandHandler;
     private final EmbedManager embedManager;
+    private final FusionConfig fusionConfig;
 
     private final ExtensionManager extensionManager;
     private Environment environment;
-    private String version = "";
 
     public Beidou(@NonNull final String token, @NonNull final OptionsManager manager) {
         super(List.of(
@@ -88,23 +83,27 @@ public class Beidou extends DiscordPlugin {
                 CacheFlag.EMOJI
         ), "beidou", token);
 
+        this.fusionConfig = new FusionConfig(this.path);
+
         manager.getOptionByName("environment").ifPresent(action -> manager.getOption().ifPresent(option -> {
             final EnvOption envOption = (EnvOption) action;
 
             envOption.getValue(option).ifPresentOrElse(env -> environment = env, () -> environment = Environment.RELEASE);
         }));
 
-        this.extensionManager = new ExtensionManager(getDirectory().resolve("extensions"));
+        this.extensionManager = new ExtensionManager(getDirectory().resolve("addons"));
         this.commandHandler = new CommandHandler();
         this.embedManager = new EmbedManager();
 
         this.executorService = Executors.newSingleThreadScheduledExecutor();
     }
 
-    private StorageHolder storageHolder;
     private ConfigManager configManager;
     private GuildManager guildManager;
     private JDA jda;
+
+    private StorageManager storageManager;
+    private StorageHolder holder;
 
     @Override
     public void onGuildReady(@NonNull final Guild guild, final boolean isReload) {
@@ -133,15 +132,12 @@ public class Beidou extends DiscordPlugin {
         }
 
         List.of(
-                "cache.json",
-
                 "config.yml",
                 "traffic.yml"
         ).forEach(file -> {
             final String extension = file.split("\\.")[1];
 
             final FileType fileType = switch (extension) {
-                case "json" -> FileType.JSON;
                 case "yml" -> FileType.YAML;
                 default -> throw new IllegalStateException("Unexpected value: " + extension);
             };
@@ -254,6 +250,9 @@ public class Beidou extends DiscordPlugin {
         }
 
         this.commandHandler.addCommands(List.of(
+                // guild whitelist command
+                new WhitelistCommand(this),
+
                 // bot creator commands
                 new ReloadCommand(this),
 
@@ -305,15 +304,15 @@ public class Beidou extends DiscordPlugin {
                 .description("We're setting sail! Men, to your posts! A new adventure is about to begin!")
                 .author(context.getAuthor())
                 .timestamp()
-                .footer("Guild: %s".formatted(guild.getName()), getIconUrl(guild))
+                .footer("Guild: %s (Version: %s)".formatted(guild.getName(), this.version), getIconUrl(guild))
                 .color(EmbedColor.SUCCESS).build(), true);
     }
 
     @Override
     public void onReload(@NonNull final JDA jda) {
-        this.configManager.reload();
+        this.fusionConfig.reload();
 
-        this.fileManager.setDepth(getRecursionDepth());
+        this.configManager.reload();
 
         final List<Guild> guilds = jda.getGuilds();
 
@@ -326,67 +325,39 @@ public class Beidou extends DiscordPlugin {
     public void onStop(@NonNull final JDA jda) {
         Logger.info("{} is offline!", jda.getSelfUser().getName());
 
-        final Path directory = getDirectory();
+        //final Path directory = getDirectory();
 
-        final Path folder = directory.resolve("logs");
+        //final Path folder = directory.resolve("logs");
 
-        this.fileManager.compressFile(folder.resolve("latest.log"), folder);
+        //this.fileManager.compressFile(folder.resolve("latest.log"), folder);
     }
 
     @Override
     public void init() {
+        this.fusionConfig.build();
+
         super.init();
-
-        try (final JarFile jar = new JarFile(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath())) { //todo() replace with native json api in j28
-            final JarEntry origin = jar.getJarEntry("version.json");
-
-            if (origin == null) {
-                return;
-            }
-
-            final InputStream entry = jar.getInputStream(origin);
-
-            if (entry == null) {
-                return;
-            }
-
-            final JsonObject json = new JsonParser().parse(new InputStreamReader(entry, StandardCharsets.UTF_8)).getAsJsonObject();
-
-            this.version = json.get("version").getAsString();
-        } catch (final Exception exception) {
-            Logger.warn("Failed to get version.json", exception);
-        }
 
         final Path directory = getDirectory();
 
-        this.fileManager.addFile(directory.resolve("guilds.json"), FileType.JSON)
-                .addFile(directory.resolve("config.yml"), FileType.YAML);
+        this.fileManager.addFile(directory.resolve("config.yml"), FileType.YAML);
 
         this.configManager = new ConfigManager(this.fileManager, directory);
         this.configManager.init();
 
-        this.fileManager.setDepth(getRecursionDepth());
-
         this.guildManager = new GuildManager(this);
 
-        final BotConfig bot = this.configManager.getConfig();
+        this.storageManager = new StorageManager(this);
 
-        final StorageConfig config = bot.getStorageConfig();
-
-        if (!config.getType().equalsIgnoreCase("none")) {
-            try {
-                this.storageHolder = new StorageManager(this).init();
-            } catch (final Exception exception) {
-                Logger.error("Failed to initialize storage impl", exception);
-            }
+        try {
+            this.holder = this.storageManager.init();
+        } catch (final Exception exception) {
+            Logger.error("Failed to initialize storage impl (Reason: {})", exception.getMessage());
         }
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isWhitelisted(@NonNull final String guildId) {
-        final List<String> cache = this.configManager.getGuildCache().getGuilds();
-
-        return cache.contains(guildId);
+        return this.holder.hasGuild(guildId);
     }
 
     public void leaveGuild(@NonNull final Guild guild, final String guildId, final String username, final String userId) {
@@ -410,11 +381,7 @@ public class Beidou extends DiscordPlugin {
     }
 
     public int getRecursionDepth() {
-        final BotConfig config = this.configManager.getConfig();
-
-        final FileConfig fileConfig = config.getFileConfig();
-
-        return fileConfig.getRecursionDepth();
+        return this.fusionConfig.getConfig().getProperty(RootKeys.recursion_depth);
     }
 
     public @NonNull final CommandHandler getCommandHandler() {
@@ -422,7 +389,7 @@ public class Beidou extends DiscordPlugin {
     }
 
     public @NonNull final StorageHolder getStorageHolder() {
-        return this.storageHolder;
+        return this.holder;
     }
 
     public @NonNull final ConfigManager getConfigManager() {

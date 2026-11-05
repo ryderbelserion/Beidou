@@ -13,7 +13,9 @@ repositories {
 }
 
 dependencies {
-    compileOnlyApi(project(":beidou-bot"))
+    compileOnly(project(":beidou-bot"))
+    compileOnly(libs.bundles.discord)
+    compileOnly(libs.bundles.fusion)
 
     implementation("io.tebex:tbx:1.0.1")
 }
