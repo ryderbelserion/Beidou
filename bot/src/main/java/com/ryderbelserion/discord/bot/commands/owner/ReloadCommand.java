@@ -5,6 +5,7 @@ import com.ryderbelserion.discord.api.commands.CommandEngine;
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.embeds.EmbedColor;
 import com.ryderbelserion.discord.bot.Beidou;
+import com.ryderbelserion.discord.bot.api.objects.BeidouGuild;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
@@ -14,25 +15,33 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jspecify.annotations.NonNull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReloadCommand extends CommandEngine {
 
+    private final GuildManager guildManager;
     private final Beidou beidou;
 
     public ReloadCommand(@NonNull final Beidou beidou) {
         super("reload", "Reloads the Discord Bot.");
 
         this.beidou = beidou;
+        this.guildManager = this.beidou.getGuildManager();
 
-        final GuildManager guildManager = this.beidou.getGuildManager();
+        final List<String> guilds = new ArrayList<>();
 
-        this.addChoice("guild_id", guildManager.getGuilds().keySet().stream().toList());
+        for (final BeidouGuild instance : this.guildManager.getGuilds().values()) {
+            guilds.add(instance.getGuild().getName());
+        }
+
+        this.addChoice("guild_name", guilds);
     }
 
     @Override
     @NonNull
     public final CommandData getCommandData() {
-        return Commands.slash(getName(), getDescription()).addOption(OptionType.STRING, "guild_id", "The guild id", false, true);
+        return Commands.slash(getName(), getDescription()).addOption(OptionType.STRING, "guild_name", "The name of the guild.", false, true);
     }
 
     @Override
@@ -43,14 +52,24 @@ public class ReloadCommand extends CommandEngine {
         final User user = context.getAuthor();
 
         if (context.isCreator(user.getId())) {
-            final OptionMapping arg1 = context.getOption("guild_id");
+            final OptionMapping arg1 = context.getOption("guild_name");
 
             final JDA jda = context.getJDA();
 
             if (arg1 != null) {
                 final String id = arg1.getAsString();
 
-                this.beidou.onReload(id, context);
+                this.guildManager.getGuildByName(id).ifPresentOrElse(index -> {
+                    this.beidou.onReload(index.getId(), context);
+                }, () -> {
+                    final Embed embed = new Embed()
+                            .description("%s is not a valid guild!".formatted(id))
+                            .timestamp()
+                            .author(user)
+                            .color(EmbedColor.FAIL);
+
+                    context.reply(embed.build(), false);
+                });
 
                 return;
             }

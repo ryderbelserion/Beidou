@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class GuildManager {
 
@@ -38,6 +39,10 @@ public class GuildManager {
 
     public void removeGuild(@NonNull final String id) {
         this.guilds.remove(id);
+    }
+
+    public Optional<BeidouGuild> getGuildByName(@NonNull final String name) {
+        return Optional.ofNullable(this.guilds.values().stream().filter(index -> index.getGuild().getName().equals(name)).toList().getFirst());
     }
 
     public Optional<BeidouGuild> getGuild(@NonNull final String id) {
