@@ -44,6 +44,8 @@ public abstract class DiscordPlugin {
 
     public abstract void onGuildReady(@NonNull final Guild guild, final boolean isReload);
 
+    public abstract void onGuildLeave(@NonNull final Guild guild);
+
     public abstract void onReload(@NonNull final String id, @NonNull final CommandContext user);
 
     public abstract void onReload(@NonNull final JDA jda);

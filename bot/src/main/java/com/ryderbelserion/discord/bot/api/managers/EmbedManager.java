@@ -50,4 +50,8 @@ public class EmbedManager {
     public @NonNull final Map<String, BeidouEmbed> getEmbeds(@NonNull final String id) {
         return Collections.unmodifiableMap(this.embeds.getOrDefault(id, Map.of()));
     }
+
+    public void purge() {
+        this.embeds.clear();
+    }
 }

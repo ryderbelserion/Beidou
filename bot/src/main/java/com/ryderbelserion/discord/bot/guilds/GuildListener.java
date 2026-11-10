@@ -3,6 +3,7 @@ package com.ryderbelserion.discord.bot.guilds;
 import com.ryderbelserion.discord.bot.Beidou;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jspecify.annotations.NonNull;
@@ -20,6 +21,11 @@ public class GuildListener extends ListenerAdapter {
         final Guild guild = event.getGuild();
 
         this.beidou.onGuildReady(guild, false);
+    }
+
+    @Override
+    public void onGuildLeave(@NonNull GuildLeaveEvent event) {
+        this.beidou.onGuildLeave(event.getGuild());
     }
 
     @Override

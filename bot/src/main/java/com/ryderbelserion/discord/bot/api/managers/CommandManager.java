@@ -64,6 +64,10 @@ public class CommandManager {
         this.commandHandler.addGuildCommands(this.instance.getGuild(), data);
     }
 
+    public void purge() {
+        this.commandHandler.purgeGuildCommands(this.instance.getGuild());
+    }
+
     public @NonNull final Optional<BeidouCommand> getCommand(@NonNull final String key) {
         return Optional.ofNullable(this.commands.getOrDefault(key, null));
     }

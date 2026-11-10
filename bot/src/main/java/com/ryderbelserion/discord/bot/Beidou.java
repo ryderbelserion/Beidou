@@ -24,7 +24,6 @@ import com.ryderbelserion.discord.bot.guilds.features.traffic.TrafficListener;
 import com.ryderbelserion.discord.bot.guilds.listeners.GuildSlashListener;
 import com.ryderbelserion.discord.bot.guilds.features.threads.ThreadListener;
 import com.ryderbelserion.fusion.addons.ExtensionManager;
-import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.impl.FusionConfig;
 import com.ryderbelserion.fusion.impl.keys.RootKeys;
@@ -39,7 +38,6 @@ import org.tinylog.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -131,93 +129,12 @@ public class Beidou extends DiscordPlugin {
             exception.printStackTrace();
         }
 
-        this.fileManager.extractFolder("guilds", "guilds", FileType.YAML, directory);
+        this.guildManager.addGuild(guild, directory, isReload);
+    }
 
-        List.of(
-                "config.yml",
-                "traffic.yml"
-        ).forEach(file -> {
-            final List<FileAction> actions = new ArrayList<>();
-
-            final Path path = directory.resolve(file);
-
-            if (Files.exists(path)) {
-                actions.add(FileAction.ALREADY_EXTRACTED);
-            }
-
-            if (this.fileManager.hasFile(path)) {
-                actions.add(FileAction.RELOAD_FILE);
-            }
-
-            this.fileManager.addFile(directory.resolve(file), FileType.YAML, builder -> actions.forEach(builder::addAction));
-        });
-
-        final Path commandFolder = directory.resolve("commands");
-        final Path embedFolder = directory.resolve("embeds");
-
-        if (!Files.exists(commandFolder) || !Files.exists(embedFolder)) {
-            this.fileManager.extractFolder("defaults", FileType.YAML, directory);
-        }
-
-        final Path folder = directory.resolve("defaults");
-
-        if (!Files.exists(embedFolder)) {
-            final Path target = folder.resolve("embeds");
-
-            if (Files.exists(target)) {
-                try {
-                    Files.move(target, embedFolder, StandardCopyOption.REPLACE_EXISTING);
-                } catch (final IOException exception) {
-                    exception.printStackTrace();
-                }
-            }
-        }
-
-        if (!Files.exists(commandFolder)) {
-            final Path target = folder.resolve("commands");
-
-            if (Files.exists(target)) {
-                try {
-                    Files.move(target, commandFolder, StandardCopyOption.REPLACE_EXISTING);
-                } catch (final IOException exception) {
-                    exception.printStackTrace();
-                }
-            }
-        }
-
-        try {
-            Files.deleteIfExists(folder);
-        } catch (final IOException exception) {
-            exception.printStackTrace();
-        }
-
-        this.fileManager.addFolder(directory.resolve("commands"), FileType.YAML, consumer -> {
-            consumer.addAction(FileAction.ALREADY_EXTRACTED);
-
-            if (isReload) {
-                consumer.addAction(FileAction.RELOAD_FILE);
-            }
-        });
-
-        this.fileManager.addFolder(directory.resolve("embeds"), FileType.YAML, consumer -> {
-            consumer.addAction(FileAction.ALREADY_EXTRACTED);
-
-            if (isReload) {
-                consumer.addAction(FileAction.RELOAD_FILE);
-            }
-        });
-
-        final Path addons = directory.resolve("addons");
-
-        try {
-            if (!Files.exists(addons)) {
-                Files.createDirectory(addons);
-            }
-        } catch (final IOException exception) {
-            exception.printStackTrace();
-        }
-
-        this.guildManager.addGuild(guild, directory);
+    @Override
+    public void onGuildLeave(@NonNull final Guild guild) {
+        this.guildManager.removeGuild(guild.getId());
     }
 
     @Override

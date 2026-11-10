@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.jspecify.annotations.NonNull;
+import org.tinylog.Logger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,10 @@ public class CommandHandler implements CommandFlow {
 
     @Override
     public void purgeGuildCommands(@NonNull final Guild guild) {
-        guild.updateCommands().queue();
+        guild.updateCommands().queue(
+                _ -> {},
+                error -> Logger.warn("Failed to purge commands: {}. This can be ignored in most cases.", error.getMessage())
+        );
     }
 
     @Override

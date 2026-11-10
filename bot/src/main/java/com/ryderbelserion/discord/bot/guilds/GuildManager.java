@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class GuildManager {
 
@@ -21,24 +20,28 @@ public class GuildManager {
         this.instance = instance;
     }
 
-    public void addGuild(@NonNull final Guild guild, @NonNull final Path directory) {
+    public void addGuild(@NonNull final Guild guild, @NonNull final Path directory, final boolean isReload) {
         final String id = guild.getId();
 
         if (this.guilds.containsKey(id)) {
-            this.guilds.get(id).init();
+            this.guilds.get(id).init(isReload);
 
             return;
         }
 
         final BeidouGuild beidou = new BeidouGuild(this.instance, directory, guild);
 
-        beidou.init();
+        beidou.init(isReload);
 
         this.guilds.putIfAbsent(id, beidou);
     }
 
     public void removeGuild(@NonNull final String id) {
-        this.guilds.remove(id);
+        final BeidouGuild guild = this.guilds.remove(id);
+
+        if (guild != null) {
+            guild.purge();
+        }
     }
 
     public Optional<BeidouGuild> getGuildByName(@NonNull final String name) {

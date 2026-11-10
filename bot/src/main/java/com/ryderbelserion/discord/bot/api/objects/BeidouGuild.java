@@ -9,6 +9,8 @@ import com.ryderbelserion.discord.bot.guilds.GuildConfig;
 import com.ryderbelserion.discord.bot.guilds.commands.RefreshCommand;
 import com.ryderbelserion.fusion.addons.ExtensionManager;
 import com.ryderbelserion.fusion.files.FileManager;
+import com.ryderbelserion.fusion.files.enums.FileAction;
+import com.ryderbelserion.fusion.files.enums.FileType;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -17,6 +19,8 @@ import org.tinylog.TaggedLogger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BeidouGuild {
@@ -42,7 +46,7 @@ public class BeidouGuild {
 
         this.configManager = instance.getConfigManager();
         this.embedManager = instance.getEmbedManager();
-        this.fileManager = instance.getFileManager();
+        this.fileManager = new FileManager(directory);
         this.handler = instance.getCommandHandler();
         this.logger = Logger.tag("guild");
 
@@ -54,7 +58,93 @@ public class BeidouGuild {
     private CommandManager commandManager;
     private GuildConfig guildConfig;
 
-    public void init() {
+    public void init(final boolean isReload) {
+        this.fileManager.extractFolder("guilds", "guilds", FileType.YAML, directory);
+
+        List.of(
+                "config.yml",
+                "traffic.yml"
+        ).forEach(file -> {
+            final List<FileAction> actions = new ArrayList<>();
+
+            final Path path = directory.resolve(file);
+
+            if (Files.exists(path)) {
+                actions.add(FileAction.ALREADY_EXTRACTED);
+            }
+
+            if (this.fileManager.hasFile(path)) {
+                actions.add(FileAction.RELOAD_FILE);
+            }
+
+            this.fileManager.addFile(directory.resolve(file), FileType.YAML, builder -> actions.forEach(builder::addAction));
+        });
+
+        final Path commandFolder = directory.resolve("commands");
+        final Path embedFolder = directory.resolve("embeds");
+
+        if (!Files.exists(commandFolder) || !Files.exists(embedFolder)) {
+            this.fileManager.extractFolder("defaults", FileType.YAML, directory);
+        }
+
+        final Path folder = directory.resolve("defaults");
+
+        if (!Files.exists(embedFolder)) {
+            final Path target = folder.resolve("embeds");
+
+            if (Files.exists(target)) {
+                try {
+                    Files.move(target, embedFolder, StandardCopyOption.REPLACE_EXISTING);
+                } catch (final IOException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
+
+        if (!Files.exists(commandFolder)) {
+            final Path target = folder.resolve("commands");
+
+            if (Files.exists(target)) {
+                try {
+                    Files.move(target, commandFolder, StandardCopyOption.REPLACE_EXISTING);
+                } catch (final IOException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
+
+        try {
+            Files.deleteIfExists(folder);
+        } catch (final IOException exception) {
+            exception.printStackTrace();
+        }
+
+        this.fileManager.addFolder(directory.resolve("commands"), FileType.YAML, consumer -> {
+            consumer.addAction(FileAction.ALREADY_EXTRACTED);
+
+            if (isReload) {
+                consumer.addAction(FileAction.RELOAD_FILE);
+            }
+        });
+
+        this.fileManager.addFolder(directory.resolve("embeds"), FileType.YAML, consumer -> {
+            consumer.addAction(FileAction.ALREADY_EXTRACTED);
+
+            if (isReload) {
+                consumer.addAction(FileAction.RELOAD_FILE);
+            }
+        });
+
+        final Path addons = directory.resolve("addons");
+
+        try {
+            if (!Files.exists(addons)) {
+                Files.createDirectory(addons);
+            }
+        } catch (final IOException exception) {
+            exception.printStackTrace();
+        }
+
         final CommentedConfigurationNode config = this.fileManager.getYamlFile(this.directory.resolve("config.yml")).orElseThrow().getConfig();
         final CommentedConfigurationNode traffic = this.fileManager.getYamlFile(this.directory.resolve("traffic.yml")).orElseThrow().getConfig();
 
@@ -99,6 +189,16 @@ public class BeidouGuild {
 
             this.isExtensionsLoaded = true;
         }
+    }
+
+    public void purge() {
+        if (this.extensionManager != null) {
+            this.extensionManager.purge();
+        }
+
+        this.commandManager.purge();
+        this.embedManager.purge();
+        this.fileManager.purge();
     }
 
     public @NonNull final ExtensionManager getExtensionManager() {
