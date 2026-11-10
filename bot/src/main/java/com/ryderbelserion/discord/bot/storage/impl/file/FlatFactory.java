@@ -71,9 +71,13 @@ public abstract class FlatFactory extends ConnectionFactory {
                     statement.executeBatch();
                 } catch (final SQLException exception) {
                     Logger.error("Failed to initialize database! (Reason: {})", exception.getMessage());
+
+                    System.exit(1);
                 }
             } catch (final SQLException exception) {
                 Logger.error("Failed to fetch connection from pool! (Reason: {})", exception.getMessage());
+
+                System.exit(1);
             }
         });
     }

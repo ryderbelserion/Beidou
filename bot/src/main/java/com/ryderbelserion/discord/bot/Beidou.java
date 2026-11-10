@@ -350,6 +350,8 @@ public class Beidou extends DiscordPlugin {
             this.holder = this.storageManager.init();
         } catch (final Exception exception) {
             Logger.error("Failed to initialize storage impl (Reason: {})", exception.getMessage());
+
+            System.exit(1);
         }
     }
 
