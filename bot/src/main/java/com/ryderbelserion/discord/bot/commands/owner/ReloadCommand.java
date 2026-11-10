@@ -5,18 +5,18 @@ import com.ryderbelserion.discord.api.commands.CommandEngine;
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.embeds.EmbedColor;
 import com.ryderbelserion.discord.bot.Beidou;
-import com.ryderbelserion.discord.bot.api.objects.BeidouGuild;
 import com.ryderbelserion.discord.bot.guilds.GuildManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.AutoCompleteQuery;
+import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jspecify.annotations.NonNull;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ReloadCommand extends CommandEngine {
 
@@ -28,20 +28,29 @@ public class ReloadCommand extends CommandEngine {
 
         this.beidou = beidou;
         this.guildManager = this.beidou.getGuildManager();
-
-        final List<String> guilds = new ArrayList<>();
-
-        for (final BeidouGuild instance : this.guildManager.getGuilds().values()) {
-            guilds.add(instance.getGuild().getName());
-        }
-
-        this.addChoice("guild_name", guilds);
     }
 
     @Override
     @NonNull
     public final CommandData getCommandData() {
         return Commands.slash(getName(), getDescription()).addOption(OptionType.STRING, "guild_name", "The name of the guild.", false, true);
+    }
+
+    @Override
+    protected boolean completion(@NonNull final CommandAutoCompleteInteractionEvent event) {
+        final AutoCompleteQuery option = event.getFocusedOption();
+
+        if (!option.getName().equals("guild_name")) {
+            return false;
+        }
+
+        event.replyChoices(this.guildManager.getGuilds().values().stream().map(instance -> {
+            final String name = instance.getGuild().getName();
+
+            return new Command.Choice(name, name);
+        }).toList()).queue(); //todo() maybe cache this?
+
+        return true;
     }
 
     @Override

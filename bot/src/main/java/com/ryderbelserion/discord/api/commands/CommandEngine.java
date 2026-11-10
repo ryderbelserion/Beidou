@@ -28,16 +28,24 @@ public abstract class CommandEngine {
 
     public abstract CommandData getCommandData();
 
+    protected boolean completion(@NonNull final CommandAutoCompleteInteractionEvent event) {
+        return false;
+    }
+
     protected abstract void perform(@NonNull final SlashCommandInteractionEvent event, @NonNull final CommandContext context);
 
     public void interact(@NonNull final SlashCommandInteractionEvent event) {
         final CommandContext context = new CommandContext(event);
 
-        if (!event.getName().equalsIgnoreCase(this.name)) return;
+        if (!event.getName().equalsIgnoreCase(this.name)) {
+            return;
+        }
 
         final User user = context.getAuthor();
 
-        if (user.isBot()) return; // don't let bots interact with the command
+        if (user.isBot()) {
+            return; // don't let bots interact with the command
+        }
 
         perform(event, context);
     }
@@ -45,7 +53,13 @@ public abstract class CommandEngine {
     public void complete(@NonNull final CommandAutoCompleteInteractionEvent event) {
         final String name = event.getName();
 
-        if (!name.equalsIgnoreCase(this.name)) return;
+        if (!name.equalsIgnoreCase(this.name)) {
+            return;
+        }
+
+        if (completion(event)) { // custom completion detected, do not run static options below, if option is false. go ahead below anyway.
+            return;
+        }
 
         final AutoCompleteQuery option = event.getFocusedOption();
 
@@ -66,6 +80,18 @@ public abstract class CommandEngine {
 
     public void removeChoice(@NonNull final String option) {
         this.values.remove(option);
+    }
+
+    public boolean hasChoice(@NonNull final String option) {
+        return this.values.containsKey(option);
+    }
+
+    public List<String> getChoices(@NonNull final String option) {
+        return this.values.getOrDefault(option, List.of());
+    }
+
+    public int getChoicesSize() {
+        return this.values.size();
     }
 
     public @NonNull final String getDescription() {
